@@ -1,7 +1,7 @@
 ---
-name: Feature
+name: "✨Feature"
 about: 기능을 추가합니다.
-title: Feature
+title: "✨Feature"
 labels: ''
 assignees: ''
 

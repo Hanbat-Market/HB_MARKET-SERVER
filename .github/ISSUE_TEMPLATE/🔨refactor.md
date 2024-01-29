@@ -1,7 +1,7 @@
 ---
-name: Refactor
+name: "\U0001F528Refactor"
 about: 리팩토링이 필요합니다.
-title: Refactor
+title: "\U0001F528Refactor"
 labels: ''
 assignees: ''
 

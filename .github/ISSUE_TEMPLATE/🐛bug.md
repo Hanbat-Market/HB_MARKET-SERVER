@@ -1,7 +1,7 @@
 ---
-name: Bug
+name: "\U0001F41BBug"
 about: 버그가 발생했습니다.
-title: Bug
+title: "\U0001F41BBug"
 labels: ''
 assignees: ''
 
