@@ -1,7 +1,7 @@
 ---
-name: Feature request
-about: Suggest an idea for this project
-title: ''
+name: Feature
+about: 기능을 추가합니다.
+title: Feature
 labels: ''
 assignees: ''
 
