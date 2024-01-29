@@ -41,9 +41,10 @@ public class ImageFile {
     /**
      * 생성 메서드
      */
-    private void createImageFile(Article article, String type, String name) {
+    private ImageFile createImageFile(Article article, String type, String name) {
         ImageFile imageFile = new ImageFile(type, name);
         imageFile.regisArticle(article);
+        return imageFile;
     }
 }
 

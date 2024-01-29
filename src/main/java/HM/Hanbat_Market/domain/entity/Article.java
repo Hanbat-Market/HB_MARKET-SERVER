@@ -24,7 +24,6 @@ public class Article {
     @GeneratedValue
     @Column(name = "article_id")
     private AtomicLong id = new AtomicLong();
-    ;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "item_id")
