@@ -18,7 +18,7 @@ public class Member {
     @Id
     @GeneratedValue
     @Column(name = "user_id")
-    private AtomicLong id = new AtomicLong(); //동시성 문제해결을 위해 AtomicLong 사용
+    private Long id; //동시성 문제해결을 위해 추후에 AtomicLong 사용
 
     @Column(nullable = false, unique = true)
     private String mail;
@@ -51,7 +51,7 @@ public class Member {
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<PurchaseHistory> purchaseHistories = new ArrayList<>();
 
-    public Member createMember(String mail, String passwd, String phoneNumber, String nickname){
+    public static Member createMember(String mail, String passwd, String phoneNumber, String nickname){
         return new Member(mail, passwd, phoneNumber, nickname);
     }
 

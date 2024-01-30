@@ -18,16 +18,16 @@ public class Item {
     @Id
     @GeneratedValue
     @Column(name = "item_id")
-    private AtomicLong id;
+    private Long id;
 
     @Column(nullable = false)
-    private AtomicLong price = new AtomicLong();
+    private Long price;
 
     private String description;
 
     private String tradingPlace;
 
-    private AtomicLong preemptionCount = new AtomicLong();
+    private Long preemptionCount;
 
     @Enumerated(EnumType.STRING)
     private ItemStatus itemStatus;
@@ -45,11 +45,11 @@ public class Item {
     @OneToMany(mappedBy = "item", cascade = CascadeType.ALL)
     private List<PurchaseHistory> purchaseHistories = new ArrayList<>();
 
-    private Item(AtomicLong price, String description, String tradingPlace, Member member) {
+    private Item(Long price, String description, String tradingPlace, Member member) {
         this.price = price;
         this.description = description;
         this.tradingPlace = tradingPlace;
-        this.preemptionCount.set(0);
+        this.preemptionCount = 0L;
         this.itemStatus = ItemStatus.SALE;
     }
 
@@ -69,7 +69,7 @@ public class Item {
     /**
      * 생성 메서드
      */
-    public Item createItem(AtomicLong price, String description, String tradingPlace, Member member) {
+    public static Item createItem(Long price, String description, String tradingPlace, Member member) {
         Item item = new Item(price, description, tradingPlace, member);
         item.regisMember(member);
         return item;

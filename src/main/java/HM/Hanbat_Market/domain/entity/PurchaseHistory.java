@@ -15,7 +15,7 @@ public class PurchaseHistory {
     @Id
     @GeneratedValue
     @Column(name = "purchase_history_id")
-    private AtomicLong id = new AtomicLong();
+    private Long id;
     ;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -39,7 +39,7 @@ public class PurchaseHistory {
         item.getPurchaseHistories().add(this);
     }
 
-    public PurchaseHistory createPurchaseHistory(Member member, Item item) {
+    public static PurchaseHistory createPurchaseHistory(Member member, Item item) {
         PurchaseHistory purchaseHistory = new PurchaseHistory();
         purchaseHistory.regisItem(item);
         purchaseHistory.regisMember(member);
