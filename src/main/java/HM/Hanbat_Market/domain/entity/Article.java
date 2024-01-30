@@ -23,7 +23,7 @@ public class Article {
     @Id
     @GeneratedValue
     @Column(name = "article_id")
-    private AtomicLong id = new AtomicLong();
+    private Long id;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "item_id")

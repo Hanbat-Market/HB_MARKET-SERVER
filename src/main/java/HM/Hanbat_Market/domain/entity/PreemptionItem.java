@@ -15,7 +15,7 @@ public class PreemptionItem {
     @Id
     @GeneratedValue
     @Column(name = "preemption_item_id")
-    private AtomicLong id = new AtomicLong();
+    private Long id;
     ;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -39,7 +39,7 @@ public class PreemptionItem {
         item.getPreemptionItems().add(this);
     }
 
-    public PreemptionItem createPreemptionItem(Member member, Item item) {
+    public static PreemptionItem createPreemptionItem(Member member, Item item) {
         PreemptionItem preemptionItem = new PreemptionItem();
         preemptionItem.regisItem(item);
         preemptionItem.regisMember(member);

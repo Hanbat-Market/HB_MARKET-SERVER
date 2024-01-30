@@ -15,7 +15,7 @@ public class ImageFile {
     @Id
     @GeneratedValue
     @Column(name = "file_id")
-    private AtomicLong id = new AtomicLong();
+    private Long id;
 
     private String type;
 
@@ -25,7 +25,7 @@ public class ImageFile {
     @JoinColumn(name = "article_id")
     private Article article;
 
-    public ImageFile(String type, String name) {
+    private ImageFile(String type, String name) {
         this.type = type;
         this.name = name;
     }
@@ -41,7 +41,7 @@ public class ImageFile {
     /**
      * 생성 메서드
      */
-    private ImageFile createImageFile(Article article, String type, String name) {
+    public static ImageFile createImageFile(Article article, String type, String name) {
         ImageFile imageFile = new ImageFile(type, name);
         imageFile.regisArticle(article);
         return imageFile;
