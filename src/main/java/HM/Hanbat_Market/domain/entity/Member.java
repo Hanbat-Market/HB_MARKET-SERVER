@@ -26,11 +26,18 @@ public class Member {
     @Column(nullable = false)
     private String passwd;
 
-    @Column(unique = true)
+    @Column(nullable = false, unique = true)
     private String phoneNumber;
 
     @Column(nullable = false, unique = true)
     private String nickname;
+
+    private Member(String mail, String passwd, String phoneNumber, String nickname) {
+        this.mail = mail;
+        this.passwd = passwd;
+        this.phoneNumber = phoneNumber;
+        this.nickname = nickname;
+    }
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<Article> articles = new ArrayList<>();
@@ -43,5 +50,9 @@ public class Member {
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<PurchaseHistory> purchaseHistories = new ArrayList<>();
+
+    public Member createMember(String mail, String passwd, String phoneNumber, String nickname){
+        return new Member(mail, passwd, phoneNumber, nickname);
+    }
 
 }
