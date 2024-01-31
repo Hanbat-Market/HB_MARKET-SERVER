@@ -1,4 +1,4 @@
-package HM.Hanbat_Market.repository;
+package HM.Hanbat_Market.repository.member;
 
 import HM.Hanbat_Market.domain.entity.Member;
 import HM.Hanbat_Market.repository.member.JpaMemberRepository;
@@ -15,8 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @Transactional
 class JpaMemberRepositoryTest
 {
-    @Autowired
-    JpaMemberRepository jpaMemberRepository;
+    @Autowired MemberRepository jpaMemberRepository;
 
     @Test
     public void 회원가입() throws Exception {
