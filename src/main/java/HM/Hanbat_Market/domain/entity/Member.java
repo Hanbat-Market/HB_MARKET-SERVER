@@ -39,16 +39,16 @@ public class Member {
         this.nickname = nickname;
     }
 
-    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "member")
     private List<Article> articles = new ArrayList<>();
 
-    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "member")
     private List<Item> items = new ArrayList<>();
 
-    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "member")
     private List<PreemptionItem> preemptionItems = new ArrayList<>();
 
-    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "member")
     private List<PurchaseHistory> purchaseHistories = new ArrayList<>();
 
     public static Member createMember(String mail, String passwd, String phoneNumber, String nickname) {

@@ -47,9 +47,8 @@ class JpaArticleRepositoryTest {
         jpaMemberRepository.save(member);
 
         Item item = createTestItem(member, "PS5");
-        jpaItemRepository.save(item);
-
         Article article = creteTestArticle(member, item);
+
         jpaArticleRepository.save(article);
 
         //when
@@ -76,21 +75,19 @@ class JpaArticleRepositoryTest {
     public void 게시글_전체조회() throws Exception {
         //given
         Member member = createTestMember();
-        jpaMemberRepository.save(member);
-
         Member member2 = createTestMember2();
+
+        jpaMemberRepository.save(member);
         jpaMemberRepository.save(member2);
 
         Item item = createTestItem(member, "PS3");
         Item item2 = createTestItem(member, "PS4");
         Item item3 = createTestItem(member2, "PS5");
-        jpaItemRepository.save(item);
-        jpaItemRepository.save(item2);
-        jpaItemRepository.save(item3);
 
         Article article = creteTestArticle(member, item);
         Article article2 = creteTestArticle(member, item2);
         Article article3 = creteTestArticle(member2, item3);
+
         jpaArticleRepository.save(article);
         jpaArticleRepository.save(article2);
         jpaArticleRepository.save(article3);
@@ -111,21 +108,19 @@ class JpaArticleRepositoryTest {
     public void 게시글_검색() throws Exception {
         //given
         Member member = createTestMember();
-        jpaMemberRepository.save(member);
-
         Member member2 = createTestMember2();
+
+        jpaMemberRepository.save(member);
         jpaMemberRepository.save(member2);
 
         Item item = createTestItem(member, "PS3");
         Item item2 = createTestItem(member, "PS4");
         Item item3 = createTestItem(member2, "PS5");
-        jpaItemRepository.save(item);
-        jpaItemRepository.save(item2);
-        jpaItemRepository.save(item3);
 
         Article article = creteTestArticle(member, item);
         Article article2 = creteTestArticle(member, item2);
         Article article3 = creteTestArticle(member2, item3);
+
         jpaArticleRepository.save(article);
         jpaArticleRepository.save(article2);
         jpaArticleRepository.save(article3);

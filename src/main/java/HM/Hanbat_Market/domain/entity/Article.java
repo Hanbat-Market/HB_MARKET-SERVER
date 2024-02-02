@@ -31,8 +31,7 @@ public class Article {
 
     private String tradingPlace;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "item_id")
+    @OneToOne(mappedBy = "article", cascade = CascadeType.ALL)
     private Item item;
 
     @ManyToOne(fetch = FetchType.LAZY)
