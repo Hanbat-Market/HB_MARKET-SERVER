@@ -16,7 +16,6 @@ public class PreemptionItem {
     @GeneratedValue
     @Column(name = "preemption_item_id")
     private Long id;
-    ;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")

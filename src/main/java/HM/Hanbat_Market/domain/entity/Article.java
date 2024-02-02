@@ -25,6 +25,12 @@ public class Article {
     @Column(name = "article_id")
     private Long id;
 
+    private String title;
+
+    private String description;
+
+    private String tradingPlace;
+
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "item_id")
     private Item item;
@@ -40,7 +46,10 @@ public class Article {
     @Convert(converter = Jsr310JpaConverters.LocalDateTimeConverter.class)
     private LocalDateTime createdAt;
 
-    private Article(Member member, Item item) {
+    private Article(String title, String description, String tradingPlace) {
+        this.title = title;
+        this.description = description;
+        this.tradingPlace = tradingPlace;
         this.createdAt = LocalDateTime.now();
     }
 
@@ -61,10 +70,12 @@ public class Article {
      * @param member
      * @param item   생성 메서드
      */
-    public static Article createArticle(Member member, Item item) {
-        Article article = new Article(member, item);
+    public static Article createArticle(String title, String description, String tradingPlace, Member member, Item item) {
+        Article article = new Article(title, description, tradingPlace);
+
         article.regisMember(member);
         article.regisItem(item);
+
         return article;
     }
 

@@ -1,7 +1,6 @@
 package HM.Hanbat_Market.repository.member;
 
 import HM.Hanbat_Market.domain.entity.Member;
-import HM.Hanbat_Market.repository.member.JpaMemberRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -13,9 +12,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
-class JpaMemberRepositoryTest
-{
-    @Autowired MemberRepository jpaMemberRepository;
+class JpaMemberRepositoryTest {
+    @Autowired
+    MemberRepository jpaMemberRepository;
 
     @Test
     public void 회원가입() throws Exception {
@@ -32,8 +31,8 @@ class JpaMemberRepositoryTest
     public void 전체회원조회() throws Exception {
         //given
         Member member1 = createTestMember();
-        Member member2 = Member.createMember("wncks0303@naver.com","321","010-321-321","토마스");
-        Member member3 = Member.createMember("wncks0303@sadf.com","213123","010-4244-321","케빈");
+        Member member2 = Member.createMember("wncks0303@naver.com", "321", "010-321-321", "토마스");
+        Member member3 = Member.createMember("wncks0303@sadf.com", "213123", "010-4244-321", "케빈");
 
         jpaMemberRepository.save(member1);
         jpaMemberRepository.save(member2);
@@ -43,7 +42,8 @@ class JpaMemberRepositoryTest
         //then
         assertEquals(3, members.size());
     }
-    public Member createTestMember(){
+
+    public Member createTestMember() {
         String mail = "jckim229@gmail.com";
         String passwd = "1234";
         String phoneNumber = "010-1234-1234";
