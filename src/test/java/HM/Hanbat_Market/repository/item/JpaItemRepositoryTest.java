@@ -1,5 +1,6 @@
 package HM.Hanbat_Market.repository.item;
 
+import HM.Hanbat_Market.domain.entity.Article;
 import HM.Hanbat_Market.domain.entity.Item;
 import HM.Hanbat_Market.domain.entity.Member;
 import HM.Hanbat_Market.repository.member.JpaMemberRepository;
@@ -17,13 +18,16 @@ import static org.junit.jupiter.api.Assertions.*;
 @Transactional
 class JpaItemRepositoryTest {
 
-    @Autowired ItemRepository jpaItemRepository;
-    @Autowired MemberRepository jpaMemberRepository;
+    @Autowired
+    ItemRepository jpaItemRepository;
+    @Autowired
+    MemberRepository jpaMemberRepository;
 
     @Test
     public void 아이템_등록() throws Exception {
         //given
         Member member = createTestMember();
+
         Item item = createTestItem(member);
         //when
         jpaItemRepository.save(item);
@@ -32,23 +36,29 @@ class JpaItemRepositoryTest {
     }
 
     @Test
-    public void 아이템_멤버_테스트() throws Exception {
+    public void 아이템_멤버_연관성테스트() throws Exception {
         //given
         Member member = createTestMember();
         jpaMemberRepository.save(member);
 
         Item item = createTestItem(member);
         jpaItemRepository.save(item);
+
         //when
-        Member member2 = item.getMember();
+        Item findItem = jpaItemRepository.findById(item.getId()).get();
+        Member findMember = jpaMemberRepository.findById(findItem.getMember().getId()).get();
+
         //then
-        assertEquals(member2, jpaMemberRepository.findById(member.getId()).get());
+        assertEquals(findItem, jpaItemRepository.findById(item.getId()).get());
+        assertEquals(findMember, jpaMemberRepository.findById(member.getId()).get());
+
+        assertEquals(item, findItem);
+        assertEquals(member, findMember);
     }
 
     /**
      * 모든 아이템을 조회하는 것을 테스트 합니다.
-     * 멤버가 갖고 있는 아이템의 수 전체 조회한 아이템의 수를 비교합니다.
-     * 멤버가 갖고 있는 아이템의 수와 멤버의 아이템 수를 조회하여 비교합니다.
+     * 멤버와 이이템의 연관성을 테스트 합니다.
      */
 
     @Test
@@ -68,7 +78,7 @@ class JpaItemRepositoryTest {
 
         //when
         List<Item> items = jpaItemRepository.findAll();
-        List<Item> memberItems = jpaItemRepository.findByMember(findMember);
+        List<Item> memberItems = jpaItemRepository.findAllByMember(findMember);
 
         //then
         assertEquals(3, items.size());
@@ -86,10 +96,9 @@ class JpaItemRepositoryTest {
     }
 
     public Item createTestItem(Member member) {
+        String ItemName = "PS5";
         Long price = 10000L;
-        String description = "hello";
-        String tradingPlace = "성수역 7번 출구";
 
-        return Item.createItem(price, description, tradingPlace, member);
+        return Item.createItem(ItemName, price, member);
     }
 }

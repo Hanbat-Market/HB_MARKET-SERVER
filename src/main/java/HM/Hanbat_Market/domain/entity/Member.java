@@ -51,7 +51,7 @@ public class Member {
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<PurchaseHistory> purchaseHistories = new ArrayList<>();
 
-    public static Member createMember(String mail, String passwd, String phoneNumber, String nickname){
+    public static Member createMember(String mail, String passwd, String phoneNumber, String nickname) {
         return new Member(mail, passwd, phoneNumber, nickname);
     }
 
