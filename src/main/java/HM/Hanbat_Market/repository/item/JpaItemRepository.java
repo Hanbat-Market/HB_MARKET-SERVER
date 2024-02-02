@@ -1,5 +1,6 @@
 package HM.Hanbat_Market.repository.item;
 
+import HM.Hanbat_Market.domain.entity.Article;
 import HM.Hanbat_Market.domain.entity.Item;
 import HM.Hanbat_Market.domain.entity.Member;
 import jakarta.persistence.EntityManager;
@@ -34,10 +35,10 @@ public class JpaItemRepository implements ItemRepository {
     }
 
     @Override
-    public List<Item> findByMember(Member member) {
+    public List<Item> findAllByMember(Member member) {
         Long memberId = member.getId();
-        return em.createQuery("select i from Item i where i.member.id = :memberId")
-                .setParameter("memberId", memberId)
+        return em.createQuery("select i from Item i join i.member m where m.id = :memberId")
+                .setParameter("memberId", member.getId())
                 .getResultList();
     }
 

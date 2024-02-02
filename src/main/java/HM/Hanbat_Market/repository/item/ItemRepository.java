@@ -11,7 +11,7 @@ public interface ItemRepository {
 
     Optional<Item> findById(Long id);
 
-    List<Item> findByMember(Member member);
+    List<Item> findAllByMember(Member member);
 
     List<Item> findAll();
 }
