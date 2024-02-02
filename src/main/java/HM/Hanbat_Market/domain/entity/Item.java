@@ -21,11 +21,10 @@ public class Item {
     private Long id;
 
     @Column(nullable = false)
+    private String itemName;
+
+    @Column(nullable = false)
     private Long price;
-
-    private String description;
-
-    private String tradingPlace;
 
     private Long preemptionCount;
 
@@ -45,10 +44,9 @@ public class Item {
     @OneToMany(mappedBy = "item", cascade = CascadeType.ALL)
     private List<PurchaseHistory> purchaseHistories = new ArrayList<>();
 
-    private Item(Long price, String description, String tradingPlace, Member member) {
+    private Item(String itemName, Long price) {
+        this.itemName = itemName;
         this.price = price;
-        this.description = description;
-        this.tradingPlace = tradingPlace;
         this.preemptionCount = 0L;
         this.itemStatus = ItemStatus.SALE;
     }
@@ -69,9 +67,20 @@ public class Item {
     /**
      * 생성 메서드
      */
-    public static Item createItem(Long price, String description, String tradingPlace, Member member) {
-        Item item = new Item(price, description, tradingPlace, member);
+    public static Item createItem(String itemName, Long price, Member member) {
+        Item item = new Item(itemName, price);
         item.regisMember(member);
         return item;
+    }
+
+    /**
+     * 비즈니스 로직
+     */
+    public void changeItemStatus() {
+        if (this.itemStatus == ItemStatus.SALE) {
+            this.itemStatus = ItemStatus.COMP;
+        } else if (this.itemStatus == ItemStatus.COMP) {
+            this.itemStatus = ItemStatus.SALE;
+        }
     }
 }
