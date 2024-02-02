@@ -25,8 +25,18 @@ public class Article {
     @Column(name = "article_id")
     private Long id;
 
+<<<<<<< Updated upstream
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "item_id")
+=======
+    private String title;
+
+    private String description;
+
+    private String tradingPlace;
+
+    @OneToOne(mappedBy = "article", cascade = CascadeType.ALL)
+>>>>>>> Stashed changes
     private Item item;
 
     @ManyToOne(fetch = FetchType.LAZY)

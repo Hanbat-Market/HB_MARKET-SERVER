@@ -32,6 +32,18 @@ public class Member {
     @Column(nullable = false, unique = true)
     private String nickname;
 
+    @OneToMany(mappedBy = "member")
+    private List<Article> articles = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member")
+    private List<Item> items = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member")
+    private List<PreemptionItem> preemptionItems = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member")
+    private List<PurchaseHistory> purchaseHistories = new ArrayList<>();
+
     private Member(String mail, String passwd, String phoneNumber, String nickname) {
         this.mail = mail;
         this.passwd = passwd;
@@ -39,6 +51,7 @@ public class Member {
         this.nickname = nickname;
     }
 
+<<<<<<< Updated upstream
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<Article> articles = new ArrayList<>();
 
@@ -52,7 +65,9 @@ public class Member {
     private List<PurchaseHistory> purchaseHistories = new ArrayList<>();
 
     public static Member createMember(String mail, String passwd, String phoneNumber, String nickname){
+=======
+    public static Member createMember(String mail, String passwd, String phoneNumber, String nickname) {
+>>>>>>> Stashed changes
         return new Member(mail, passwd, phoneNumber, nickname);
     }
-
 }
