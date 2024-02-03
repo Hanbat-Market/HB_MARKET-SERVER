@@ -16,7 +16,6 @@ public class JpaItemRepository implements ItemRepository {
 
     private final EntityManager em;
 
-
     @Override
     public Item save(Item item) {
         //        if (item.getId() == null){
