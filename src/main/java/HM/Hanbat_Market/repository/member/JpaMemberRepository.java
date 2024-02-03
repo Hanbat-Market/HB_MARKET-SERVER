@@ -36,6 +36,22 @@ public class JpaMemberRepository implements MemberRepository {
     }
 
     @Override
+    public Optional<Member> findByMail(String mail) {
+        List<Member> result = em.createQuery("select m from Member m where m.mail like :mail", Member.class)
+                .setParameter("mail", mail)
+                .getResultList();
+        return result.stream().findAny();
+    }
+
+    @Override
+    public Optional<Member> findByPhoneNumber(String phoneNumber) {
+        List<Member> result = em.createQuery("select m from Member m where m.phoneNumber like :phoneNumber", Member.class)
+                .setParameter("phoneNumber", phoneNumber)
+                .getResultList();
+        return result.stream().findAny();
+    }
+
+    @Override
     public List<Member> findAll() {
         return em.createQuery("select m from Member m", Member.class)
                 .getResultList();
