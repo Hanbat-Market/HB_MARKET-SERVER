@@ -26,7 +26,7 @@ public class Purchase {
     @JoinColumn(name = "user_id")
     private Member member;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "item_id")
     private Item item;
 
@@ -46,7 +46,7 @@ public class Purchase {
 
     private void regisItem(Item item) {
         this.item = item;
-        item.getPurchases().add(this);
+        item.setPurchase(this);
     }
 
     public static Purchase createPurchase(Member member, Item item) {

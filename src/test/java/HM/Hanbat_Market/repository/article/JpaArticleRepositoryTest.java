@@ -14,6 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
 
+import static HM.Hanbat_Market.CreateTestEntity.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
@@ -29,7 +30,7 @@ class JpaArticleRepositoryTest {
     @Test
     public void 게시글_등록() throws Exception {
         //given
-        Member member = createTestMember();
+        Member member = createTestMember1();
         Item item = createTestItem(member, "PS5");
         Article article = creteTestArticle(member, item);
 
@@ -43,7 +44,7 @@ class JpaArticleRepositoryTest {
     @Test
     public void 게시글_아이템_멤버_연관성테스트() throws Exception {
         //given
-        Member member = createTestMember();
+        Member member = createTestMember1();
         jpaMemberRepository.save(member);
 
         Item item = createTestItem(member, "PS5");
@@ -74,7 +75,7 @@ class JpaArticleRepositoryTest {
     @Test
     public void 게시글_전체조회() throws Exception {
         //given
-        Member member = createTestMember();
+        Member member = createTestMember1();
         Member member2 = createTestMember2();
 
         jpaMemberRepository.save(member);
@@ -107,7 +108,7 @@ class JpaArticleRepositoryTest {
     @Test
     public void 게시글_검색() throws Exception {
         //given
-        Member member = createTestMember();
+        Member member = createTestMember1();
         Member member2 = createTestMember2();
 
         jpaMemberRepository.save(member);
@@ -144,41 +145,4 @@ class JpaArticleRepositoryTest {
         assertEquals(searchByItemName.size(), 1);
         assertEquals(searchByItemStatus.size(), 1);
     }
-
-    public Member createTestMember() {
-        String mail = "jckim229@gmail.com";
-        String passwd = "1234";
-        String phoneNumber = "010-1234-1234";
-        String nickname = "김주찬";
-
-        return Member.createMember(mail, passwd, phoneNumber, nickname);
-    }
-
-    public Member createTestMember2() {
-        String mail = "wncks0303@naver.com";
-        String passwd = "1234";
-        String phoneNumber = "010-4321-4321";
-        String nickname = "토마스";
-
-        return Member.createMember(mail, passwd, phoneNumber, nickname);
-    }
-
-    public Item createTestItem(Member member, String name) {
-        String itemName = name;
-        Long price = 10000L;
-        String description = "hello";
-        String tradingPlace = "성수역 7번 출구";
-
-        return Item.createItem(itemName, price, member);
-    }
-
-
-    public Article creteTestArticle(Member member, Item item) {
-        String title = "증고책 팝니다";
-        String description = "hello";
-        String tradingPlace = "성수역 7번 출구";
-
-        return Article.createArticle(title, description, tradingPlace, member, item);
-    }
-
 }
