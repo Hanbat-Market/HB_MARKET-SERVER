@@ -33,7 +33,8 @@ public class MemberService {
         }
 
         findMember = jpaMemberRepository.findByMail((member.getMail()));
-        if (findMember.isPresent()) {
+        if (findMember.isPresent())
+        {
             throw new IllegalArgumentException("이미 존재하는 메일입니다.");
         }
 
