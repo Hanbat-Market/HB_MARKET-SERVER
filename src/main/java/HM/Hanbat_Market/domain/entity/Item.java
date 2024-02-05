@@ -41,7 +41,7 @@ public class Item {
     private List<PreemptionItem> PreemptionItems = new ArrayList<>();
 
     @OneToMany(mappedBy = "item", cascade = CascadeType.ALL)
-    private List<Orders> orders = new ArrayList<>();
+    private List<Purchase> purchases = new ArrayList<>();
 
     private Item(String itemName, Long price) {
         this.itemName = itemName;
