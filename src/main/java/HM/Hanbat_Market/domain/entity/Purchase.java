@@ -14,11 +14,11 @@ import java.time.LocalDateTime;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EntityListeners(AuditingEntityListener.class)
-public class Orders {
+public class Purchase {
 
     @Id
     @GeneratedValue
-    @Column(name = "orders_id")
+    @Column(name = "purchase_id")
     private Long id;
     ;
 
@@ -32,25 +32,27 @@ public class Orders {
 
     @CreatedDate
     @Convert(converter = Jsr310JpaConverters.LocalDateTimeConverter.class)
-    private LocalDateTime ordersDate;
+    private LocalDateTime purchaseDate;
+
+
 
     /**
      * 연관관계 편의 메서드
      */
     private void regisMember(Member member) {
         this.member = member;
-        member.getOrders().add(this);
+        member.getPurchases().add(this);
     }
 
     private void regisItem(Item item) {
         this.item = item;
-        item.getOrders().add(this);
+        item.getPurchases().add(this);
     }
 
-    public static Orders createOrders(Member member, Item item) {
-        Orders orders = new Orders();
-        orders.regisItem(item);
-        orders.regisMember(member);
-        return orders;
+    public static Purchase createPurchase(Member member, Item item) {
+        Purchase purchase = new Purchase();
+        purchase.regisItem(item);
+        purchase.regisMember(member);
+        return purchase;
     }
 }

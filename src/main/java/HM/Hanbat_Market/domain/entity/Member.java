@@ -40,7 +40,7 @@ public class Member {
     private List<PreemptionItem> preemptionItems = new ArrayList<>();
 
     @OneToMany(mappedBy = "member")
-    private List<Orders> orders = new ArrayList<>();
+    private List<Purchase> purchases = new ArrayList<>();
 
     private Member(String mail, String passwd, String phoneNumber, String nickname) {
         this.mail = mail;
