@@ -1,5 +1,6 @@
 package HM.Hanbat_Market.repository.member;
 
+import HM.Hanbat_Market.CreateTestEntity;
 import HM.Hanbat_Market.domain.entity.Member;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,7 @@ class JpaMemberRepositoryTest {
     @Test
     public void 회원가입() throws Exception {
         //given
-        Member member = createTestMember();
+        Member member = CreateTestEntity.createTestMember1();
         //when
         Member saveMember = jpaMemberRepository.save(member);
         //then
@@ -30,7 +31,7 @@ class JpaMemberRepositoryTest {
     @Test
     public void 전체회원조회() throws Exception {
         //given
-        Member member1 = createTestMember();
+        Member member1 = CreateTestEntity.createTestMember1();
         Member member2 = Member.createMember("wncks0303@naver.com", "321", "010-321-321", "토마스");
         Member member3 = Member.createMember("wncks0303@sadf.com", "213123", "010-4244-321", "케빈");
 
@@ -41,14 +42,5 @@ class JpaMemberRepositoryTest {
         List<Member> members = jpaMemberRepository.findAll();
         //then
         assertEquals(3, members.size());
-    }
-
-    public Member createTestMember() {
-        String mail = "jckim229@gmail.com";
-        String passwd = "1234";
-        String phoneNumber = "010-1234-1234";
-        String nickname = "김주찬";
-
-        return Member.createMember(mail, passwd, phoneNumber, nickname);
     }
 }
