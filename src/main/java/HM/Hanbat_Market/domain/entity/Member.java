@@ -4,11 +4,9 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicLong;
 
 @Entity
 @Getter
@@ -32,13 +30,6 @@ public class Member {
     @Column(nullable = false, unique = true)
     private String nickname;
 
-    private Member(String mail, String passwd, String phoneNumber, String nickname) {
-        this.mail = mail;
-        this.passwd = passwd;
-        this.phoneNumber = phoneNumber;
-        this.nickname = nickname;
-    }
-
     @OneToMany(mappedBy = "member")
     private List<Article> articles = new ArrayList<>();
 
@@ -49,7 +40,14 @@ public class Member {
     private List<PreemptionItem> preemptionItems = new ArrayList<>();
 
     @OneToMany(mappedBy = "member")
-    private List<PurchaseHistory> purchaseHistories = new ArrayList<>();
+    private List<Purchase> purchases = new ArrayList<>();
+
+    private Member(String mail, String passwd, String phoneNumber, String nickname) {
+        this.mail = mail;
+        this.passwd = passwd;
+        this.phoneNumber = phoneNumber;
+        this.nickname = nickname;
+    }
 
     public static Member createMember(String mail, String passwd, String phoneNumber, String nickname) {
         return new Member(mail, passwd, phoneNumber, nickname);
