@@ -4,11 +4,9 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.ColumnDefault;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicLong;
 
 @Entity
 @Getter
@@ -43,7 +41,7 @@ public class Item {
     private List<PreemptionItem> PreemptionItems = new ArrayList<>();
 
     @OneToMany(mappedBy = "item", cascade = CascadeType.ALL)
-    private List<PurchaseHistory> purchaseHistories = new ArrayList<>();
+    private List<Orders> orders = new ArrayList<>();
 
     private Item(String itemName, Long price) {
         this.itemName = itemName;
