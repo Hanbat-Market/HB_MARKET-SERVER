@@ -19,15 +19,15 @@ public class ImageFile {
 
     private String type;
 
-    private String name;
+    private String path;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "article_id")
     private Article article;
 
-    private ImageFile(String type, String name) {
+    private ImageFile(String type, String path) {
         this.type = type;
-        this.name = name;
+        this.path = path;
     }
 
     /**
@@ -41,8 +41,8 @@ public class ImageFile {
     /**
      * 생성 메서드
      */
-    public static ImageFile createImageFile(Article article, String type, String name) {
-        ImageFile imageFile = new ImageFile(type, name);
+    public static ImageFile createImageFile(Article article, String type, String path) {
+        ImageFile imageFile = new ImageFile(type, path);
         imageFile.regisArticle(article);
         return imageFile;
     }

@@ -9,6 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import static HM.Hanbat_Market.CreateTestEntity.createTestMember;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
@@ -83,10 +84,5 @@ class MemberServiceTest {
         assertEquals("이미 존재하는 전화번호입니다.", e.getMessage());
 
         assertEquals(1, jpaMemberRepository.findAll().size());
-    }
-
-    public Member createTestMember(String nickname, String mail, String phoneNumber) {
-        String passwd = "1234";
-        return Member.createMember(mail, passwd, phoneNumber, nickname);
     }
 }

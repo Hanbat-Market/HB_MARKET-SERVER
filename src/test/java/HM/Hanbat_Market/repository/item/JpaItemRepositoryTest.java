@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+import static HM.Hanbat_Market.CreateTestEntity.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
@@ -26,7 +27,7 @@ class JpaItemRepositoryTest {
     @Test
     public void 아이템_등록() throws Exception {
         //given
-        Member member = createTestMember();
+        Member member = createTestMember1();
 
         Item item = createTestItem(member);
         //when
@@ -38,7 +39,7 @@ class JpaItemRepositoryTest {
     @Test
     public void 아이템_멤버_연관성테스트() throws Exception {
         //given
-        Member member = createTestMember();
+        Member member = createTestMember1();
         jpaMemberRepository.save(member);
 
         Item item = createTestItem(member);
@@ -64,7 +65,7 @@ class JpaItemRepositoryTest {
     @Test
     public void 아이템_전체조회() throws Exception {
         //given
-        Member member = createTestMember();
+        Member member = createTestMember1();
         jpaMemberRepository.save(member);
 
         Item item = createTestItem(member);
@@ -84,21 +85,5 @@ class JpaItemRepositoryTest {
         assertEquals(3, items.size());
         assertEquals(findMember.getItems().size(), items.size());
         assertEquals(findMember.getItems().size(), memberItems.size());
-    }
-
-    public Member createTestMember() {
-        String mail = "jckim229@gmail.com";
-        String passwd = "1234";
-        String phoneNumber = "010-1234-1234";
-        String nickname = "김주찬";
-
-        return Member.createMember(mail, passwd, phoneNumber, nickname);
-    }
-
-    public Item createTestItem(Member member) {
-        String ItemName = "PS5";
-        Long price = 10000L;
-
-        return Item.createItem(ItemName, price, member);
     }
 }

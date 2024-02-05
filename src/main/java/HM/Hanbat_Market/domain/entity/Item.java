@@ -40,8 +40,8 @@ public class Item {
     @OneToMany(mappedBy = "item", cascade = CascadeType.ALL)
     private List<PreemptionItem> PreemptionItems = new ArrayList<>();
 
-    @OneToMany(mappedBy = "item", cascade = CascadeType.ALL)
-    private List<Purchase> purchases = new ArrayList<>();
+    @OneToOne(mappedBy = "item", cascade = CascadeType.ALL)
+    private Purchase purchase;
 
     private Item(String itemName, Long price) {
         this.itemName = itemName;
@@ -53,6 +53,10 @@ public class Item {
     //일대일 연관관계 메서드를 위해 세터 생성
     protected void setArticle(Article article) {
         this.article = article;
+    }
+
+    protected void setPurchase(Purchase purchase) {
+        this.purchase = purchase;
     }
 
     /**
