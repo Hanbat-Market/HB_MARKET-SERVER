@@ -42,6 +42,10 @@ public class Member {
     @OneToMany(mappedBy = "member")
     private List<Purchase> purchases = new ArrayList<>();
 
+    private void setMail(String mail){
+        this.mail = mail;
+    }
+
     private Member(String mail, String passwd, String phoneNumber, String nickname) {
         this.mail = mail;
         this.passwd = passwd;
@@ -51,6 +55,10 @@ public class Member {
 
     public static Member createMember(String mail, String passwd, String phoneNumber, String nickname) {
         return new Member(mail, passwd, phoneNumber, nickname);
+    }
+
+    public void changeMail(String mail) {
+        setMail(mail);
     }
 
 }

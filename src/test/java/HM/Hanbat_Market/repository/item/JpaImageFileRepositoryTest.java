@@ -6,6 +6,7 @@ import HM.Hanbat_Market.domain.entity.ImageFile;
 import HM.Hanbat_Market.domain.entity.Item;
 import HM.Hanbat_Market.domain.entity.Member;
 import HM.Hanbat_Market.repository.article.ArticleRepository;
+import HM.Hanbat_Market.repository.article.dto.ImageFileDto;
 import HM.Hanbat_Market.repository.member.MemberRepository;
 import HM.Hanbat_Market.service.member.MemberService;
 import org.junit.jupiter.api.Test;
@@ -37,8 +38,9 @@ class JpaImageFileRepositoryTest {
 
         Item testItem = createTestItem(newMember);
         Article article = creteTestArticle(newMember, testItem);
-        ImageFile imageFile = ImageFile.createImageFile(article, "jpg", "/");
-
+        List<ImageFileDto> testImageFilesDto = createTestImageFilesDto();
+        ImageFile imageFile = ImageFile.createImageFile(article, testImageFilesDto.get(0));
+        
         //when
         jpaArticleRepository.save(article);
 

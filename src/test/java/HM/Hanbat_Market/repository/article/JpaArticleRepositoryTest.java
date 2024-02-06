@@ -4,8 +4,8 @@ import HM.Hanbat_Market.domain.entity.Article;
 import HM.Hanbat_Market.domain.entity.Item;
 import HM.Hanbat_Market.domain.entity.ItemStatus;
 import HM.Hanbat_Market.domain.entity.Member;
+import HM.Hanbat_Market.repository.article.dto.ArticleSearchDto;
 import HM.Hanbat_Market.repository.item.ItemRepository;
-import HM.Hanbat_Market.repository.item.JpaItemRepository;
 import HM.Hanbat_Market.repository.member.MemberRepository;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
@@ -31,7 +31,7 @@ class JpaArticleRepositoryTest {
     public void 게시글_등록() throws Exception {
         //given
         Member member = createTestMember1();
-        Item item = createTestItem(member, "PS5");
+        Item item = createTestItem(member);
         Article article = creteTestArticle(member, item);
 
         //when
@@ -47,7 +47,7 @@ class JpaArticleRepositoryTest {
         Member member = createTestMember1();
         jpaMemberRepository.save(member);
 
-        Item item = createTestItem(member, "PS5");
+        Item item = createTestItem(member);
         Article article = creteTestArticle(member, item);
 
         jpaArticleRepository.save(article);
@@ -81,9 +81,9 @@ class JpaArticleRepositoryTest {
         jpaMemberRepository.save(member);
         jpaMemberRepository.save(member2);
 
-        Item item = createTestItem(member, "PS3");
-        Item item2 = createTestItem(member, "PS4");
-        Item item3 = createTestItem(member2, "PS5");
+        Item item = createTestItem(member, "PS3", 16000L);
+        Item item2 = createTestItem(member, "PS4", 160000L);
+        Item item3 = createTestItem(member2, "PS5", 160000L);
 
         Article article = creteTestArticle(member, item);
         Article article2 = creteTestArticle(member, item2);
@@ -114,9 +114,9 @@ class JpaArticleRepositoryTest {
         jpaMemberRepository.save(member);
         jpaMemberRepository.save(member2);
 
-        Item item = createTestItem(member, "PS3");
-        Item item2 = createTestItem(member, "PS4");
-        Item item3 = createTestItem(member2, "PS5");
+        Item item = createTestItem(member, "PS3", 16000L);
+        Item item2 = createTestItem(member, "PS4", 160000L);
+        Item item3 = createTestItem(member2, "PS5", 160000L);
 
         Article article = creteTestArticle(member, item);
         Article article2 = creteTestArticle(member, item2);
@@ -136,7 +136,7 @@ class JpaArticleRepositoryTest {
 
         articleSearchDto.setItemName(null);
         articleSearchDto.setItemStatus(ItemStatus.COMP);
-        item.changeItemStatus();
+        item.completeItemStatus();
 
         List<Article> searchByItemStatus = jpaArticleRepository.findAllBySearch(articleSearchDto);
 

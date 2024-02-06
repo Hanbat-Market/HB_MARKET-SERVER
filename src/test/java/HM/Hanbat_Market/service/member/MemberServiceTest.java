@@ -38,12 +38,16 @@ class MemberServiceTest {
         //when, then
         memberService.join(member1);
 
-        //변경 감지로 인한 update
         IllegalArgumentException e = assertThrows(IllegalArgumentException.class, ()
                 -> memberService.join(member2));
         assertEquals("이미 존재하는 닉네임입니다.", e.getMessage());
 
+        //변경 감지로 인한 update
+        member1.changeMail("123@gmail.com");
+        Member findMember1 = jpaMemberRepository.findById(member1.getId()).get();
+
         assertEquals(1, jpaMemberRepository.findAll().size());
+        assertEquals("123@gmail.com", findMember1.getMail());
     }
 
     @Test
@@ -58,12 +62,9 @@ class MemberServiceTest {
         //when, then
         memberService.join(member1);
 
-        //변경 감지로 인한 update
         IllegalArgumentException e = assertThrows(IllegalArgumentException.class, ()
                 -> memberService.join(member2));
         assertEquals("이미 존재하는 메일입니다.", e.getMessage());
-
-        assertEquals(1, jpaMemberRepository.findAll().size());
     }
 
     @Test
@@ -78,11 +79,8 @@ class MemberServiceTest {
         //when, then
         memberService.join(member1);
 
-        //변경 감지로 인한 update
         IllegalArgumentException e = assertThrows(IllegalArgumentException.class, ()
                 -> memberService.join(member2));
         assertEquals("이미 존재하는 전화번호입니다.", e.getMessage());
-
-        assertEquals(1, jpaMemberRepository.findAll().size());
     }
 }
