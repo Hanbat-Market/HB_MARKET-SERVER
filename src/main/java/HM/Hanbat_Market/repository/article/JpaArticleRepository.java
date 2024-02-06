@@ -1,15 +1,14 @@
 package HM.Hanbat_Market.repository.article;
 
 import HM.Hanbat_Market.domain.entity.Article;
-import HM.Hanbat_Market.domain.entity.Item;
 import HM.Hanbat_Market.domain.entity.Member;
+import HM.Hanbat_Market.repository.article.dto.ArticleSearchDto;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -61,6 +60,16 @@ public class JpaArticleRepository implements ArticleRepository {
             }
             jpql += " i.itemStatus = :itemStatus";
         }
+        //게시글 제목 검색
+        if (StringUtils.hasText(articleSearchDto.getTitle())) {
+            if (isFirstCondition) {
+                jpql += " where";
+                isFirstCondition = false;
+            } else {
+                jpql += " and";
+            }
+            jpql += "  a.title like concat('%', :title, '%')";
+        }
         //아이템 이름 검색
         if (StringUtils.hasText(articleSearchDto.getItemName())) {
             if (isFirstCondition) {
@@ -69,7 +78,7 @@ public class JpaArticleRepository implements ArticleRepository {
             } else {
                 jpql += " and";
             }
-            jpql += " i.itemName like :itemName";
+            jpql += " i.itemName like concat('%', :itemName, '%')";
         }
         TypedQuery<Article> query = em.createQuery(jpql, Article.class)
                 .setMaxResults(1000); //최대 1000건
@@ -80,6 +89,10 @@ public class JpaArticleRepository implements ArticleRepository {
         if (StringUtils.hasText(articleSearchDto.getItemName())) {
             query = query
                     .setParameter("itemName", articleSearchDto.getItemName());
+        }
+        if (StringUtils.hasText(articleSearchDto.getTitle())) {
+            query = query
+                    .setParameter("title", articleSearchDto.getTitle());
         }
         return query.getResultList();
     }

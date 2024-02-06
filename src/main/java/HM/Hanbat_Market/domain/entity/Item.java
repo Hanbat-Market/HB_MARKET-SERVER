@@ -1,5 +1,7 @@
 package HM.Hanbat_Market.domain.entity;
 
+import HM.Hanbat_Market.repository.item.dto.ItemCreateDto;
+import HM.Hanbat_Market.repository.item.dto.ItemUpdateDto;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -70,8 +72,8 @@ public class Item {
     /**
      * 생성 메서드
      */
-    public static Item createItem(String itemName, Long price, Member member) {
-        Item item = new Item(itemName, price);
+    public static Item createItem(ItemCreateDto itemCreateDto, Member member) {
+        Item item = new Item(itemCreateDto.getItemName(), itemCreateDto.getPrice());
         item.regisMember(member);
         return item;
     }
@@ -79,11 +81,20 @@ public class Item {
     /**
      * 비즈니스 로직
      */
-    public void changeItemStatus() {
+    public void completeItemStatus() {
         if (this.itemStatus == ItemStatus.SALE) {
             this.itemStatus = ItemStatus.COMP;
         } else if (this.itemStatus == ItemStatus.COMP) {
             this.itemStatus = ItemStatus.SALE;
         }
+    }
+
+    public void updateItem(ItemUpdateDto itemUpdateDto){
+        this.price = itemUpdateDto.getPrice();
+        this.itemName = itemUpdateDto.getItemName();
+    }
+
+    public void deleteItem(){
+        this.itemStatus = ItemStatus.HIDE;
     }
 }

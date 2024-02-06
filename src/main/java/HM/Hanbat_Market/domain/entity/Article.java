@@ -1,5 +1,8 @@
 package HM.Hanbat_Market.domain.entity;
 
+import HM.Hanbat_Market.repository.article.dto.ArticleCreateDto;
+import HM.Hanbat_Market.repository.article.dto.ArticleUpdateDto;
+import HM.Hanbat_Market.repository.item.dto.ItemUpdateDto;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -9,6 +12,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.awt.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +35,8 @@ public class Article {
 
     private String tradingPlace;
 
+    private ArticleStatus articleStatus;
+
     @OneToOne(mappedBy = "article", cascade = CascadeType.ALL)
     private Item item;
 
@@ -50,6 +56,7 @@ public class Article {
         this.description = description;
         this.tradingPlace = tradingPlace;
         this.createdAt = LocalDateTime.now();
+        this.articleStatus = ArticleStatus.OPEN;
     }
 
     /**
@@ -66,16 +73,28 @@ public class Article {
     }
 
     /**
-     * @param member
-     * @param item   생성 메서드
+     * 생성 메서드
      */
-    public static Article createArticle(String title, String description, String tradingPlace, Member member, Item item) {
-        Article article = new Article(title, description, tradingPlace);
+    public static Article createArticle(ArticleCreateDto articleCreateDto) {
+        Article article = new Article(articleCreateDto.getTitle(),
+                articleCreateDto.getDescription(), articleCreateDto.getTradingPlace());
 
-        article.regisMember(member);
-        article.regisItem(item);
+        article.regisMember(articleCreateDto.getMember());
+        article.regisItem(articleCreateDto.getItem());
 
         return article;
+    }
+
+    public void updateArticle(ArticleUpdateDto articleUpdateDto) {
+        this.title = articleUpdateDto.getTitle();
+        this.description = articleUpdateDto.getDescription();
+        this.tradingPlace = articleUpdateDto.getDescription();
+        this.item.updateItem(articleUpdateDto.getItemUpdateDto());
+    }
+
+    public void deleteArticle() {
+        this.articleStatus = ArticleStatus.HIDE;
+        this.item.deleteItem();
     }
 
 }

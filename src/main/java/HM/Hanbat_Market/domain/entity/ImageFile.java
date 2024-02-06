@@ -1,5 +1,6 @@
 package HM.Hanbat_Market.domain.entity;
 
+import HM.Hanbat_Market.repository.article.dto.ImageFileDto;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -41,8 +42,8 @@ public class ImageFile {
     /**
      * 생성 메서드
      */
-    public static ImageFile createImageFile(Article article, String type, String path) {
-        ImageFile imageFile = new ImageFile(type, path);
+    public static ImageFile createImageFile(Article article, ImageFileDto imageFileDto) {
+        ImageFile imageFile = new ImageFile(imageFileDto.getType(), imageFileDto.getPath());
         imageFile.regisArticle(article);
         return imageFile;
     }
