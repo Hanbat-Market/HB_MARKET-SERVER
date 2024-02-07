@@ -75,7 +75,7 @@ public class Article {
     /**
      * 생성 메서드
      */
-    public static Article createArticle(ArticleCreateDto articleCreateDto) {
+    public static Article create(ArticleCreateDto articleCreateDto) {
         Article article = new Article(articleCreateDto.getTitle(),
                 articleCreateDto.getDescription(), articleCreateDto.getTradingPlace());
 
@@ -85,16 +85,15 @@ public class Article {
         return article;
     }
 
-    public void updateArticle(ArticleUpdateDto articleUpdateDto) {
+    public void update(ArticleUpdateDto articleUpdateDto) {
         this.title = articleUpdateDto.getTitle();
         this.description = articleUpdateDto.getDescription();
         this.tradingPlace = articleUpdateDto.getDescription();
         this.item.updateItem(articleUpdateDto.getItemUpdateDto());
     }
 
-    public void deleteArticle() {
+    public void delete() {
         this.articleStatus = ArticleStatus.HIDE;
         this.item.deleteItem();
     }
-
 }

@@ -47,7 +47,7 @@ public class CreateTestEntity {
         articleCreateDto.setDescription("이러이러 합니다.");
         articleCreateDto.setMember(member);
         articleCreateDto.setItem(item);
-        return Article.createArticle(articleCreateDto);
+        return Article.create(articleCreateDto);
     }
 
     public static Member createTestMember(String nickname, String mail, String phoneNumber) {
@@ -78,6 +78,14 @@ public class CreateTestEntity {
         articleCreateDto.setTitle(title);
         articleCreateDto.setDescription(description);
         articleCreateDto.setTradingPlace(tradingPlace);
+        return articleCreateDto;
+    }
+
+    public static ArticleCreateDto createArticleCreateDto(Member member, Item item) {
+        ArticleCreateDto articleCreateDto = new ArticleCreateDto();
+        articleCreateDto.setTitle("플스 팝니다");
+        articleCreateDto.setDescription("싸게 팔아요");
+        articleCreateDto.setTradingPlace("대전");
         return articleCreateDto;
     }
 
