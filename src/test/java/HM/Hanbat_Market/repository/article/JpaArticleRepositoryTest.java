@@ -136,7 +136,7 @@ class JpaArticleRepositoryTest {
 
         articleSearchDto.setItemName(null);
         articleSearchDto.setItemStatus(ItemStatus.COMP);
-        item.completeItemStatus();
+        item.changeItemStatus();
 
         List<Article> searchByItemStatus = jpaArticleRepository.findAllBySearch(articleSearchDto);
 

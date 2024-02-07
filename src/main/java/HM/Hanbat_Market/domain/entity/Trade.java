@@ -14,13 +14,12 @@ import java.time.LocalDateTime;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EntityListeners(AuditingEntityListener.class)
-public class Purchase {
+public class Trade {
 
     @Id
     @GeneratedValue
-    @Column(name = "purchase_id")
+    @Column(name = "trade_id")
     private Long id;
-    ;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
@@ -32,8 +31,9 @@ public class Purchase {
 
     @CreatedDate
     @Convert(converter = Jsr310JpaConverters.LocalDateTimeConverter.class)
-    private LocalDateTime purchaseDate;
+    private LocalDateTime tradeDate;
 
+    private TradeStatus tradeStatus;
 
 
     /**
@@ -41,18 +41,28 @@ public class Purchase {
      */
     private void regisMember(Member member) {
         this.member = member;
-        member.getPurchases().add(this);
+        member.getTrades().add(this);
     }
 
     private void regisItem(Item item) {
         this.item = item;
-        item.setPurchase(this);
+        item.setTrade(this);
     }
 
-    public static Purchase createPurchase(Member member, Item item) {
-        Purchase purchase = new Purchase();
-        purchase.regisItem(item);
-        purchase.regisMember(member);
-        return purchase;
+    public static Trade reservation(Member member, Item item) {
+        Trade trade = new Trade();
+        trade.regisItem(item);
+        trade.regisMember(member);
+        trade.tradeStatus = TradeStatus.RESERVATION;
+        return trade;
+    }
+
+    public Trade complete() {
+        this.tradeStatus = TradeStatus.COMP;
+        return this;
+    }
+
+    public void cancel(){
+        this.tradeStatus = TradeStatus.CANCEL;
     }
 }
