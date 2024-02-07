@@ -43,7 +43,7 @@ public class Item {
     private List<PreemptionItem> PreemptionItems = new ArrayList<>();
 
     @OneToOne(mappedBy = "item", cascade = CascadeType.ALL)
-    private Purchase purchase;
+    private Trade trade;
 
     private Item(String itemName, Long price) {
         this.itemName = itemName;
@@ -57,8 +57,8 @@ public class Item {
         this.article = article;
     }
 
-    protected void setPurchase(Purchase purchase) {
-        this.purchase = purchase;
+    protected void setTrade(Trade trade) {
+        this.trade = trade;
     }
 
     /**
@@ -81,7 +81,7 @@ public class Item {
     /**
      * 비즈니스 로직
      */
-    public void completeItemStatus() {
+    public void changeItemStatus() {
         if (this.itemStatus == ItemStatus.SALE) {
             this.itemStatus = ItemStatus.COMP;
         } else if (this.itemStatus == ItemStatus.COMP) {

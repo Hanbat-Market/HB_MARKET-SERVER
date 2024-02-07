@@ -130,8 +130,8 @@ class ArticleServiceTest {
         //when (상태를 변경하는 것으로 softDelete 진행
         articleService.deleteArticle(articleId);
 
-        //then
-        assertEquals(ArticleStatus.HIDE, articleService.findArticles(member).get(0).getArticleStatus());
+        //then (삭제 후 전체 게시글의 수가 0
+        assertEquals(0, articleService.findArticles().size());
     }
 
 }
