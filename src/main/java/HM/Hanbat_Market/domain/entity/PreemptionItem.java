@@ -25,6 +25,8 @@ public class PreemptionItem {
     @JoinColumn(name = "item_id")
     private Item item;
 
+    private PreemptionItemStatus preemptionItemStatus;
+
     /**
      * 연관관계 편의 메서드
      */
@@ -38,10 +40,23 @@ public class PreemptionItem {
         item.getPreemptionItems().add(this);
     }
 
+    /**
+     * 비즈니스 로직
+     */
+
     public static PreemptionItem createPreemptionItem(Member member, Item item) {
         PreemptionItem preemptionItem = new PreemptionItem();
         preemptionItem.regisItem(item);
         preemptionItem.regisMember(member);
+        preemptionItem.preemptionItemStatus = PreemptionItemStatus.PREEMPTION;
         return preemptionItem;
+    }
+
+    public void active(){
+        this.preemptionItemStatus = PreemptionItemStatus.PREEMPTION;
+    }
+
+    public void cancel(){
+        this.preemptionItemStatus = PreemptionItemStatus.CANCEL;
     }
 }
