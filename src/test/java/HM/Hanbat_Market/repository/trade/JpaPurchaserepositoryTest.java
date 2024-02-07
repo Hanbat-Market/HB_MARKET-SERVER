@@ -1,10 +1,8 @@
-package HM.Hanbat_Market.repository.purchase;
+package HM.Hanbat_Market.repository.trade;
 
 import HM.Hanbat_Market.domain.entity.*;
 import HM.Hanbat_Market.repository.article.ArticleRepository;
 import HM.Hanbat_Market.repository.item.ItemRepository;
-import HM.Hanbat_Market.repository.item.PreemptionItemRepository;
-import HM.Hanbat_Market.repository.member.JpaMemberRepository;
 import HM.Hanbat_Market.service.member.MemberService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,15 +10,15 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import static HM.Hanbat_Market.CreateTestEntity.*;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 @Transactional
-class JpaPurchaserepositoryTest {
+class JpaTradeRepositoryTest {
     @Autowired
     ArticleRepository jpaArticleRepository;
     @Autowired
-    PurchaseRepository jpaPurchaseRepository;
+    TradeRepository jpaTradeRepository;
     @Autowired
     MemberService memberService;
     @Autowired
@@ -37,15 +35,16 @@ class JpaPurchaserepositoryTest {
 
         jpaArticleRepository.save(article);
         //when
-        Purchase purchase = Purchase.createPurchase(newMember, testItem);
-        jpaPurchaseRepository.save(purchase);
+        Trade trade = Trade.reservation(newMember, testItem);
+        trade.complete();
+        jpaTradeRepository.save(trade);
 
         //then
         Item findItem = jpaItemRepository.findById(testItem.getId()).get();
         Member findMember = memberService.findOne(newMember.getId()).get();
 
-        assertEquals(purchase, findMember.getPurchases().get(0));
-        assertEquals(purchase, findItem.getPurchase());
-        assertEquals(purchase, jpaPurchaseRepository.findById(purchase.getId()).get());
+        assertEquals(trade, findMember.getTrades().get(0));
+        assertEquals(trade, findItem.getTrade());
+        assertEquals(trade, jpaTradeRepository.findById(trade.getId()).get());
     }
 }

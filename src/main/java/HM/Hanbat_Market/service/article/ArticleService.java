@@ -32,7 +32,7 @@ public class ArticleService {
         Item newItem = Item.createItem(itemCreateDto, newMember);
         articleCreateDto.setItem(newItem);
         articleCreateDto.setMember(newMember);
-        return articleRepository.save(Article.createArticle(articleCreateDto)).getId();
+        return articleRepository.save(Article.create(articleCreateDto)).getId();
     }
 
     @Transactional
@@ -42,7 +42,7 @@ public class ArticleService {
         articleCreateDto.setItem(newItem);
         articleCreateDto.setMember(newMember);
 
-        Article newArticle = Article.createArticle(articleCreateDto);
+        Article newArticle = Article.create(articleCreateDto);
 
         imageFilesDto.stream()
                 .forEach(imageFileDto -> ImageFile
@@ -71,13 +71,13 @@ public class ArticleService {
     @Transactional
     public void deleteArticle(Long articleId) {
         Article article = articleRepository.findById(articleId).get();
-        article.deleteArticle();
+        article.delete();
     }
 
     @Transactional
     public Long updateArticle(Long articleId, ArticleUpdateDto articleUpdateDto) {
         Article article = articleRepository.findById(articleId).get();
-        article.updateArticle(articleUpdateDto);
+        article.update(articleUpdateDto);
         return articleId;
     }
 }

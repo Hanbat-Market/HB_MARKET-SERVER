@@ -1,6 +1,8 @@
 package HM.Hanbat_Market.repository.article;
 
 import HM.Hanbat_Market.domain.entity.Article;
+import HM.Hanbat_Market.domain.entity.ArticleStatus;
+import HM.Hanbat_Market.domain.entity.ItemStatus;
 import HM.Hanbat_Market.domain.entity.Member;
 import HM.Hanbat_Market.repository.article.dto.ArticleSearchDto;
 import jakarta.persistence.EntityManager;
@@ -32,16 +34,21 @@ public class JpaArticleRepository implements ArticleRepository {
 
     @Override
     public List<Article> findAll() {
-        List<Article> articles = em.createQuery("select a from Article a", Article.class)
+        return em.createQuery("select a from Article a join a.item i where" +
+                        " a.articleStatus != :articleStatusHide and i.itemStatus != :itemStatusHide", Article.class)
+                .setParameter("articleStatusHide", ArticleStatus.HIDE)
+                .setParameter("itemStatusHide", ItemStatus.HIDE)
                 .getResultList();
-        return articles;
     }
 
     @Override
     public List<Article> findAllByMember(Member member) {
         Long memberId = member.getId();
-        return em.createQuery("select a from Article a join a.member m where m.id = :memberId")
+        return em.createQuery("select a from Article a join a.member m join a.item i where m.id = :memberId" +
+                        " and a.articleStatus != :articleStatusHide and i.itemStatus != :itemStatusHide", Article.class)
                 .setParameter("memberId", member.getId())
+                .setParameter("articleStatusHide", ArticleStatus.HIDE)
+                .setParameter("itemStatusHide", ItemStatus.HIDE)
                 .getResultList();
     }
 
@@ -80,6 +87,15 @@ public class JpaArticleRepository implements ArticleRepository {
             }
             jpql += " i.itemName like concat('%', :itemName, '%')";
         }
+        //삭제된 게시글 제외
+        if (isFirstCondition) {
+            jpql += " where";
+            isFirstCondition = false;
+        } else {
+            jpql += " and";
+        }
+        jpql += " a.articleStatus != :articleStatusHide and i.itemStatus != :itemStatusHide";
+
         TypedQuery<Article> query = em.createQuery(jpql, Article.class)
                 .setMaxResults(1000); //최대 1000건
         if (articleSearchDto.getItemStatus() != null) {
@@ -94,6 +110,9 @@ public class JpaArticleRepository implements ArticleRepository {
             query = query
                     .setParameter("title", articleSearchDto.getTitle());
         }
+        query = query
+                .setParameter("articleStatusHide", ArticleStatus.HIDE)
+                .setParameter("itemStatusHide", ItemStatus.HIDE);
         return query.getResultList();
     }
 }
