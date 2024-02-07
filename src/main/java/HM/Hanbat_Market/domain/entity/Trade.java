@@ -49,6 +49,9 @@ public class Trade {
         item.setTrade(this);
     }
 
+    /**
+     * 비즈니스 로직
+     */
     public static Trade reservation(Member member, Item item) {
         Trade trade = new Trade();
         trade.regisItem(item);
