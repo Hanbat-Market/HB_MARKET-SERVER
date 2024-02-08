@@ -1,5 +1,6 @@
 package HM.Hanbat_Market.service.member;
 
+import HM.Hanbat_Market.controller.member.dto.MemberForm;
 import HM.Hanbat_Market.domain.entity.Member;
 import HM.Hanbat_Market.repository.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -14,31 +15,30 @@ import java.util.Optional;
 @Transactional(readOnly = true)
 public class MemberService {
 
-    private final MemberRepository jpaMemberRepository;
-
+    private final MemberRepository memberRepository;
     /**
      * 회원가입
      */
     @Transactional
     public Long join(Member member) {
         validateDuplicateMember(member);
-        jpaMemberRepository.save(member);
+        memberRepository.save(member);
         return member.getId();
     }
 
     private void validateDuplicateMember(Member member) {
-        Optional<Member> findMember = jpaMemberRepository.findByNickName((member.getNickname()));
+        Optional<Member> findMember = memberRepository.findByNickName((member.getNickname()));
         if (findMember.isPresent()) {
             throw new IllegalArgumentException("이미 존재하는 닉네임입니다.");
         }
 
-        findMember = jpaMemberRepository.findByMail((member.getMail()));
+        findMember = memberRepository.findByMail((member.getMail()));
         if (findMember.isPresent())
         {
             throw new IllegalArgumentException("이미 존재하는 메일입니다.");
         }
 
-        findMember = jpaMemberRepository.findByPhoneNumber((member.getPhoneNumber()));
+        findMember = memberRepository.findByPhoneNumber((member.getPhoneNumber()));
         if (findMember.isPresent()) {
             throw new IllegalArgumentException("이미 존재하는 전화번호입니다.");
         }
@@ -49,14 +49,22 @@ public class MemberService {
      */
 
     public List<Member> findMembers() {
-        return jpaMemberRepository.findAll();
+        return memberRepository.findAll();
     }
 
     public Optional<Member> findOne(Long memberId) {
-        return jpaMemberRepository.findById(memberId);
+        return memberRepository.findById(memberId);
     }
 
     public Optional<Member> findOne(String nickName) {
-        return jpaMemberRepository.findByNickName(nickName);
+        return memberRepository.findByNickName(nickName);
+    }
+    /**
+     * 로그인
+     */
+    public Member login(String mail, String passwd) {
+        return memberRepository.findByMail(mail)
+                .filter(m -> m.getPasswd().equals(passwd))
+                .orElse(null);
     }
 }
