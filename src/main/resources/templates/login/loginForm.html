@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+    <title>Hanbat_Market-로그인</title>
+    <!-- Favicon-->
+    <link rel="icon" type="image/x-icon" href="/assets/favicon.ico"/>
+    <!-- Bootstrap icons-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet"/>
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="/css/styles.css" rel="stylesheet"/>
+</head>
+
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+            <div class="card border-0 shadow rounded-3 my-5">
+                <div class="card-body p-4 p-sm-5">
+                    <h5 class="card-title text-center mb-5 fw-light fs-5">Hanbat_Market</h5>
+                    <h5 class="card-title text-center mb-5 fw-light fs-5">로그인</h5>
+                    <form role="form" action="/login" th:object="${loginForm}" method="post">
+
+                        <div th:if="${#fields.hasGlobalErrors()}">
+                            <p class="field-error" th:each="err : ${#fields.globalErrors()}" style="color:red"
+                               th:text="${err}">전체 오류 메시지</p>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="email" th:field="*{mail}" class="form-control" placeholder="메일을 입력하세요"
+                                   th:class="${#fields.hasErrors('mail')}? 'form-control fieldError' : 'form-control'">
+                            <label for="floatingInput">메일을 입력하세요.</label>
+                            <p th:if="${#fields.hasErrors('mail')}" style="color:red" th:errors="*{mail}">Incorrect
+                                date</p>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="password" th:field="*{passwd}" class="form-control" placeholder="비밀번호를 입력하세요"
+                                   th:class="${#fields.hasErrors('passwd')}? 'form-control fieldError' : 'form-control'">
+                            <label for="floatingInput">비밀번호를 입력하세요.</label>
+                            <p th:if="${#fields.hasErrors('passwd')}" style="color:red" th:errors="*{passwd}">Incorrect
+                                date</p>
+                        </div>
+                        <div class="form-check mb-3">
+                            <input class="form-check-input" type="checkbox" value="" id="rememberPasswordCheck">
+                            <label class="form-check-label" for="rememberPasswordCheck">
+                                비밀번호 기억하기
+                            </label>
+                        </div>
+                        <div class="d-grid">
+                            <button class="btn btn-primary btn-login text-uppercase fw-bold" type="submit">로그인</button>
+                        </div>
+                        <hr class="my-4">
+                        <div class="d-grid mb-2">
+                            <button class="btn btn-primary btn-login text-uppercase fw-bold"
+                                    style="background-color: #141619" type="submit">
+                                <a href="/members/new" class="navbar-brand" style="color: white">회원가입</a>
+                            </button>
+                        </div>
+
+                        <!--                                                    <div class="d-grid mb-2">-->
+                        <!--                                                        <button class="btn btn-google btn-login text-uppercase fw-bold" type="submit">-->
+                        <!--                                                            <i class="fab fa-google me-2"></i> Sign in with Google-->
+                        <!--                                                        </button>-->
+                        <!--                                                    </div>-->
+                        <!--                            <div class="d-grid">-->
+                        <!--                                <button class="btn btn-facebook btn-login text-uppercase fw-bold" type="submit">-->
+                        <!--                                    <i class="fab fa-facebook-f me-2"></i> Sign in with Facebook-->
+                        <!--                                </button>-->
+                        <!--                            </div>-->
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-GLhlTQ8iKDErGBZDE32nNXr5120+q4MzD6IOcg1F7eFZ5i5/MbJ3SqTEV+iLsFns"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
