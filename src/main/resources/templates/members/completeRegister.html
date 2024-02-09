@@ -23,9 +23,14 @@
                     <h1 class="card-title text-center mb-5 fw-light fs-5">회원가입 완료</h1>
                 </div>
                 <div class="d-grid">
-                    <button class="btn btn-primary btn-login text-uppercase fw-bold" type="submit">
+                    <button class="btn btn-primary btn-login text-uppercase fw-bold" type="submit" onclick="redirectToLogin()">
                         <a href="/login" class="navbar-brand" style="color: white">로그인 페이지로</a></button>
                 </div>
+                <script>
+                    function redirectToLogin() {
+                        window.location.href = '/login'; // 이동하고 싶은 URL로 변경
+                    }
+                </script>
             </div>
         </div>
     </div>

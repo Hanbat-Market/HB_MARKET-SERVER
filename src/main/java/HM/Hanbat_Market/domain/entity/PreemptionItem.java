@@ -25,6 +25,7 @@ public class PreemptionItem {
     @JoinColumn(name = "item_id")
     private Item item;
 
+    @Enumerated(EnumType.STRING)
     private PreemptionItemStatus preemptionItemStatus;
 
     /**
