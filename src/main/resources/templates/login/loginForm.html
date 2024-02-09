@@ -54,9 +54,15 @@
                         <hr class="my-4">
                         <div class="d-grid mb-2">
                             <button class="btn btn-primary btn-login text-uppercase fw-bold"
-                                    style="background-color: #141619" type="submit">
+                                    style="background-color: #141619" type="button"
+                                    onclick="redirectToRegisterMember()">
                                 <a href="/members/new" class="navbar-brand" style="color: white">회원가입</a>
                             </button>
+                            <script>
+                                function redirectToRegisterMember() {
+                                    window.location.href = '/members/new'; // 이동하고 싶은 URL로 변경
+                                }
+                            </script>
                         </div>
 
                         <!--                                                    <div class="d-grid mb-2">-->
