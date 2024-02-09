@@ -55,8 +55,12 @@ public class PreemptionItemService {
         return preemptionItemRepository.findAllByItem(item);
     }
 
+    public PreemptionItem findPreemptionItemByMemberAndItem(Member member, Item item) {
+        return preemptionItemRepository.findByMemberAndItem(member, item);
+    }
+
     //전체조회
-    public List<PreemptionItem> findAllPreemptionItem(){
+    public List<PreemptionItem> findAllPreemptionItem() {
         return preemptionItemRepository.findAll();
     }
 }

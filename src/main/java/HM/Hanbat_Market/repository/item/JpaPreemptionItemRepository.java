@@ -2,6 +2,7 @@ package HM.Hanbat_Market.repository.item;
 
 import HM.Hanbat_Market.domain.entity.*;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -29,6 +30,19 @@ public class JpaPreemptionItemRepository implements PreemptionItemRepository {
     public Optional<PreemptionItem> findById(Long id) {
         PreemptionItem preemptionItem = em.find(PreemptionItem.class, id);
         return Optional.ofNullable(preemptionItem);
+    }
+
+    @Override
+    public PreemptionItem findByMemberAndItem(Member member, Item item) throws NoResultException {
+        Long memberId = member.getId();
+        Long itemId = item.getId();
+        return em.createQuery("select p from PreemptionItem p join p.member m join p.item i where m.id = :memberId and i.id = :itemId" +
+                        " and p.item.itemStatus = :itemStatus and p.preemptionItemStatus != :preemptionItemStatus", PreemptionItem.class)
+                .setParameter("memberId", member.getId())
+                .setParameter("itemStatus", ItemStatus.SALE)
+                .setParameter("preemptionItemStatus", PreemptionItemStatus.CANCEL)
+                .setParameter("itemId", item.getId())
+                .getSingleResult();
     }
 
     @Override

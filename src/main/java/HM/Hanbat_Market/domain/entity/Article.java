@@ -35,6 +35,7 @@ public class Article {
 
     private String tradingPlace;
 
+    @Enumerated(EnumType.STRING)
     private ArticleStatus articleStatus;
 
     @OneToOne(mappedBy = "article", cascade = CascadeType.ALL)

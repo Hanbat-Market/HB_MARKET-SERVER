@@ -33,6 +33,7 @@ public class Trade {
     @Convert(converter = Jsr310JpaConverters.LocalDateTimeConverter.class)
     private LocalDateTime tradeDate;
 
+    @Enumerated(EnumType.STRING)
     private TradeStatus tradeStatus;
 
 

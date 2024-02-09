@@ -12,6 +12,8 @@ public interface PreemptionItemRepository {
 
     Optional<PreemptionItem> findById(Long id);
 
+    PreemptionItem findByMemberAndItem(Member member, Item item);
+
     List<PreemptionItem> findAllByMember(Member member);
 
     List<PreemptionItem> findAllByItem(Item item);
