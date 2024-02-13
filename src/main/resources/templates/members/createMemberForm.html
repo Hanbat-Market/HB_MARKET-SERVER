@@ -1,18 +1,30 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <meta name="description" content="" />
-    <meta name="author" content="" />
-    <title>Hanbat_Market-회원가입</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+    <title>한밭마켓-한밭만의 중고나라</title>
     <!-- Favicon-->
-    <link rel="icon" type="image/x-icon" href="/assets/favicon.ico" />
+    <link rel="icon" type="image/x-icon" href="/assets/hanbat_logo.png"/>
     <!-- Bootstrap icons-->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet"/>
     <!-- Core theme CSS (includes Bootstrap)-->
-    <link href="/css/styles.css" rel="stylesheet" />
+    <link href="/css/styles.css" rel="stylesheet"/>
+    <style>
+        .interest-button button {
+            transition: background-color 0.3s ease-in-out;
+        }
+
+        .interest-button button:hover {
+            background-color: #dc3545; /* Change this to the color you desire */
+            color: #fff; /* Change this to the text color you desire */
+        }
+    </style>
 </head>
+
+
 
 <body>
 <div class="container">
@@ -20,40 +32,55 @@
         <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
             <div class="card border-0 shadow rounded-3 my-5">
                 <div class="card-body p-4 p-sm-5">
-                    <h5 class="card-title text-center mb-5 fw-light fs-5">Hanbat_Market</h5>
-                    <h5 class="card-title text-center mb-5 fw-light fs-5">회원가입</h5>
+                    <h5 class="card-title text-center mb-5 fw-light fs-5"><img src="../assets/logo2.png" alt=""
+                                                                               class="img-fluid"></h5>
+                    <h5 class="card-title text-center mb-5 fw-light fs-5" style="font-weight: bold">회원가입</h5>
                     <form role="form" action="/members/new" th:object="${memberForm}" method="post">
                         <div class="form-group">
                             <label th:for="mail">메일</label>
                             <input type="email" th:field="*{mail}" class="form-control" placeholder="메일을 입력하세요"
                                    th:class="${#fields.hasErrors('mail')}? 'form-control fieldError' : 'form-control'">
-                            <p th:if="${#fields.hasErrors('mail')}" style="color:red" th:errors="*{mail}">Incorrect date</p>
+                            <p th:if="${#fields.hasErrors('mail')}" style="color:red" th:errors="*{mail}">Incorrect
+                                date</p>
 
                         </div>
                         <div class="form-group">
                             <label th:for="passwd">비밀번호</label>
                             <input type="password" th:field="*{passwd}" class="form-control" placeholder="비밀번호를 입력하세요"
                                    th:class="${#fields.hasErrors('passwd')}? 'form-control fieldError' : 'form-control'">
-                            <p th:if="${#fields.hasErrors('passwd')}" style="color:red" th:errors="*{passwd}">Incorrect date</p>
+                            <p th:if="${#fields.hasErrors('passwd')}" style="color:red" th:errors="*{passwd}">Incorrect
+                                date</p>
                         </div>
                         <div class="form-group">
                             <label th:for="phoneNumber">전화번호</label>
                             <input type="tel" th:field="*{phoneNumber}" class="form-control" placeholder="전화번호를 입력하세요"
                                    th:class="${#fields.hasErrors('phoneNumber')}? 'form-control fieldError' : 'form-control'">
-                            <p th:if="${#fields.hasErrors('phoneNumber')}" style="color:red" th:errors="*{phoneNumber}">Incorrect date</p>
+                            <p th:if="${#fields.hasErrors('phoneNumber')}" style="color:red" th:errors="*{phoneNumber}">
+                                Incorrect date</p>
                         </div>
                         <div class="form-group">
                             <label th:for="nickname">닉네임</label>
                             <input type="text" th:field="*{nickname}" class="form-control" placeholder="닉네임을 입력하세요"
                                    th:class="${#fields.hasErrors('nickname')}? 'form-control fieldError' : 'form-control'">
-                            <p th:if="${#fields.hasErrors('nickname')}" style="color:red" th:errors="*{nickname}">Incorrect date</p>
+                            <p th:if="${#fields.hasErrors('nickname')}" style="color:red" th:errors="*{nickname}">
+                                Incorrect date</p>
                         </div>
                         <button type="submit" class="btn btn-primary">제출</button>
+                        <button type="button" onclick="redirectToBack()" class="btn btn-primary">뒤로</button>
+                        <script>
+                            function redirectToBack() {
+                                window.location.href = '/'; // 이동하고 싶은 URL로 변경
+                            }
+                        </script>
                     </form>
                 </div>
             </div>
         </div>
     </div>
 </div>
+<!-- Bootstrap core JS-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Core theme JS-->
+<script src="/js/scripts.js"></script>
 </body>
 </html>

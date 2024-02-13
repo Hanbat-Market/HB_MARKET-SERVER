@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
     <meta name="description" content=""/>
     <meta name="author" content=""/>
-    <title>Shop Homepage - Start Bootstrap Template</title>
+    <title>한밭마켓-한밭만의 중고나라</title>
     <!-- Favicon-->
-    <link rel="icon" type="image/x-icon" href="/assets/favicon.ico"/>
+    <link rel="icon" type="image/x-icon" href="/assets/hanbat_logo.png"/>
     <!-- Bootstrap icons-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet"/>
     <!-- Core theme CSS (includes Bootstrap)-->
@@ -27,31 +27,34 @@
 <!-- Navigation-->
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container px-4 px-lg-5">
-        <a class="navbar-brand" href="/">Hanbat_Market</a>
+        <a class="navbar-brand" href="/" style="width: 120px">
+            <img src="assets/logo2.png" alt="" class="img-fluid">
+        </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span
                 class="navbar-toggler-icon"></span></button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
-                <li class="nav-item"><a class="nav-link active" aria-current="page"
-                                        th:text="|${member.nickname}님 환영합니다!|" href="#!">Home</a></li>
-                <li class="nav-item">
-                    <form th:action="@{/logout}" method="post">
+                <li class="nav-item"><a style="font-weight: bold" class="nav-link active" aria-current="page"
+                                        th:text="|${member.nickname}님 환영합니다!|" href="#!">Home</a>
+                </li>
+                <form class="d-flex" th:action="@{/logout}" method="post">
                         <!--                        <button class="btn btn-outline-dark" onclick="location.href='/'" type="submit">-->
                         <!--                            <i class="bi-cart-fill me-1"></i>-->
                         <!--                            Cart-->
                         <!--                            <span class="badge bg-dark text-white ms-1 rounded-pill">0</span>-->
                         <!--                        </button>-->
-                        <button class="w-100 btn btn-dark btn-lg" onclick="location.href='/'" type="submit">
+                        <button style="font-weight: bold" class="btn btn-outline-dark" onclick="location.href='/'" type="submit">
                             로그아웃
+                            <span style="font-weight: bold" class="badge bg-dark text-white ms-1 rounded-pill">OUT!</span>
                         </button>
-                    </form>
-                </li>
+                </form>
             </ul>
             <span>  </span>
             <form class="d-flex">
-                <button class="btn btn-outline-dark" type="button" onclick="redirectToNewArticle()">
+                <button style="font-weight: bold" class="btn btn-outline-dark" type="button" onclick="redirectToNewArticle()">
                     상품등록
+                    <span style="font-weight: bold" class="badge bg-dark text-white ms-1 rounded-pill">NEW!</span>
                 </button>
                 <script>
                     function redirectToNewArticle() {
@@ -59,12 +62,33 @@
                     }
                 </script>
             </form>
-            &nbsp;
             <form class="d-flex">
-                <button class="btn btn-outline-dark" type="button" onclick="redirectToCart()">
+                <button style="font-weight: bold" class="btn btn-outline-dark" type="button" onclick="redirectToMyPage()">
+                    마이페이지
+                    <span style="font-weight: bold" class="badge bg-dark text-white ms-1 rounded-pill">MY</span>
+                </button>
+                <script>
+                    function redirectToMyPage() {
+                        window.location.href = '/mypage'; // 이동하고 싶은 URL로 변경
+                    }
+                </script>
+            </form>
+            <form class="d-flex">
+                <button style="font-weight: bold" class="btn btn-outline-dark" type="button" onclick="redirectToPurchaseHistory()">
+                    구매내역
+                    <span style="font-weight: bold" class="badge bg-dark text-white ms-1 rounded-pill">BUY</span>
+                </button>
+                <script>
+                    function redirectToPurchaseHistory() {
+                        window.location.href = '/purchaseHistory'; // 이동하고 싶은 URL로 변경
+                    }
+                </script>
+            </form>
+            <form class="d-flex">
+                <button style="font-weight: bold" class="btn btn-outline-dark" type="button" onclick="redirectToCart()">
                     <i class="bi-cart-fill me-1"></i>
-                    관심상품
-                    <span class="badge bg-dark text-white ms-1 rounded-pill" th:text="${memberPreemptionSize}">0</span>
+                    장바구니
+                    <span style="font-weight: bold" class="badge bg-dark text-white ms-1 rounded-pill" th:text="${memberPreemptionSize}">0</span>
                 </button>
                 <script>
                     function redirectToCart() {
@@ -76,14 +100,15 @@
     </div>
 </nav>
 <!-- Header-->
-<header class="bg-dark py-5">
+<header class="py-5" style="background: radial-gradient(circle at center, #B0E57C, #8EDC76, #6AC46D, #48B361, #2C9C51);">
     <div class="container px-4 px-lg-5 my-5">
         <div class="text-center text-white">
-            <h1 class="display-4 fw-bolder">Shop in style</h1>
-            <p class="lead fw-normal text-white-50 mb-0">With this shop hompeage template</p>
+            <h1 class="display-4 fw-bolder"><img src="assets/logo2.png" alt="" class="img-fluid"></h1>
+            <p style="font-weight: bold" class="lead fw-normal text-white-50 mb-0">Hanbat_Market</p>
         </div>
     </div>
 </header>
+
 <!-- Section -->
 <section class="py-5">
     <div class="container px-4 px-lg-5 mt-5">
@@ -93,25 +118,37 @@
                 <div class="card h-100">
                     <!-- Interest button -->
                     <div class="interest-button">
-                        <form th:action="@{'/preemption/' + ${article.id}}" method="get">
+                        <form th:action="@{'/preemption/' + ${article.item.id}}" method="get">
                             <button type="submit" class="btn btn-outline-danger" onclick="showAlert()">
                                 <i class="bi-heart"></i> 담아가기
                             </button>
                         </form>
                     </div>
                     <!-- Article details -->
+                    <img class="card-img-top"
+                         th:if="${article.imageFiles != null and article.imageFiles.size() > 0}"
+                         th:src="@{'/images/' + ${article.imageFiles.get(0).storeFileName}}"
+                         alt="Article Image"
+                         style="object-fit: cover; width: 100%; height: 200px;" />
+                    <img class="card-img-top"
+                         th:unless="${article.imageFiles != null and article.imageFiles.size() > 0}"
+                         src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg"
+                         alt="Default Image"
+                         style="object-fit: cover; width: 100%; height: 200px;" />
                     <div class="card-body p-4">
                         <div class="text-center">
                             <!-- Article title -->
                             <h5 class="fw-bolder" th:text="${article.title}">Article Title</h5>
+                            <p th:text="'상품: ' + ${article.item.itemName}">ItemName</p>
                             <!-- Article price -->
-                            <p th:text="${article.item.price + '원'}">Price</p>
+                            <p style="color: #0b5ed7" th:text="'가격: ' + ${article.item.price + '원'}">Price</p>
+                            <p th:text="'판매자: ' + ${article.member.nickname}">nickname</p>
                         </div>
                     </div>
                     <!-- Article actions -->
                     <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
                         <div class="text-center"><a class="btn btn-outline-dark mt-auto"
-                                                    th:href="@{'/article/' + ${article.id}}">View details</a></div>
+                                                    th:href="@{'/articles/' + ${article.id}}">상세보기</a></div>
                     </div>
                 </div>
             </div>
@@ -126,8 +163,8 @@
 </div>
 
 <!-- Footer-->
-<footer class="py-5 bg-dark">
-    <div class="container"><p class="m-0 text-center text-white">Hanbat_Market 2024</p></div>
+<footer class="py-5" style="background: radial-gradient(circle at center, #B0E57C, #8EDC76, #6AC46D, #48B361, #2C9C51);">
+    <div class="container"><p class="m-0 text-center">Hanbat_Market 2024</p></div>
 </footer>
 <!-- Bootstrap core JS-->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
@@ -143,5 +180,10 @@
         alert("상품을 담았습니다.");
     }
 </script>
+<!-- Bootstrap core JS-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Core theme JS-->
+<script src="/js/scripts.js"></script>
 </body>
 </html>
+

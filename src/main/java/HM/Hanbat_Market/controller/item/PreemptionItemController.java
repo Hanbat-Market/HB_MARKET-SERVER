@@ -7,6 +7,7 @@ import HM.Hanbat_Market.repository.item.ItemRepository;
 import HM.Hanbat_Market.repository.item.PreemptionItemRepository;
 import HM.Hanbat_Market.service.article.ArticleService;
 import HM.Hanbat_Market.service.preemption.PreemptionItemService;
+import HM.Hanbat_Market.service.trade.TradeService;
 import jakarta.persistence.NoResultException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,7 +26,7 @@ public class PreemptionItemController {
     private final ItemRepository itemRepository;
     private final PreemptionItemService preemptionItemService;
     private final PreemptionItemRepository preemptionItemRepository;
-    private final ArticleService articleService;
+    private final TradeService tradeService;
 
     @GetMapping("/preemption/{itemId}")
     public String preemption(@PathVariable("itemId") Long itemId,
@@ -43,10 +44,29 @@ public class PreemptionItemController {
         }
     }
 
-    @GetMapping("/preemption/mypage/{preemptionItemId}")
-    public String preemptionMypage(@PathVariable("preemptionItemId") Long preemptionItemId,
+    @GetMapping("/preemptionFromDetail/{itemId}")
+    public String preemptionFromDetail(@PathVariable("itemId") Long itemId,
                              @SessionAttribute(name = SessionConst.LOGIN_MEMBER,
                                      required = false) Member loginMember, Model model
+    ) {
+        Item item = itemRepository.findById(itemId).get();
+        try {
+            PreemptionItem preemptionItem = preemptionItemService.findPreemptionItemByMemberAndItem(loginMember, item);
+            preemptionItemService.activePreemption(preemptionItem.getId());
+            Long articleId = item.getArticle().getId();
+            return "redirect:/articles/"+articleId;
+        } catch (NoResultException e) {
+            Long preemption = preemptionItemService.regisPreemption(loginMember.getId(), itemId);
+            Long articleId = item.getArticle().getId();
+            return "redirect:/articles/"+articleId;
+        }
+    }
+
+
+    @GetMapping("/preemption/mypage/{preemptionItemId}")
+    public String preemptionMyPage(@PathVariable("preemptionItemId") Long preemptionItemId,
+                                   @SessionAttribute(name = SessionConst.LOGIN_MEMBER,
+                                           required = false) Member loginMember, Model model
     ) {
         try {
             PreemptionItem preemptionItem = preemptionItemRepository.findById(preemptionItemId).get();
@@ -58,17 +78,20 @@ public class PreemptionItemController {
     }
 
     @GetMapping("/preemption")
-    public String preemptions(
-                             @SessionAttribute(name = SessionConst.LOGIN_MEMBER,
-                                     required = false) Member loginMember, Model model
+    public String myPage(
+            @SessionAttribute(name = SessionConst.LOGIN_MEMBER,
+                    required = false) Member loginMember, Model model
     ) {
         try {
             List<PreemptionItem> preemptionItemByMember = preemptionItemService.findPreemptionItemByMember(loginMember);
-            model.addAttribute("articles", preemptionItemByMember);
+            List<Trade> completedByMember = tradeService.findCompletedByMember(loginMember);
+            List<Trade> reservedByMember = tradeService.findReservedByMember(loginMember);
+            model.addAttribute("memberPreemptionSize", preemptionItemByMember.size());
+            model.addAttribute("preemptionItemByMember", preemptionItemByMember);
             model.addAttribute("member", loginMember);
-            return "mypage";
+            return "preemption";
         } catch (NoResultException e) {
-            return "mypage";
+            return "preemption";
         }
     }
 }
