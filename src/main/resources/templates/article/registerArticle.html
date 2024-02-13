@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
     <meta name="description" content=""/>
     <meta name="author" content=""/>
-    <title>Shop Homepage - Start Bootstrap Template</title>
+    <title>한밭마켓-한밭만의 중고나라</title>
     <!-- Favicon-->
-    <link rel="icon" type="image/x-icon" href="/assets/favicon.ico"/>
+    <link rel="icon" type="image/x-icon" href="/assets/hanbat_logo.png"/>
     <!-- Bootstrap icons-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet"/>
     <!-- Core theme CSS (includes Bootstrap)-->
@@ -27,27 +27,79 @@
 <!-- Navigation-->
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container px-4 px-lg-5">
-        <a class="navbar-brand" href="/">Hanbat_Market</a>
+        <a class="navbar-brand" href="/" style="width: 120px">
+            <img src="../assets/logo2.png" alt="" class="img-fluid">
+        </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span
                 class="navbar-toggler-icon"></span></button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
-                <li class="nav-item"><a class="nav-link active" aria-current="page"
-                                        th:text="|${member.nickname}님 환영합니다!|" href="#!">Home</a></li>
-                <li class="nav-item">
-                    <form th:action="@{/logout}" method="post">
-                        <!--                        <button class="btn btn-outline-dark" onclick="location.href='/'" type="submit">-->
-                        <!--                            <i class="bi-cart-fill me-1"></i>-->
-                        <!--                            Cart-->
-                        <!--                            <span class="badge bg-dark text-white ms-1 rounded-pill">0</span>-->
-                        <!--                        </button>-->
-                        <button class="w-100 btn btn-dark btn-lg" onclick="location.href='/'" type="submit">
-                            로그아웃
-                        </button>
-                    </form>
+                <li class="nav-item"><a style="font-weight: bold" class="nav-link active" aria-current="page"
+                                        th:text="|${member.nickname}님 환영합니다!|" href="#!">Home</a>
                 </li>
+                <form class="d-flex" th:action="@{/logout}" method="post">
+                    <!--                        <button class="btn btn-outline-dark" onclick="location.href='/'" type="submit">-->
+                    <!--                            <i class="bi-cart-fill me-1"></i>-->
+                    <!--                            Cart-->
+                    <!--                            <span class="badge bg-dark text-white ms-1 rounded-pill">0</span>-->
+                    <!--                        </button>-->
+                    <button style="font-weight: bold" class="btn btn-outline-dark" onclick="location.href='/'"
+                            type="submit">
+                        로그아웃
+                        <span style="font-weight: bold" class="badge bg-dark text-white ms-1 rounded-pill">OUT!</span>
+                    </button>
+                </form>
             </ul>
+            <span>  </span>
+            <form class="d-flex">
+                <button style="font-weight: bold" class="btn btn-outline-dark" type="button"
+                        onclick="redirectToNewArticle()">
+                    상품등록
+                    <span style="font-weight: bold" class="badge bg-dark text-white ms-1 rounded-pill">NEW!</span>
+                </button>
+                <script>
+                    function redirectToNewArticle() {
+                        window.location.href = '/articles/new'; // 이동하고 싶은 URL로 변경
+                    }
+                </script>
+            </form>
+            <form class="d-flex">
+                <button style="font-weight: bold" class="btn btn-outline-dark" type="button"
+                        onclick="redirectToMyPage()">
+                    마이페이지
+                    <span style="font-weight: bold" class="badge bg-dark text-white ms-1 rounded-pill">MY</span>
+                </button>
+                <script>
+                    function redirectToMyPage() {
+                        window.location.href = '/mypage'; // 이동하고 싶은 URL로 변경
+                    }
+                </script>
+            </form>
+            <form class="d-flex">
+                <button style="font-weight: bold" class="btn btn-outline-dark" type="button" onclick="redirectToPurchaseHistory()">
+                    구매내역
+                    <span style="font-weight: bold" class="badge bg-dark text-white ms-1 rounded-pill">BUY</span>
+                </button>
+                <script>
+                    function redirectToPurchaseHistory() {
+                        window.location.href = '/purchaseHistory'; // 이동하고 싶은 URL로 변경
+                    }
+                </script>
+            </form>
+            <form class="d-flex">
+                <button style="font-weight: bold" class="btn btn-outline-dark" type="button" onclick="redirectToCart()">
+                    <i class="bi-cart-fill me-1"></i>
+                    장바구니
+                    <span style="font-weight: bold" class="badge bg-dark text-white ms-1 rounded-pill"
+                          th:text="${memberPreemptionSize}">0</span>
+                </button>
+                <script>
+                    function redirectToCart() {
+                        window.location.href = '/preemption'; // 이동하고 싶은 URL로 변경
+                    }
+                </script>
+            </form>
         </div>
     </div>
 </nav>
@@ -73,7 +125,8 @@
                     // to get an API token!
                     -->
 
-                    <form role="form" action="/articles/new" th:object="${articleForm}" method="post">
+                    <form role="form" action="/articles/new" enctype="multipart/form-data" th:object="${articleForm}"
+                          method="post">
 
                         <!-- Name Input -->
                         <div class="form-floating mb-3">
@@ -94,13 +147,15 @@
                             <input type="text" th:field="*{itemName}" class="form-control" placeholder="상품이름을 입력하세요"
                                    th:class="${#fields.hasErrors('itemName')}? 'form-control fieldError' : 'form-control'">
                             <label for="floatingInput">상품이름을 입력하세요.</label>
-                            <p th:if="${#fields.hasErrors('itemName')}" style="color:red" th:errors="*{itemName}">Incorrect
+                            <p th:if="${#fields.hasErrors('itemName')}" style="color:red" th:errors="*{itemName}">
+                                Incorrect
                                 date</p>
                         </div>
 
                         <!-- Message Input -->
                         <div class="form-floating mb-3">
-                            <textarea class="form-control" th:field="*{description}" id="message" type="text" placeholder="상품설명을 입력해주세요."
+                            <textarea class="form-control" th:field="*{description}" id="message" type="text"
+                                      placeholder="상품설명을 입력해주세요."
                                       style="height: 10rem;" data-sb-validations="required"></textarea>
                             <label for="message">상품설명을 입력해주세요.</label>
                             <div class="invalid-feedback" data-sb-feedback="message:required">상품이름을 입력해주세요.</div>
@@ -109,9 +164,22 @@
                             <input type="text" th:field="*{tradingPlace}" class="form-control" placeholder="거래장소를 입력하세요"
                                    th:class="${#fields.hasErrors('tradingPlace')}? 'form-control fieldError' : 'form-control'">
                             <label for="floatingInput">거래장소를 입력하세요.</label>
-                            <p th:if="${#fields.hasErrors('tradingPlace')}" style="color:red" th:errors="*{tradingPlace}">Incorrect
+                            <p th:if="${#fields.hasErrors('tradingPlace')}" style="color:red"
+                               th:errors="*{tradingPlace}">Incorrect
                                 date</p>
                         </div>
+                        <label for="floatingInput">사진을 첨부해주세요.</label>
+                        <div class="form-floating mb-3">
+                            <input type="file" th:field="*{imageFile1}" class="form-control"
+                                   th:class="${#fields.hasErrors('imageFile1')}? 'form-control fieldError' : 'form-control'">
+                            <p th:if="${#fields.hasErrors('imageFile1')}" style="color:red"
+                               th:errors="*{imageFile1}">Incorrect
+                                date</p>
+                        </div>
+
+                        <!--                        <div class="form-floating mb-3">-->
+                        <!--                            <input type="file" multiple="multiple" th:field="*{imageFiles}" class="form-control">-->
+                        <!--                        </div>-->
                         <!-- Submit success message -->
                         <div class="d-none" id="submitSuccessMessage">
                             <div class="text-center mb-3">
@@ -123,8 +191,17 @@
 
                         <!-- Submit button -->
                         <div class="d-grid">
-                            <button class="btn btn-primary btn-lgs" id="submitButton" type="submit">Submit</button>
+                            <button class="btn btn-primary btn-lgs" id="submitButton" type="submit">등록</button>
                         </div>
+                        <hr class="my-4">
+                        <div class="d-grid">
+                            <button class="btn btn-primary btn-lgs" onclick="redirectToBack()" type="button">뒤로</button>
+                        </div>
+                        <script>
+                            function redirectToBack() {
+                                window.location.href = '/'; // 이동하고 싶은 URL로 변경
+                            }
+                        </script>
                     </form>
                     <!-- End of contact form -->
 
@@ -136,3 +213,9 @@
 
 <!-- CDN Link to SB Forms Scripts -->
 <script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>
+<!-- Bootstrap core JS-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Core theme JS-->
+<script src="/js/scripts.js"></script>
+</body>
+</html>

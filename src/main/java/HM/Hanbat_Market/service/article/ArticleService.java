@@ -32,24 +32,28 @@ public class ArticleService {
         Item newItem = Item.createItem(itemCreateDto, newMember);
         articleCreateDto.setItem(newItem);
         articleCreateDto.setMember(newMember);
-        return articleRepository.save(Article.create(articleCreateDto)).getId();
+        Article article = Article.create(articleCreateDto);
+        articleCreateDto.getImageFiles().stream()
+                .forEach(imageFile -> ImageFile
+                        .createImageFile(article, imageFile));
+        return articleRepository.save(article).getId();
     }
 
-    @Transactional
-    public Long regisArticle(Long memberId, ArticleCreateDto articleCreateDto, ItemCreateDto itemCreateDto, List<ImageFileDto> imageFilesDto) {
-        Member newMember = memberRepository.findById(memberId).get();
-        Item newItem = Item.createItem(itemCreateDto, newMember);
-        articleCreateDto.setItem(newItem);
-        articleCreateDto.setMember(newMember);
-
-        Article newArticle = Article.create(articleCreateDto);
-
-        imageFilesDto.stream()
-                .forEach(imageFileDto -> ImageFile
-                        .createImageFile(newArticle, imageFileDto));
-
-        return articleRepository.save(newArticle).getId();
-    }
+//    @Transactional
+//    public Long regisArticle(Long memberId, ArticleCreateDto articleCreateDto, ItemCreateDto itemCreateDto, List<ImageFileDto> imageFilesDto) {
+//        Member newMember = memberRepository.findById(memberId).get();
+//        Item newItem = Item.createItem(itemCreateDto, newMember);
+//        articleCreateDto.setItem(newItem);
+//        articleCreateDto.setMember(newMember);
+//
+//        Article newArticle = Article.create(articleCreateDto);
+//
+//        imageFilesDto.stream()
+//                .forEach(imageFileDto -> ImageFile
+//                        .createImageFile(newArticle, imageFileDto));
+//
+//        return articleRepository.save(newArticle).getId();
+//    }
 
     //검색
     public List<Article> findArticles(ArticleSearchDto articleSearchDto) {

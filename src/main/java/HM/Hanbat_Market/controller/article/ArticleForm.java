@@ -8,6 +8,7 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,5 +32,7 @@ public class ArticleForm {
     @NotEmpty(message = "거래장소를 입력해주세요..")
     private String tradingPlace;
 
-    private List<ImageFile> imageFiles = new ArrayList<>();
+    private MultipartFile imageFile1;
+    private MultipartFile imageFile2;
+    private MultipartFile imageFile3;
 }

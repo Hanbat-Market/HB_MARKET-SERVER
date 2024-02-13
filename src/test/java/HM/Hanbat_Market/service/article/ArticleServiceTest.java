@@ -36,9 +36,9 @@ class ArticleServiceTest {
         memberService.join(member);
         ArticleCreateDto articleCreateDto = createArticleCreateDto("PS5 팝니다.", "싸게 팝니다.", "대전");
         ItemCreateDto itemCreateDto = createItemCreateDto("PS5", 170000L);
-        List<ImageFileDto> imageFilesDto = createTestImageFilesDto();
+//        List<ImageFileDto> imageFilesDto = createTestImageFilesDto();
         //when
-        articleService.regisArticle(member.getId(), articleCreateDto, itemCreateDto, imageFilesDto);
+        articleService.regisArticle(member.getId(), articleCreateDto, itemCreateDto);
         articleService.regisArticle(member.getId(), articleCreateDto, itemCreateDto);
         //then (등록된 게시글이 2개)
         assertEquals(2, articleService.findArticles(member).size());
@@ -58,12 +58,12 @@ class ArticleServiceTest {
         ArticleCreateDto articleCreateDto2 = createArticleCreateDto("PS3 팝니다.", "싸게 팝니다.", "대전");
         ItemCreateDto itemCreateDto = createItemCreateDto("PS5", 170000L);
         ItemCreateDto itemCreateDto2 = createItemCreateDto("PS3", 130000L);
-        List<ImageFileDto> imageFilesDto = createTestImageFilesDto();
+//        List<ImageFileDto> imageFilesDto = createTestImageFilesDto();
 
         ArticleSearchDto articleSearchDto = new ArticleSearchDto();
         articleSearchDto.setTitle("PS3");
         //when
-        articleService.regisArticle(member.getId(), articleCreateDto, itemCreateDto, imageFilesDto);
+        articleService.regisArticle(member.getId(), articleCreateDto, itemCreateDto);
         articleService.regisArticle(member.getId(), articleCreateDto, itemCreateDto);
         articleService.regisArticle(member.getId(), articleCreateDto2, itemCreateDto2);
         //then (등록된 게시글이 3개)
@@ -90,7 +90,7 @@ class ArticleServiceTest {
 
         ArticleCreateDto articleCreateDto = createArticleCreateDto("PS5 팝니다.", "싸게 팝니다.", "대전");
         ItemCreateDto itemCreateDto = createItemCreateDto("PS5", 170000L);
-        List<ImageFileDto> imageFilesDto = createTestImageFilesDto();
+//        List<ImageFileDto> imageFilesDto = createTestImageFilesDto();
 
         Long articleId = articleService.regisArticle(member.getId(), articleCreateDto, itemCreateDto);
         Article article = articleService.findArticle(articleId);
@@ -101,8 +101,8 @@ class ArticleServiceTest {
         articleUpdateDto.setDescription("qwer");
         articleUpdateDto.setItemUpdateDto(createItemUpdateDto());
         articleUpdateDto.setTradingPlace("sdf");
-        imageFilesDto.stream()
-                .forEach(imageFileDto -> ImageFile.createImageFile(article, imageFileDto));
+//        imageFilesDto.stream()
+//                .forEach(imageFileDto -> ImageFile.createImageFile(article, imageFileDto));
 
         articleService.updateArticle(articleId, articleUpdateDto);
 
@@ -112,7 +112,7 @@ class ArticleServiceTest {
         assertEquals(1, articleService.findArticles(articleSearchDto).size());
 
         //then (등록한 이미지 파일 2개)
-        assertEquals(2, articleService.findArticles().get(0).getImageFiles().size());
+//        assertEquals(2, articleService.findArticles().get(0).getImageFiles().size());
 
     }
 

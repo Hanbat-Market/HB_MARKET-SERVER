@@ -1,16 +1,90 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:fragment="header">
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+    <title>Shop Homepage - Start Bootstrap Template</title>
     <!-- Favicon-->
-    <link rel="icon" type="image/x-icon" href="/assets/favicon.ico" />
+    <link rel="icon" type="image/x-icon" href="/assets/favicon.ico"/>
     <!-- Bootstrap icons-->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet"/>
     <!-- Core theme CSS (includes Bootstrap)-->
-    <link href="/css/styles.css" rel="stylesheet" />
+    <link href="/css/styles.css" rel="stylesheet"/>
+    <style>
+        .interest-button button {
+            transition: background-color 0.3s ease-in-out;
+        }
 
-    <title>Hello, world!</title>
+        .interest-button button:hover {
+            background-color: #dc3545; /* Change this to the color you desire */
+            color: #fff; /* Change this to the text color you desire */
+        }
+    </style>
 </head>
+<body>
+<!-- Navigation-->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container px-4 px-lg-5">
+        <a class="navbar-brand" href="/" style="width: 120px">
+            <img src="assets/logo2.png" alt="" class="img-fluid">
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span
+                class="navbar-toggler-icon"></span></button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+                <li class="nav-item"><a style="font-weight: bold" class="nav-link active" aria-current="page"
+                                        th:text="|${member.nickname}님 환영합니다!|" href="#!">Home</a>
+                </li>
+                <form class="d-flex" th:action="@{/logout}" method="post">
+                    <!--                        <button class="btn btn-outline-dark" onclick="location.href='/'" type="submit">-->
+                    <!--                            <i class="bi-cart-fill me-1"></i>-->
+                    <!--                            Cart-->
+                    <!--                            <span class="badge bg-dark text-white ms-1 rounded-pill">0</span>-->
+                    <!--                        </button>-->
+                    <button style="font-weight: bold" class="btn btn-outline-dark" onclick="location.href='/'" type="submit">
+                        로그아웃
+                        <span style="font-weight: bold" class="badge bg-dark text-white ms-1 rounded-pill">OUT!</span>
+                    </button>
+                </form>
+            </ul>
+            <span>  </span>
+            <form class="d-flex">
+                <button style="font-weight: bold" class="btn btn-outline-dark" type="button" onclick="redirectToNewArticle()">
+                    상품등록
+                    <span style="font-weight: bold" class="badge bg-dark text-white ms-1 rounded-pill">NEW!</span>
+                </button>
+                <script>
+                    function redirectToNewArticle() {
+                        window.location.href = '/articles/new'; // 이동하고 싶은 URL로 변경
+                    }
+                </script>
+            </form>
+            <form class="d-flex">
+                <button style="font-weight: bold" class="btn btn-outline-dark" type="button" onclick="redirectToMyPage()">
+                    마이페이지
+                    <span style="font-weight: bold" class="badge bg-dark text-white ms-1 rounded-pill">MY</span>
+                </button>
+                <script>
+                    function redirectToMyPage() {
+                        window.location.href = '/mypage'; // 이동하고 싶은 URL로 변경
+                    }
+                </script>
+            </form>
+            <form class="d-flex">
+                <button style="font-weight: bold" class="btn btn-outline-dark" type="button" onclick="redirectToCart()">
+                    <i class="bi-cart-fill me-1"></i>
+                    장바구니
+                    <span style="font-weight: bold" class="badge bg-dark text-white ms-1 rounded-pill" th:text="${memberPreemptionSize}">0</span>
+                </button>
+                <script>
+                    function redirectToCart() {
+                        window.location.href = '/preemption'; // 이동하고 싶은 URL로 변경
+                    }
+                </script>
+            </form>
+        </div>
+    </div>
+</nav>

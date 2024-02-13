@@ -37,16 +37,18 @@ public class JpaTradeRepository implements TradeRepository {
     @Override
     public List<Trade> findCompleteByMember(Member member) {
         return em.createQuery("select p from Trade p join p.member m where " +
-                        "p.tradeStatus = :tradeStatus", Trade.class)
+                        "p.tradeStatus = :tradeStatus and :purchaseMember != p.item.member.nickname", Trade.class)
                 .setParameter("tradeStatus", TradeStatus.COMP)
+                .setParameter("purchaseMember", member.getNickname())
                 .getResultList();
     }
 
     @Override
     public List<Trade> findReservationByMember(Member member) {
         return em.createQuery("select p from Trade p join p.member m where " +
-                        "p.tradeStatus = :tradeStatus", Trade.class)
+                        "p.tradeStatus = :tradeStatus and :purchaseMember != p.item.member.nickname", Trade.class)
                 .setParameter("tradeStatus", TradeStatus.RESERVATION)
+                .setParameter("purchaseMember", member.getNickname())
                 .getResultList();
     }
 }

@@ -6,6 +6,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.SimpleTimeZone;
 import java.util.concurrent.atomic.AtomicLong;
 
 @Entity
@@ -18,17 +19,16 @@ public class ImageFile {
     @Column(name = "file_id")
     private Long id;
 
-    private String type;
-
-    private String path;
+    private String uploadFileName;
+    private String storeFileName;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "article_id")
     private Article article;
 
-    private ImageFile(String type, String path) {
-        this.type = type;
-        this.path = path;
+    public ImageFile(String uploadFileName, String storeFileName) {
+        this.uploadFileName = uploadFileName;
+        this.storeFileName = storeFileName;
     }
 
     /**
@@ -42,8 +42,7 @@ public class ImageFile {
     /**
      * 생성 메서드
      */
-    public static ImageFile createImageFile(Article article, ImageFileDto imageFileDto) {
-        ImageFile imageFile = new ImageFile(imageFileDto.getType(), imageFileDto.getPath());
+    public static ImageFile createImageFile(Article article, ImageFile imageFile) {
         imageFile.regisArticle(article);
         return imageFile;
     }
