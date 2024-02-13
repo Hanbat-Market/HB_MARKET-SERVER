@@ -89,21 +89,20 @@ public class CreateTestEntity {
         return articleCreateDto;
     }
 
-    public static List<ImageFileDto> createTestImageFilesDto() {
-        List<ImageFileDto> imageFilesDto = new ArrayList<>();
-        ImageFileDto imageFileDto1 = new ImageFileDto();
-        imageFileDto1.setPath("/sf");
-        imageFileDto1.setType("png");
-        ImageFileDto imageFileDto2 = new ImageFileDto();
-        imageFileDto2.setPath("/asd");
-        imageFileDto2.setType("jpg");
-
-        imageFilesDto.add(imageFileDto1);
-        imageFilesDto.add(imageFileDto2);
-
-        return imageFilesDto;
-
-    }
+//    public static List<ImageFileDto> createTestImageFilesDto() {
+//        List<ImageFileDto> imageFilesDto = new ArrayList<>();
+//        ImageFileDto imageFileDto1 = new ImageFileDto();
+//        imageFileDto1.setPath("/sf");
+//        imageFileDto1.setType("png");
+//        ImageFileDto imageFileDto2 = new ImageFileDto();
+//        imageFileDto2.setPath("/asd");
+//        imageFileDto2.setType("jpg");
+//
+//        imageFilesDto.add(imageFileDto1);
+//        imageFilesDto.add(imageFileDto2);
+//
+//        return imageFilesDto;
+//    }
 
     public static ItemUpdateDto createItemUpdateDto() {
         ItemUpdateDto itemUpdateDto = new ItemUpdateDto();

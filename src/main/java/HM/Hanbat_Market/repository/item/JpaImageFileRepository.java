@@ -4,6 +4,7 @@ import HM.Hanbat_Market.domain.entity.ImageFile;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import org.thymeleaf.model.IAttribute;
 
 import java.awt.*;
@@ -12,6 +13,7 @@ import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
+@Transactional
 public class JpaImageFileRepository implements ImageFileRepository {
 
     private final EntityManager em;

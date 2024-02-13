@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
     <meta name="description" content=""/>
     <meta name="author" content=""/>
-    <title>Shop Homepage - Start Bootstrap Template</title>
+    <title>한밭마켓-한밭만의 중고나라</title>
     <!-- Favicon-->
-    <link rel="icon" type="image/x-icon" href="/assets/favicon.ico"/>
+    <link rel="icon" type="image/x-icon" href="/assets/hanbat_logo.png"/>
     <!-- Bootstrap icons-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet"/>
     <!-- Core theme CSS (includes Bootstrap)-->
@@ -27,73 +27,192 @@
 <!-- Navigation-->
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container px-4 px-lg-5">
-        <a class="navbar-brand" href="/">Hanbat_Market</a>
+        <a class="navbar-brand" href="/" style="width: 120px">
+            <img src="assets/logo2.png" alt="" class="img-fluid">
+        </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span
                 class="navbar-toggler-icon"></span></button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
-                <li class="nav-item"><a class="nav-link active" aria-current="page"
-                                        th:text="|${member.nickname}님 환영합니다!|" href="#!">Home</a></li>
-                <li class="nav-item">
-                    <form th:action="@{/logout}" method="post">
-                        <!--                        <button class="btn btn-outline-dark" onclick="location.href='/'" type="submit">-->
-                        <!--                            <i class="bi-cart-fill me-1"></i>-->
-                        <!--                            Cart-->
-                        <!--                            <span class="badge bg-dark text-white ms-1 rounded-pill">0</span>-->
-                        <!--                        </button>-->
-                        <button class="w-100 btn btn-dark btn-lg" onclick="location.href='/'" type="submit">
-                            로그아웃
-                        </button>
-                    </form>
+                <li class="nav-item"><a style="font-weight: bold" class="nav-link active" aria-current="page"
+                                        th:text="|${member.nickname}님 환영합니다!|" href="#!">Home</a>
                 </li>
+                <form class="d-flex" th:action="@{/logout}" method="post">
+                    <!--                        <button class="btn btn-outline-dark" onclick="location.href='/'" type="submit">-->
+                    <!--                            <i class="bi-cart-fill me-1"></i>-->
+                    <!--                            Cart-->
+                    <!--                            <span class="badge bg-dark text-white ms-1 rounded-pill">0</span>-->
+                    <!--                        </button>-->
+                    <button style="font-weight: bold" class="btn btn-outline-dark" onclick="location.href='/'" type="submit">
+                        로그아웃
+                        <span style="font-weight: bold" class="badge bg-dark text-white ms-1 rounded-pill">OUT!</span>
+                    </button>
+                </form>
             </ul>
+            <span>  </span>
+            <form class="d-flex">
+                <button style="font-weight: bold" class="btn btn-outline-dark" type="button" onclick="redirectToNewArticle()">
+                    상품등록
+                    <span style="font-weight: bold" class="badge bg-dark text-white ms-1 rounded-pill">NEW!</span>
+                </button>
+                <script>
+                    function redirectToNewArticle() {
+                        window.location.href = '/articles/new'; // 이동하고 싶은 URL로 변경
+                    }
+                </script>
+            </form>
+            <form class="d-flex">
+                <button style="font-weight: bold" class="btn btn-outline-dark" type="button" onclick="redirectToMyPage()">
+                    마이페이지
+                    <span style="font-weight: bold" class="badge bg-dark text-white ms-1 rounded-pill">MY</span>
+                </button>
+                <script>
+                    function redirectToMyPage() {
+                        window.location.href = '/mypage'; // 이동하고 싶은 URL로 변경
+                    }
+                </script>
+            </form>
+            <form class="d-flex">
+                <button style="font-weight: bold" class="btn btn-outline-dark" type="button" onclick="redirectToPurchaseHistory()">
+                    구매내역
+                    <span style="font-weight: bold" class="badge bg-dark text-white ms-1 rounded-pill">BUY</span>
+                </button>
+                <script>
+                    function redirectToPurchaseHistory() {
+                        window.location.href = '/purchaseHistory'; // 이동하고 싶은 URL로 변경
+                    }
+                </script>
+            </form>
+            <form class="d-flex">
+                <button style="font-weight: bold" class="btn btn-outline-dark" type="button" onclick="redirectToCart()">
+                    <i class="bi-cart-fill me-1"></i>
+                    장바구니
+                    <span style="font-weight: bold" class="badge bg-dark text-white ms-1 rounded-pill" th:text="${memberPreemptionSize}">0</span>
+                </button>
+                <script>
+                    function redirectToCart() {
+                        window.location.href = '/preemption'; // 이동하고 싶은 URL로 변경
+                    }
+                </script>
+            </form>
         </div>
     </div>
 </nav>
-<body>
 <div class="container">
     <div class="row">
+        <h1>마이페이지</h1>
         <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
             <div class="card border-0 shadow rounded-3 my-5">
                 <div class="card-body p-4 p-sm-5">
-                    <h5 class="card-title text-center mb-5 fw-light fs-5">내 관심상품</h5>
+                    <h5 class="card-title text-center mb-5 fw-light fs-5">판매예약</h5>
                     <section class="py-5">
                         <div class="container px-4 px-lg-5 mt-5">
                             <ul class="list-group">
                                 <!-- 타임리프 반복문 시작 -->
-                                <li th:each="article : ${articles}" class="list-group-item mb-3">
+                                <li th:each="reservedMember : ${reservedByMember}" class="list-group-item mb-3">
                                     <div class="d-flex justify-content-between">
                                         <div>
+                                            <img class="card-img-top"
+                                                 th:if="${reservedMember.item.article.imageFiles != null and reservedMember.item.article.imageFiles.size() > 0}"
+                                                 th:src="@{'/images/' + ${reservedMember.item.article.imageFiles.get(0).storeFileName}}"
+                                                 alt="Article Image"
+                                                 style="object-fit: cover; width: 90%; height: 100px;" />
+                                            <img class="card-img-top"
+                                                 th:unless="${reservedMember.item.article.imageFiles != null and reservedMember.item.article.imageFiles.size() > 0}"
+                                                 src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg"
+                                                 alt="Default Image"
+                                                 style="object-fit: cover; width: 100%; height: 200px;" />
                                             <!-- Article title -->
-                                            <h5 class="fw-bolder" th:text="${article.item.article.title}">Article Title</h5>
+                                            <h5 class="fw-bolder" th:text="${reservedMember.item.article.title}">Article
+                                                Title</h5>
                                             <!-- Item name -->
-                                            <p th:text="${article.item.itemName}">Item Name</p>
+                                            <p th:text="'상품: ' + ${reservedMember.item.itemName}">Item Name</p>
                                             <!-- Item owner's nickname -->
-                                            <p th:text="${article.item.member.nickname}"></p>
-                                        </div>
-                                        <div class="interest-button">
-                                            <form th:action="@{'/preemption/mypage/' + ${article.id}}" method="get">
-                                                <button type="submit" class="btn btn-outline-danger">
-                                                    <i class="bi-heart"></i> 목록에서 제거
-                                                </button>
-                                            </form>
+                                            <p style="color: #0b5ed7"  th:text="'가격: ' + ${reservedMember.item.price}"></p>
+                                            <p th:text="'판매자: ' + ${reservedMember.item.member.nickname}"></p>
+                                            <p th:text="'구매자: ' + ${reservedMember.item.trade.member.nickname}"></p>
                                         </div>
                                     </div>
                                     <div class="mt-3">
-                                        <a class="btn btn-outline-dark" th:href="@{'/article/' + ${article.id}}">View details</a>
+                                        <a class="btn btn-outline-dark"
+                                           th:href="@{'/articles/' + ${reservedMember.item.article.id}}">상세보기</a>
                                     </div>
                                 </li>
                                 <!-- 타임리프 반복문 끝 -->
                             </ul>
                         </div>
+                        <button class="btn btn-outline-dark" type="button" onclick="redirectToBack()">
+                            뒤로가기
+                        </button>
+                        <script>
+                            function redirectToBack() {
+                                window.location.href = '/'; // 이동하고 싶은 URL로 변경
+                            }
+                        </script>
                     </section>
-
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+            <div class="card border-0 shadow rounded-3 my-5">
+                <div class="card-body p-4 p-sm-5">
+                    <h5 class="card-title text-center mb-5 fw-light fs-5">판매완료</h5>
+                    <section class="py-5">
+                        <div class="container px-4 px-lg-5 mt-5">
+                            <ul class="list-group">
+                                <!-- 타임리프 반복문 시작 -->
+                                <li th:each="completedItemMember : ${completedByMember}" class="list-group-item mb-3">
+                                    <div class="d-flex justify-content-between">
+                                        <div>
+                                            <img class="card-img-top"
+                                                 th:if="${completedItemMember.item.article.imageFiles != null and completedItemMember.item.article.imageFiles.size() > 0}"
+                                                 th:src="@{'/images/' + ${completedItemMember.item.article.imageFiles.get(0).storeFileName}}"
+                                                 alt="Article Image"
+                                                 style="object-fit: cover; width: 90%; height: 100px;" />
+                                            <img class="card-img-top"
+                                                 th:unless="${completedItemMember.item.article.imageFiles != null and completedItemMember.item.article.imageFiles.size() > 0}"
+                                                 src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg"
+                                                 alt="Default Image"
+                                                 style="object-fit: cover; width: 100%; height: 200px;" />
+                                            <!-- Article title -->
+                                            <h5 class="fw-bolder" th:text="${completedItemMember.item.article.title}">
+                                                Article Title</h5>
+                                            <!-- Item name -->
+                                            <p th:text="'상품: ' + ${completedItemMember.item.itemName}">Item Name</p>
+                                            <!-- Item owner's nickname -->
+                                            <p style="color: #0b5ed7"  th:text="'가격: ' + ${completedItemMember.item.price}"></p>
+                                            <p th:text="'판매자: ' + ${completedItemMember.item.member.nickname}"></p>
+                                            <p th:text="'구매자: ' + ${completedItemMember.item.trade.member.nickname}"></p>
+                                        </div>
+                                    </div>
+                                    <div class="mt-3">
+                                        <a class="btn btn-outline-dark"
+                                           th:href="@{'/articles/' + ${completedItemMember.item.article.id}}">상세보기</a>
+                                    </div>
+                                </li>
+                                <!-- 타임리프 반복문 끝 -->
+                            </ul>
+                        </div>
+                        <button class="btn btn-outline-dark" type="button" onclick="redirectToBack()">
+                            뒤로가기
+                        </button>
+                        <script>
+                            function redirectToBack() {
+                                window.location.href = '/'; // 이동하고 싶은 URL로 변경
+                            }
+                        </script>
+                    </section>
                 </div>
             </div>
         </div>
     </div>
 </div>
 </div>
+<!-- Bootstrap core JS-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Core theme JS-->
+<script src="/js/scripts.js"></script>
 </body>
 </html>
+
