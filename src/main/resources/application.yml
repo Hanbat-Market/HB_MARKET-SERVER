@@ -13,10 +13,10 @@ spring:
     hibernate:
       ddl-auto: create-drop
     defer-datasource-initialization: true
-  sql:
-    init:
-      data-locations: classpath:database/data.sql # 더미데이터 파일 연결
-      mode: always
-      platform: h2
+#  sql:
+#    init:
+#      data-locations: classpath:database/data.sql # 더미데이터 파일 연결
+#      mode: always
+#      platform: h2
   file:
     dir: 'file:/Users/Kimjuchan/Desktop/Hanbat_Market_FIle/'

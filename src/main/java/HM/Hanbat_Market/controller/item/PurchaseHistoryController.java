@@ -32,10 +32,11 @@ public class PurchaseHistoryController {
         try {
             List<Trade> completedByMember = tradeService.findCompletedByMember(loginMember);
             List<Trade> reservedByMember = tradeService.findReservedByMember(loginMember);
+            List<PreemptionItem> preemptionItemByMember = preemptionItemService.findPreemptionItemByMember(loginMember);
+
             model.addAttribute("member", loginMember);
             model.addAttribute("completedByMember", completedByMember);
             model.addAttribute("reservedByMember", reservedByMember);
-            List<PreemptionItem> preemptionItemByMember = preemptionItemService.findPreemptionItemByMember(loginMember);
             model.addAttribute("memberPreemptionSize", preemptionItemByMember.size());
             return "purchaseHistory";
         } catch (NoResultException e) {
