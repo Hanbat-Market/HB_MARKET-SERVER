@@ -12,17 +12,17 @@ insert into item (article_id,item_name,item_status,user_id,preemption_count,pric
 
 insert into article (article_status, created_at, description, user_id, title, trading_place, article_id) values ('OPEN', '2024-02-10 19:50:37', 'PS4 ' ||
                                                                                                                                                 '싸게 ' ||
-                                                                                                                                                '급처합니다.', 1, 'PS4 팝니다.', '대전 서구 ???아파튼', 3);
+                                                                                                                                                '급처합니다.', 2, 'PS4 팝니다.', '대전 서구 ???아파튼', 3);
 insert into item (article_id,item_name,item_status,user_id,preemption_count,price,item_id) values (3,'PS4','SALE',2,0,123,3);
 
 insert into article (article_status, created_at, description, user_id, title, trading_place, article_id) values ('OPEN', '2024-02-10 19:50:38', 'PS2 ' ||
                                                                                                                                                 '싸게 ' ||
-                                                                                                                                                '급처합니다.', 1, 'PS2 팝니다.', '대전 서구 ???아파튼', 4);
+                                                                                                                                                '급처합니다.', 2, 'PS2 팝니다.', '대전 서구 ???아파튼', 4);
 insert into item (article_id,item_name,item_status,user_id,preemption_count,price,item_id) values (4,'PS2','SALE',2,0,123,4);
 
 insert into article (article_status, created_at, description, user_id, title, trading_place, article_id) values ('OPEN', '2024-02-10 19:50:39', 'PS1 ' ||
                                                                                                                                                 '싸게 ' ||
-                                                                                                                                                '급처합니다.', 1, 'PS1 팝니다.', '대전 서구 ???아파튼', 5);
+                                                                                                                                                '급처합니다.', 2, 'PS1 팝니다.', '대전 서구 ???아파튼', 5);
 insert into item (article_id,item_name,item_status,user_id,preemption_count,price,item_id) values (5,'PS1','SALE',2,0,123,5);
 
 INSERT INTO trade (trade_id,user_id, item_id, trade_date, trade_status)
