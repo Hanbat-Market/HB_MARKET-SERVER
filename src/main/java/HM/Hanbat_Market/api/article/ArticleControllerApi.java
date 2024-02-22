@@ -1,11 +1,14 @@
-package HM.Hanbat_Market.controller.article;
+package HM.Hanbat_Market.api.article;
 
-import HM.Hanbat_Market.controller.member.dto.MemberForm;
+import HM.Hanbat_Market.controller.article.ArticleForm;
+import HM.Hanbat_Market.controller.article.FileStore;
 import HM.Hanbat_Market.controller.member.login.SessionConst;
-import HM.Hanbat_Market.domain.entity.*;
+import HM.Hanbat_Market.domain.entity.Article;
+import HM.Hanbat_Market.domain.entity.ImageFile;
+import HM.Hanbat_Market.domain.entity.Member;
+import HM.Hanbat_Market.domain.entity.PreemptionItem;
 import HM.Hanbat_Market.repository.article.dto.ArticleCreateDto;
 import HM.Hanbat_Market.repository.article.dto.ArticleSearchDto;
-import HM.Hanbat_Market.repository.item.ImageFileRepository;
 import HM.Hanbat_Market.repository.item.dto.ItemCreateDto;
 import HM.Hanbat_Market.service.article.ArticleService;
 import HM.Hanbat_Market.service.preemption.PreemptionItemService;
@@ -20,17 +23,15 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.awt.*;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-//@Controller
+@RestController
 @RequiredArgsConstructor
 @Slf4j
-public class ArticleController {
+public class ArticleControllerApi {
 
     private final ArticleService articleService;
     private final PreemptionItemService preemptionItemService;

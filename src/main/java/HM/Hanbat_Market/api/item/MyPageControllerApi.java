@@ -1,4 +1,4 @@
-package HM.Hanbat_Market.controller.item;
+package HM.Hanbat_Market.api.item;
 
 import HM.Hanbat_Market.controller.member.login.SessionConst;
 import HM.Hanbat_Market.domain.entity.*;
@@ -11,15 +11,16 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
 import java.util.ArrayList;
 import java.util.List;
 
-//@Controller
+@RestController
 @RequiredArgsConstructor
 @Slf4j
-public class MyPageController {
+public class MyPageControllerApi {
     private final TradeService tradeService;
     private final PreemptionItemService preemptionItemService;
     private final ItemRepository itemRepository;
