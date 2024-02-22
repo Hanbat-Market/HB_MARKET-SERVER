@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
-@Controller
+//@Controller
 @RequiredArgsConstructor
 @Slf4j
 public class MemberController {
