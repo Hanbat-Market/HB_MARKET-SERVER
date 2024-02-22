@@ -1,11 +1,12 @@
-package HM.Hanbat_Market.controller.item;
+package HM.Hanbat_Market.api.item;
 
 import HM.Hanbat_Market.controller.member.login.SessionConst;
-import HM.Hanbat_Market.domain.entity.*;
-import HM.Hanbat_Market.repository.article.dto.ArticleSearchDto;
+import HM.Hanbat_Market.domain.entity.Item;
+import HM.Hanbat_Market.domain.entity.Member;
+import HM.Hanbat_Market.domain.entity.PreemptionItem;
+import HM.Hanbat_Market.domain.entity.Trade;
 import HM.Hanbat_Market.repository.item.ItemRepository;
 import HM.Hanbat_Market.repository.item.PreemptionItemRepository;
-import HM.Hanbat_Market.service.article.ArticleService;
 import HM.Hanbat_Market.service.preemption.PreemptionItemService;
 import HM.Hanbat_Market.service.trade.TradeService;
 import jakarta.persistence.NoResultException;
@@ -13,15 +14,17 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.SessionAttribute;
 
-import java.awt.print.PrinterAbortException;
 import java.util.List;
 
-//@Controller
+@RestController
 @RequiredArgsConstructor
 @Slf4j
-public class PreemptionItemController {
+public class PreemptionItemControllerApi {
 
     private final ItemRepository itemRepository;
     private final PreemptionItemService preemptionItemService;

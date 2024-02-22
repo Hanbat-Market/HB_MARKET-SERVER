@@ -1,5 +1,6 @@
 package HM.Hanbat_Market.service.article;
 
+import HM.Hanbat_Market.api.dto.HomeArticlesDto;
 import HM.Hanbat_Market.domain.entity.Article;
 import HM.Hanbat_Market.domain.entity.ImageFile;
 import HM.Hanbat_Market.domain.entity.Item;
@@ -9,6 +10,7 @@ import HM.Hanbat_Market.repository.article.dto.ArticleCreateDto;
 import HM.Hanbat_Market.repository.article.dto.ArticleSearchDto;
 import HM.Hanbat_Market.repository.article.dto.ArticleUpdateDto;
 import HM.Hanbat_Market.repository.article.dto.ImageFileDto;
+import HM.Hanbat_Market.repository.item.ImageFileRepository;
 import HM.Hanbat_Market.repository.item.dto.ItemCreateDto;
 import HM.Hanbat_Market.repository.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -24,6 +27,7 @@ public class ArticleService {
 
     private final ArticleRepository articleRepository;
     private final MemberRepository memberRepository;
+    private final ImageFileRepository imageFileRepository;
 
     //영속성 전이로 ItemRepository에 따로 persist하지 않아도 됨
     @Transactional
@@ -59,6 +63,33 @@ public class ArticleService {
     public List<Article> findArticles(ArticleSearchDto articleSearchDto) {
         return articleRepository.findAllBySearch(articleSearchDto);
     }
+
+    public List<HomeArticlesDto> findArticlesToDto(List<Article> articles) {
+        List<HomeArticlesDto> homeArticlesDtos = articles.stream()
+                .map(a -> {
+                    List<ImageFile> imageFiles = imageFileRepository.findByArticle(a);
+                    String storeFileName = null;
+                    if (imageFiles != null && !imageFiles.isEmpty()) {
+                        storeFileName = imageFiles.get(0).getStoreFileName();
+                    }
+
+                    return new HomeArticlesDto(
+                            a.getId(),
+                            a.getTitle(),
+                            a.getDescription(),
+                            a.getTradingPlace(),
+                            a.getArticleStatus(),
+                            a.getItem().getItemName(),
+                            a.getItem().getPrice(),
+                            a.getMember().getNickname(),
+                            storeFileName,
+                            a.getCreatedAt()
+                    );
+                })
+                .collect(Collectors.toList());
+        return homeArticlesDtos;
+    }
+
 
     public List<Article> findArticles() {
         return articleRepository.findAll();
