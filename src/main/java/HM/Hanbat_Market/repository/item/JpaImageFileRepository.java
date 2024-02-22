@@ -1,13 +1,12 @@
 package HM.Hanbat_Market.repository.item;
 
+import HM.Hanbat_Market.domain.entity.Article;
 import HM.Hanbat_Market.domain.entity.ImageFile;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import org.thymeleaf.model.IAttribute;
 
-import java.awt.*;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,6 +31,12 @@ public class JpaImageFileRepository implements ImageFileRepository {
     @Override
     public List<ImageFile> findAll() {
         return em.createQuery("select i from ImageFile i")
+                .getResultList();
+    }
+    @Override
+    public List<ImageFile> findByArticle(Article article) {
+        return em.createQuery("select i from ImageFile i where i.article.id = :articleId")
+                .setParameter("articleId", article.getId())
                 .getResultList();
     }
 }

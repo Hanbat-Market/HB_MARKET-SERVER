@@ -6,16 +6,19 @@ import HM.Hanbat_Market.domain.entity.Member;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class JpaItemRepository implements ItemRepository {
 
     private final EntityManager em;
 
+    @Transactional
     @Override
     public Item save(Item item) {
         //        if (item.getId() == null){
@@ -31,6 +34,14 @@ public class JpaItemRepository implements ItemRepository {
     public Optional<Item> findById(Long id) {
         Item item = em.find(Item.class, id);
         return Optional.ofNullable(item);
+    }
+
+    @Override
+    public Item findAllByArticle(Article article) {
+        Long articleId = article.getId();
+        return em.createQuery("select i from Item i join i.article a where a.id = :articleId", Item.class)
+                .setParameter("articleId", articleId)
+                .getSingleResult();
     }
 
     @Override

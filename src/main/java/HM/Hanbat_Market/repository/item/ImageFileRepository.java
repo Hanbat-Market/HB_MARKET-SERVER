@@ -1,5 +1,6 @@
 package HM.Hanbat_Market.repository.item;
 
+import HM.Hanbat_Market.domain.entity.Article;
 import HM.Hanbat_Market.domain.entity.ImageFile;
 import HM.Hanbat_Market.domain.entity.Member;
 import HM.Hanbat_Market.domain.entity.PreemptionItem;
@@ -14,4 +15,5 @@ public interface ImageFileRepository {
 
     List<ImageFile> findAll();
 
+    List<ImageFile> findByArticle(Article article);
 }
