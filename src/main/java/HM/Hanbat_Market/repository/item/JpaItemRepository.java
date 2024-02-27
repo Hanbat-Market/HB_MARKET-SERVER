@@ -39,7 +39,7 @@ public class JpaItemRepository implements ItemRepository {
     @Override
     public Item findAllByArticle(Article article) {
         Long articleId = article.getId();
-        return em.createQuery("select i from Item i join i.article a where a.id = :articleId", Item.class)
+        return em.createQuery("select i from Item i join fetch i.article a where a.id = :articleId", Item.class)
                 .setParameter("articleId", articleId)
                 .getSingleResult();
     }
@@ -47,7 +47,7 @@ public class JpaItemRepository implements ItemRepository {
     @Override
     public List<Item> findAllByMember(Member member) {
         Long memberId = member.getId();
-        return em.createQuery("select i from Item i join i.member m where m.id = :memberId")
+        return em.createQuery("select i from Item i join fetch i.member m where m.id = :memberId")
                 .setParameter("memberId", member.getId())
                 .getResultList();
     }
