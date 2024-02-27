@@ -1,5 +1,6 @@
 package HM.Hanbat_Market.repository.item;
 
+import HM.Hanbat_Market.domain.entity.Article;
 import HM.Hanbat_Market.domain.entity.Item;
 import HM.Hanbat_Market.domain.entity.Member;
 
@@ -12,6 +13,8 @@ public interface ItemRepository {
     Optional<Item> findById(Long id);
 
     List<Item> findAllByMember(Member member);
+
+    Item findAllByArticle(Article article);
 
     List<Item> findAll();
 }

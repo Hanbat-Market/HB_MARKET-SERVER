@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 
 import java.util.List;
 
-@Controller
+//@Controller
 @RequiredArgsConstructor
 @Slf4j
 public class PurchaseHistoryController {
