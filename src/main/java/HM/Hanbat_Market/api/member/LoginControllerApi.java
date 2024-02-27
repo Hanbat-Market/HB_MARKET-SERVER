@@ -1,7 +1,7 @@
-package HM.Hanbat_Market.controller.member.login;
+package HM.Hanbat_Market.api.member;
 
 import HM.Hanbat_Market.controller.member.dto.LoginForm;
-import HM.Hanbat_Market.controller.member.dto.MemberForm;
+import HM.Hanbat_Market.controller.member.login.SessionConst;
 import HM.Hanbat_Market.domain.entity.Member;
 import HM.Hanbat_Market.service.member.MemberService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -13,10 +13,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-//@Controller
+@RestController
 @RequiredArgsConstructor
 @Slf4j
-public class LoginController {
+public class LoginControllerApi {
 
     private final MemberService memberService;
 
