@@ -1,16 +1,17 @@
 package HM.Hanbat_Market.api.article;
 
+import HM.Hanbat_Market.api.article.dto.ArticleCreateRequestDto;
+import HM.Hanbat_Market.api.article.dto.ArticleCreateResponseDto;
+import HM.Hanbat_Market.api.article.dto.ArticleDetailResponseDto;
 import HM.Hanbat_Market.controller.article.ArticleForm;
 import HM.Hanbat_Market.controller.article.FileStore;
 import HM.Hanbat_Market.controller.member.login.SessionConst;
-import HM.Hanbat_Market.domain.entity.Article;
-import HM.Hanbat_Market.domain.entity.ImageFile;
-import HM.Hanbat_Market.domain.entity.Member;
-import HM.Hanbat_Market.domain.entity.PreemptionItem;
+import HM.Hanbat_Market.domain.entity.*;
 import HM.Hanbat_Market.repository.article.dto.ArticleCreateDto;
 import HM.Hanbat_Market.repository.article.dto.ArticleSearchDto;
 import HM.Hanbat_Market.repository.item.dto.ItemCreateDto;
 import HM.Hanbat_Market.service.article.ArticleService;
+import HM.Hanbat_Market.service.member.MemberService;
 import HM.Hanbat_Market.service.preemption.PreemptionItemService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -31,102 +32,30 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @Slf4j
+@RequestMapping("/api")
 public class ArticleControllerApi {
 
     private final ArticleService articleService;
     private final PreemptionItemService preemptionItemService;
+    private final MemberService memberService;
     private final FileStore fileStore = new FileStore();
 
-    @GetMapping("/articles/new")
-    public String createForm(@ModelAttribute("articleForm") ArticleForm articleForm,
-                             @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member sessionMember, Model model) {
-
-        if (sessionMember == null) {
-            return "redirect:/";
-        }
-
-        model.addAttribute("member", sessionMember);
-        List<PreemptionItem> preemptionItemByMember = preemptionItemService.findPreemptionItemByMember(sessionMember);
-        model.addAttribute("memberPreemptionSize", preemptionItemByMember.size());
-        return "article/registerArticle";
-    }
-
     @PostMapping("/articles/new")
-    public String create(@Valid @ModelAttribute ArticleForm form, BindingResult result,
-                         @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member sessionMember,
-                         Model model) throws IOException {
-        if (sessionMember == null) {
-            return "redirect:/";
-        }
+    public ArticleCreateResponseDto create(@Valid @RequestBody ArticleCreateRequestDto form, BindingResult result) throws IOException {
 
-        if (result.hasErrors()) {
-            log.info(String.valueOf(result.getFieldError("imageFiles1")));
-            model.addAttribute("member", sessionMember);
-            return "article/registerArticle";
-        }
+        Member member = memberService.findOne("jckim2").get(); //임시 멤버(로그인 멤버 아님 추후 JWT 구현 필요)
+        ArticleCreateResponseDto articleCreateResponseDto = articleService.createArticleToDto(member.getId(), form, result);
 
-        ArticleCreateDto articleCreateDto = new ArticleCreateDto();
-        ItemCreateDto itemCreateDto = new ItemCreateDto();
-        itemCreateDto.setItemName(form.getItemName());
-        itemCreateDto.setPrice(form.getPrice());
-        articleCreateDto.setTitle(form.getTitle());
-        articleCreateDto.setDescription(form.getDescription());
-        articleCreateDto.setTradingPlace(form.getTradingPlace());
-
-        List<MultipartFile> multipartFiles = new ArrayList<>();
-        if (form.getImageFile1() != null) {
-            multipartFiles.add(form.getImageFile1());
-        }
-
-        // 파일 유효성 검사 실패 시 에러 추가
-        if (!multipartFiles.isEmpty()) {
-            List<ImageFile> imageFiles = fileStore.storeFiles(multipartFiles, result);
-            articleCreateDto.setImageFiles(imageFiles);
-        }
-
-        if (result.getFieldError("imageFile1") != null) {
-            log.info(String.valueOf(result.getFieldError("imageFiles1")));
-            model.addAttribute("member", sessionMember);
-            return "article/registerArticle";
-        }
-
-        Long articleId = articleService.regisArticle(sessionMember.getId(), articleCreateDto, itemCreateDto);
-        return "redirect:/";
-    }
-
-
-    @GetMapping("/articles")
-    public String createForm(@ModelAttribute("articleSearch") ArticleSearchDto articleSearchDto,
-                             @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member sessionMember,
-                             Model model) {
-        if (sessionMember == null) {
-            return "redirect:/";
-        }
-        List<Article> articles = articleService.findArticles(articleSearchDto);
-        model.addAttribute("member", sessionMember);
-        model.addAttribute("articles", articles);
-        List<PreemptionItem> preemptionItemByMember = preemptionItemService.findPreemptionItemByMember(sessionMember);
-        model.addAttribute("memberPreemptionSize", preemptionItemByMember.size());
-        return "/";
+        return articleCreateResponseDto;
     }
 
     @GetMapping("/articles/{articleId}")
-    public String articleDetail(@PathVariable("articleId") Long articleId, @SessionAttribute(name = SessionConst.LOGIN_MEMBER,
-            required = false) Member sessionMember, Model model) {
+    public ArticleDetailResponseDto articleDetail(@PathVariable("articleId") Long articleId) {
 
-        if (sessionMember == null) {
-            return "redirect:/";
-        }
-
+        Member member = memberService.findOne("jckim2").get(); //임시 멤버(로그인 멤버 아님 추후 JWT 구현 필요)
         Article article = articleService.findArticle(articleId);
-        log.info("@@@___@@@@@@@@@@@@");
-        log.info(String.valueOf(article.getImageFiles().size()));
-        log.info("@@@___@@@@@@@@@@@@");
-        model.addAttribute("member", sessionMember);
-        model.addAttribute("article", article);
-        List<PreemptionItem> preemptionItemByMember = preemptionItemService.findPreemptionItemByMember(sessionMember);
-        model.addAttribute("memberPreemptionSize", preemptionItemByMember.size());
-        return "article/detailArticle";
+
+        return articleService.articleDetailToDto(article, member);
     }
 
     @ResponseBody
