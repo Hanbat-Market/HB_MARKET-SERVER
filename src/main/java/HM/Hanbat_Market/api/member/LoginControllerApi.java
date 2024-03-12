@@ -1,5 +1,6 @@
 package HM.Hanbat_Market.api.member;
 
+import HM.Hanbat_Market.api.Result;
 import HM.Hanbat_Market.controller.member.dto.LoginForm;
 import HM.Hanbat_Market.controller.member.login.SessionConst;
 import HM.Hanbat_Market.domain.entity.Member;
@@ -16,35 +17,29 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @Slf4j
+@RequestMapping("/api/members")
 public class LoginControllerApi {
 
     private final MemberService memberService;
 
-    @GetMapping("/login")
-    public String loginForm(@ModelAttribute("loginForm") LoginForm form
-            , @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member sessionMember) {
-        if (sessionMember != null) {
-            return "redirect:/";
-        }
-        return "login/loginForm";
-    }
-
     @PostMapping("/login")
-    public String login(@Valid @ModelAttribute LoginForm form, BindingResult result
+    public Result login(@RequestBody LoginForm form, BindingResult result
             , HttpServletRequest request, @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member sessionMember
             , @RequestParam(value = "redirectURL", defaultValue = "/") String redirectURL) {
+
         if (sessionMember != null) {
-            return "redirect:/";
+            return new Result<>("이미 로그인 되어있음");
         }
+
         if (result.hasErrors()) {
-            return "login/loginForm";
+            return new Result<>(result.getFieldError().toString());
         }
 
         Member loginMember = memberService.login(form.getMail(), form.getPasswd());
 
         if (loginMember == null) {
             result.reject("loginFail", "아이디 또는 비밀번호가 맞지 않습니다.");
-            return "login/loginForm";
+            return new Result<>(result.getFieldError().toString());
         }
 
         //로그인 성공 처리
@@ -54,7 +49,7 @@ public class LoginControllerApi {
         //세션에 로그인 회원 정보 보관
         session.setAttribute(SessionConst.LOGIN_MEMBER, loginMember);
 
-        return "redirect:" + redirectURL;
+        return new Result<>("ok");
     }
 
     @PostMapping("/logout")
@@ -63,6 +58,6 @@ public class LoginControllerApi {
         if (session != null) {
             session.invalidate();
         }
-        return "redirect:/";
+        return "ok";
     }
 }

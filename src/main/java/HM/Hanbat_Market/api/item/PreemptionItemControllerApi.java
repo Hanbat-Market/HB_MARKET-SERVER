@@ -1,5 +1,6 @@
 package HM.Hanbat_Market.api.item;
 
+import HM.Hanbat_Market.api.Result;
 import HM.Hanbat_Market.api.item.dto.*;
 import HM.Hanbat_Market.controller.member.login.SessionConst;
 import HM.Hanbat_Market.domain.entity.*;
@@ -32,12 +33,15 @@ public class PreemptionItemControllerApi {
     private final MemberService memberService;
 
     @GetMapping("/preemption/{itemId}")
-    public String preemption(@PathVariable("itemId") Long itemId) {
+    public Result preemption(@PathVariable("itemId") Long itemId,
+                             @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member sessionMember) {
+//        if (sessionMember == null) {
+//            return new Result<>("로그인이 필요합니다");
+//        }
         Item item = itemRepository.findById(itemId).get();
-        Member loginMember = memberService.findOne("jckim2").get(); //임시 멤버
 
         try {
-            PreemptionItem preemptionItem = preemptionItemService.findPreemptionItemByMemberAndItem(loginMember, item);
+            PreemptionItem preemptionItem = preemptionItemService.findPreemptionItemByMemberAndItem(sessionMember, item);
             Long preemptionItemId = preemptionItem.getId();
 
             if (preemptionItem.getPreemptionItemStatus() == PreemptionItemStatus.CANCEL) {
@@ -45,16 +49,18 @@ public class PreemptionItemControllerApi {
             } else if (preemptionItem.getPreemptionItemStatus() == PreemptionItemStatus.PREEMPTION) {
                 preemptionItemService.cancelPreemption(preemptionItemId);
             }
-            return "Toggle ok " + preemptionItem.getPreemptionItemStatus();
+            return new Result("Toggle ok " + preemptionItem.getPreemptionItemStatus());
         } catch (NoResultException e) {
-            preemptionItemService.regisPreemption(loginMember.getId(), itemId);
-            return "Regis ok";
+            preemptionItemService.regisPreemption(sessionMember.getId(), itemId);
+            return new Result("Regis ok");
         }
     }
 
     @GetMapping("/preemptionItems")
-    public PreemptionItemsResult myPage() {
-        Member loginMember = memberService.findOne("jckim2").get(); //임시 멤버
-        return itemService.preemptionItemsResultToDto(loginMember);
+    public Result myPage(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member sessionMember) {
+//        if (sessionMember == null) {
+//            return new Result<>("로그인이 필요합니다");
+//        }
+        return new Result(itemService.preemptionItemsResultToDto(sessionMember));
     }
 }

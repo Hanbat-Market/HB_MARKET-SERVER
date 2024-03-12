@@ -12,5 +12,4 @@ public class HanbatMarketApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(HanbatMarketApplication.class, args);
 	}
-
 }

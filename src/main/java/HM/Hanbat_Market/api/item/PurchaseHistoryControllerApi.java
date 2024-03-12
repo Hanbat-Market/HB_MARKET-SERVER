@@ -1,5 +1,6 @@
 package HM.Hanbat_Market.api.item;
 
+import HM.Hanbat_Market.api.Result;
 import HM.Hanbat_Market.api.item.dto.PurchaseHistoryResponseDto;
 import HM.Hanbat_Market.controller.member.login.SessionConst;
 import HM.Hanbat_Market.domain.entity.Member;
@@ -31,8 +32,10 @@ public class PurchaseHistoryControllerApi {
     private final ItemService itemService;
 
     @GetMapping("/purchaseHistory")
-    public PurchaseHistoryResponseDto purchaseHistory() {
-        Member loginMember = memberService.findOne("jckim2").get(); //임시 멤버
-        return itemService.purchaseHistoryToDto(loginMember);
+    public Result purchaseHistory(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member sessionMember) {
+//        if (sessionMember == null) {
+//            return new Result<>("로그인이 필요합니다");
+//        }
+        return new Result(itemService.purchaseHistoryToDto(sessionMember));
     }
 }
