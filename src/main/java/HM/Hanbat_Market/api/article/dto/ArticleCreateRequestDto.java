@@ -27,6 +27,4 @@ public class ArticleCreateRequestDto {
     private String tradingPlace;
 
     private MultipartFile imageFile1;
-    private MultipartFile imageFile2;
-    private MultipartFile imageFile3;
 }

@@ -22,7 +22,7 @@ public class ReservedDto {
 
     private LocalDateTime tradeDate;
     public ReservedDto(Member member, Trade trade){
-        this.seller = member.getNickname();
+        this.seller = trade.getItem().getMember().getNickname();
         this.purchaser = trade.getMember().getNickname();
         this.title = trade.getItem().getArticle().getTitle();
         this.itemName = trade.getItem().getItemName();

@@ -63,6 +63,7 @@ public class Trade {
 
     public Trade complete() {
         this.tradeStatus = TradeStatus.COMP;
+        this.item.changeItemStatus();
         return this;
     }
 

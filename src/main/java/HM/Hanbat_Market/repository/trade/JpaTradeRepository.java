@@ -36,8 +36,8 @@ public class JpaTradeRepository implements TradeRepository {
 
     @Override
     public List<Trade> findCompleteByMember(Member member) {
-        return em.createQuery("select p from Trade p join p.member m where " +
-                        "p.tradeStatus = :tradeStatus and :purchaseMember != p.item.member.nickname", Trade.class)
+        return em.createQuery("select t from Trade t join t.member m where " +
+                        "t.tradeStatus = :tradeStatus and :purchaseMember != t.item.member.nickname and m.nickname = :purchaseMember", Trade.class)
                 .setParameter("tradeStatus", TradeStatus.COMP)
                 .setParameter("purchaseMember", member.getNickname())
                 .getResultList();
@@ -45,8 +45,8 @@ public class JpaTradeRepository implements TradeRepository {
 
     @Override
     public List<Trade> findReservationByMember(Member member) {
-        return em.createQuery("select p from Trade p join p.member m where " +
-                        "p.tradeStatus = :tradeStatus and :purchaseMember != p.item.member.nickname", Trade.class)
+        return em.createQuery("select t from Trade t join t.member m where " +
+                        "t.tradeStatus = :tradeStatus and :purchaseMember != t.item.member.nickname and m.nickname = :purchaseMember", Trade.class)
                 .setParameter("tradeStatus", TradeStatus.RESERVATION)
                 .setParameter("purchaseMember", member.getNickname())
                 .getResultList();
