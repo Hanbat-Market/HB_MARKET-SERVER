@@ -2,6 +2,7 @@ package HM.Hanbat_Market.api;
 
 import HM.Hanbat_Market.api.dto.HomeArticlesDto;
 import HM.Hanbat_Market.api.dto.HomeResponseDto;
+import HM.Hanbat_Market.controller.member.login.SessionConst;
 import HM.Hanbat_Market.domain.entity.Article;
 import HM.Hanbat_Market.domain.entity.Member;
 import HM.Hanbat_Market.domain.entity.PreemptionItem;
@@ -28,16 +29,28 @@ public class HomeControllerApi {
     private final ItemRepository itemRepository;
 
     @GetMapping("")
-    public HomeResponseDto home(@RequestBody ArticleSearchDto articleSearchDto) {
+    public Result home(@RequestBody ArticleSearchDto articleSearchDto
+            , @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member sessionMember) {
         /**
          * 토큰으로 멤버 인증하고 넣어주는 과정 필요함
          */
-        Member loginMember = memberService.findOne("jckim2").get(); //시큐리티 구현전 임시 더미 데이터 멤버
+
+//        if (sessionMember == null) {
+//            return new Result<>("로그인이 필요합니다");
+//        }
 
         List<Article> articles = articleService.findArticles(articleSearchDto);
         List<HomeArticlesDto> homeArticlesDtos = articleService.findArticlesToDto(articles);
-        List<PreemptionItem> preemptionItemByMember = preemptionItemService.findPreemptionItemByMember(loginMember);
+        List<PreemptionItem> preemptionItemByMember = preemptionItemService.findPreemptionItemByMember(sessionMember);
 
-        return new HomeResponseDto(preemptionItemByMember.size(), homeArticlesDtos.size(), homeArticlesDtos);
+        return new Result<>(new HomeResponseDto(preemptionItemByMember.size(), homeArticlesDtos.size(), homeArticlesDtos));
+    }
+
+    /**
+     * 인터셉터로 로그인 인가 후 실패시 리다이렉트 될 임시 로그인 페이지
+     */
+    @GetMapping("/login")
+    public Result login(){
+        return new Result("로그인이 필요합니다.₩₩₩");
     }
 }

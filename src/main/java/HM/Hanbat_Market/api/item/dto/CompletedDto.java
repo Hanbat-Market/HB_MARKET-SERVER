@@ -22,7 +22,7 @@ public class CompletedDto {
 
     private LocalDateTime tradeDate;
     public CompletedDto(Member member, Trade trade){
-        this.seller = member.getNickname();
+        this.seller = trade.getItem().getMember().getNickname();
         this.purchaser = trade.getMember().getNickname();
         this.title = trade.getItem().getArticle().getTitle();
         this.itemName = trade.getItem().getItemName();
