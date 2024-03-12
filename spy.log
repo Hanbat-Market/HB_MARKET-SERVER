@@ -1,0 +1,12 @@
+1710239085547|0|statement|connection 37|url jdbc:h2:mem:323131ed-5aec-474f-8e0e-f312bdd446a4|drop table if exists article cascade |drop table if exists article cascade 
+1710239085547|0|statement|connection 37|url jdbc:h2:mem:323131ed-5aec-474f-8e0e-f312bdd446a4|drop table if exists image_file cascade |drop table if exists image_file cascade 
+1710239085548|0|statement|connection 37|url jdbc:h2:mem:323131ed-5aec-474f-8e0e-f312bdd446a4|drop table if exists item cascade |drop table if exists item cascade 
+1710239085548|0|statement|connection 37|url jdbc:h2:mem:323131ed-5aec-474f-8e0e-f312bdd446a4|drop table if exists member cascade |drop table if exists member cascade 
+1710239085548|0|statement|connection 37|url jdbc:h2:mem:323131ed-5aec-474f-8e0e-f312bdd446a4|drop table if exists preemption_item cascade |drop table if exists preemption_item cascade 
+1710239085549|0|statement|connection 37|url jdbc:h2:mem:323131ed-5aec-474f-8e0e-f312bdd446a4|drop table if exists trade cascade |drop table if exists trade cascade 
+1710239085549|0|statement|connection 37|url jdbc:h2:mem:323131ed-5aec-474f-8e0e-f312bdd446a4|drop sequence if exists article_seq|drop sequence if exists article_seq
+1710239085549|0|statement|connection 37|url jdbc:h2:mem:323131ed-5aec-474f-8e0e-f312bdd446a4|drop sequence if exists image_file_seq|drop sequence if exists image_file_seq
+1710239085549|0|statement|connection 37|url jdbc:h2:mem:323131ed-5aec-474f-8e0e-f312bdd446a4|drop sequence if exists item_seq|drop sequence if exists item_seq
+1710239085549|0|statement|connection 37|url jdbc:h2:mem:323131ed-5aec-474f-8e0e-f312bdd446a4|drop sequence if exists member_seq|drop sequence if exists member_seq
+1710239085549|0|statement|connection 37|url jdbc:h2:mem:323131ed-5aec-474f-8e0e-f312bdd446a4|drop sequence if exists preemption_item_seq|drop sequence if exists preemption_item_seq
+1710239085549|0|statement|connection 37|url jdbc:h2:mem:323131ed-5aec-474f-8e0e-f312bdd446a4|drop sequence if exists trade_seq|drop sequence if exists trade_seq

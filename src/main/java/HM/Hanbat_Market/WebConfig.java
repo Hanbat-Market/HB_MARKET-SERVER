@@ -9,19 +9,19 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.List;
 
-//@Configuration
+@Configuration
 public class WebConfig implements WebMvcConfigurer {
-//    @Override
-//    public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
-//        resolvers.add(new LoginMemberArgumentResolver());
-//    }
+    @Override
+    public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
+        resolvers.add(new LoginMemberArgumentResolver());
+    }
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new LoginCheckInterceptor())
                 .order(2)
                 .addPathPatterns("/**")
-                .excludePathPatterns("/", "/members/new", "/login", "/logout",
+                .excludePathPatterns("/api/members/new", "/api/members/login", "/api/members/logout",
                         "/css/**","/assets/**", "/Hanbat_Market_File/**", "/*.ico", "/error");
     }
 }

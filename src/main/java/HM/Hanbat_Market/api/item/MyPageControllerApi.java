@@ -1,5 +1,6 @@
 package HM.Hanbat_Market.api.item;
 
+import HM.Hanbat_Market.api.Result;
 import HM.Hanbat_Market.api.item.dto.CompletedDto;
 import HM.Hanbat_Market.api.item.dto.MyPageResponseDto;
 import HM.Hanbat_Market.api.item.dto.ReservedDto;
@@ -34,9 +35,11 @@ public class MyPageControllerApi {
     private final MemberService memberService;
 
     @GetMapping("/mypage")
-    public MyPageResponseDto myPage() {
-        Member loginMember = memberService.findOne("jckim2").get(); //임시 멤버(로그인 멤버 아님 추후 JWT 구현 필요)
+    public Result myPage(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member sessionMember) {
+//        if (sessionMember == null) {
+//            return new Result<>("로그인이 필요합니다");
+//        }
 
-        return itemService.myPageToDto(loginMember);
+        return new Result(itemService.myPageToDto(sessionMember));
     }
 }

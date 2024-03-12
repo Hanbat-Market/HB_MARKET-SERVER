@@ -1,5 +1,6 @@
 package HM.Hanbat_Market.api.article;
 
+import HM.Hanbat_Market.api.Result;
 import HM.Hanbat_Market.api.article.dto.ArticleCreateRequestDto;
 import HM.Hanbat_Market.api.article.dto.ArticleCreateResponseDto;
 import HM.Hanbat_Market.api.article.dto.ArticleDetailResponseDto;
@@ -41,26 +42,41 @@ public class ArticleControllerApi {
     private final FileStore fileStore = new FileStore();
 
     @PostMapping("/articles/new")
-    public ArticleCreateResponseDto create(@Valid @RequestBody ArticleCreateRequestDto form, BindingResult result) throws IOException {
+    public Result create(@RequestPart("imageFile") MultipartFile imageFile,
+                         @Valid @RequestPart("articleCreateRequestDto") ArticleCreateRequestDto articleCreateRequestDto,
+                         BindingResult result,
+                         @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member sessionMember) throws IOException {
 
-        Member member = memberService.findOne("jckim2").get(); //임시 멤버(로그인 멤버 아님 추후 JWT 구현 필요)
-        ArticleCreateResponseDto articleCreateResponseDto = articleService.createArticleToDto(member.getId(), form, result);
+//        if (sessionMember == null) {
+//            return new Result<>("로그인이 필요합니다");
+//        }
 
-        return articleCreateResponseDto;
+        articleCreateRequestDto.setImageFile1(imageFile);
+        ArticleCreateResponseDto articleCreateResponseDto = articleService.createArticleToDto(sessionMember.getId(), articleCreateRequestDto, result);
+
+        return new Result(articleCreateResponseDto);
     }
 
     @GetMapping("/articles/{articleId}")
-    public ArticleDetailResponseDto articleDetail(@PathVariable("articleId") Long articleId) {
+    public Result articleDetail(@PathVariable("articleId") Long articleId,
+                                @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member sessionMember) {
 
-        Member member = memberService.findOne("jckim2").get(); //임시 멤버(로그인 멤버 아님 추후 JWT 구현 필요)
+//        if (sessionMember == null) {
+//            return new Result<>("로그인이 필요합니다");
+//        }
+
         Article article = articleService.findArticle(articleId);
 
-        return articleService.articleDetailToDto(article, member);
+        return new Result(articleService.articleDetailToDto(article, sessionMember));
     }
 
     @ResponseBody
     @GetMapping("/images/{filename}")
-    public Resource downloadImage(@PathVariable("filename") String filename) throws MalformedURLException {
-        return new UrlResource("file:" + fileStore.getFullPath(filename));
+    public Result downloadImage(@PathVariable("filename") String filename,
+                                @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member sessionMember) throws MalformedURLException {
+//        if (sessionMember == null) {
+//            return new Result<>("로그인이 필요합니다");
+//        }
+        return new Result(new UrlResource("file:" + fileStore.getFullPath(filename)));
     }
 }
