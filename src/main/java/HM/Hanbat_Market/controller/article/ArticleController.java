@@ -27,7 +27,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-@Controller
+//@Controller
 @RequiredArgsConstructor
 @Slf4j
 public class ArticleController {

@@ -27,32 +27,36 @@ class TradeServiceTest {
     public void 구매_예약() throws Exception {
         //given
         Member testMember = createTestMember1();
+        Member testMember2 = createTestMember2();
         memberService.join(testMember);
+        memberService.join(testMember2);
 
         Long articleId = articleService.regisArticle(testMember.getId(), createArticleCreateDto("test title", "test des", "대전"),
                 createItemCreateDto("플스", 170000L));
         //when
         Article article = articleService.findArticle(articleId);
-        Trade trade = Trade.reservation(testMember, article.getItem());
+        Trade trade = Trade.reservation(testMember2, article.getItem());
         //then
-        assertEquals(tradeService.findReservedByMember(testMember).get(0).getTradeStatus(), TradeStatus.RESERVATION);
+        assertEquals(tradeService.findReservedByMember(testMember2).get(0).getTradeStatus(), TradeStatus.RESERVATION);
     }
 
     @Test
     public void 구매_완료() throws Exception {
         //given
         Member testMember = createTestMember1();
+        Member testMember2 = createTestMember2();
         memberService.join(testMember);
+        memberService.join(testMember2);
 
         Long articleId = articleService.regisArticle(testMember.getId(), createArticleCreateDto("test title", "test des", "대전"),
                 createItemCreateDto("플스", 170000L));
 
         Article article = articleService.findArticle(articleId);
-        Long tradeId = tradeService.reservation(testMember.getId(), article.getItem().getId());
+        Long tradeId = tradeService.reservation(testMember2.getId(), article.getItem().getId());
         //when
         tradeService.tradeComplete(tradeId);
         //then
-        assertEquals(tradeService.findCompletedByMember(testMember).get(0).getTradeStatus(), TradeStatus.COMP);
+        assertEquals(tradeService.findCompletedByMember(testMember2).get(0).getTradeStatus(), TradeStatus.COMP);
     }
 
     @Test

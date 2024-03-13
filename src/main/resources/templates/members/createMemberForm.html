@@ -65,8 +65,8 @@
                             <p th:if="${#fields.hasErrors('nickname')}" style="color:red" th:errors="*{nickname}">
                                 Incorrect date</p>
                         </div>
-                        <button type="submit" class="btn btn-primary">제출</button>
                         <button type="button" onclick="redirectToBack()" class="btn btn-primary">뒤로</button>
+                        <button type="submit" class="btn btn-primary">제출</button>
                         <script>
                             function redirectToBack() {
                                 window.location.href = '/'; // 이동하고 싶은 URL로 변경
