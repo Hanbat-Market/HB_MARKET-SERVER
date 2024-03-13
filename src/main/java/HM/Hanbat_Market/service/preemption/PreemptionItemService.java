@@ -1,14 +1,21 @@
 package HM.Hanbat_Market.service.preemption;
 
+import HM.Hanbat_Market.api.item.dto.CompletedDto;
+import HM.Hanbat_Market.api.item.dto.PreemptionItemsResult;
+import HM.Hanbat_Market.api.item.dto.PurchaseHistoryResponseDto;
+import HM.Hanbat_Market.api.item.dto.ReservedDto;
 import HM.Hanbat_Market.domain.entity.*;
 import HM.Hanbat_Market.repository.item.ItemRepository;
 import HM.Hanbat_Market.repository.item.PreemptionItemRepository;
 import HM.Hanbat_Market.repository.member.MemberRepository;
+import jakarta.persistence.NoResultException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+
+import static java.util.stream.Collectors.toList;
 
 @Service
 @RequiredArgsConstructor

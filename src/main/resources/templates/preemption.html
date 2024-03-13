@@ -123,13 +123,13 @@
                                                  src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg"
                                                  alt="Default Image"
                                                  style="object-fit: cover; width: 100%; height: 200px;" />
-                                            <p th:text="${preemptionItemMember.item.article.title}">Article Title</p>
+                                            <p th:text="'제목: ' + ${preemptionItemMember.item.article.title}">Article Title</p>
                                             <!-- Article title -->
-                                            <h5 class="fw-bolder" th:text="${preemptionItemMember.item.itemName}">Item Name</h5>
+                                            <h5 class="fw-bolder" th:text="'상품: ' + ${preemptionItemMember.item.itemName}">Item Name</h5>
                                             <!-- Item name -->
                                             <!-- Item owner's nickname -->
-                                            <p style="color: #0b5ed7"  th:text="${preemptionItemMember.item.price} + '원'"></p>
-                                            <p th:text="${preemptionItemMember.item.member.nickname}"></p>
+                                            <p style="color: #0b5ed7"  th:text="'가격: ' + ${preemptionItemMember.item.price} + '원'"></p>
+                                            <p th:text="'판매자: ' + ${preemptionItemMember.item.member.nickname}"></p>
                                         </div>
                                         <div class="interest-button">
                                             <form th:action="@{'/preemption/mypage/' + ${preemptionItemMember.id}}" method="get">

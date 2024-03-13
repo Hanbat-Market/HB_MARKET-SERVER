@@ -55,7 +55,7 @@ public class JpaArticleRepository implements ArticleRepository {
     @Override
     public List<Article> findAllBySearch(ArticleSearchDto articleSearchDto) {
         //language=JPAQL
-        String jpql = "select a From Article a join a.item i";
+        String jpql = "select a From Article a join fetch a.item i join fetch a.member m";
         boolean isFirstCondition = true;
         //아이템 상태 검색
         if (articleSearchDto.getItemStatus() != null) {

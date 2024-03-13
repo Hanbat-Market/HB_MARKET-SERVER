@@ -109,6 +109,7 @@
             <img class="card-img-top mb-5 mb-md-0" th:src="${article.imageFiles != null and article.imageFiles.size() > 0 ? '/images/' + article.imageFiles.get(0).getStoreFileName() : 'https://dummyimage.com/600x700/dee2e6/6c757d.jpg'}" alt="..." style="max-width: 100%; height: auto;">
         </div>
             <div class="col-md-6">
+                <div class="small mb-1" th:text="${'등록 날짜: ' + article.createdAt}">SKU: BST-498</div>
                 <div class="small mb-1" th:text="${'제목: ' + article.title}">SKU: BST-498</div>
                 <h1 class="display-5 fw-bolder" th:text="${article.item.itemName}">Shop item template</h1>
                 <div class="fs-5 mb-5">

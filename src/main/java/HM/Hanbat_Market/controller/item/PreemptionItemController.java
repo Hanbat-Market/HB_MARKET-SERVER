@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import java.awt.print.PrinterAbortException;
 import java.util.List;
 
-@Controller
+//@Controller
 @RequiredArgsConstructor
 @Slf4j
 public class PreemptionItemController {

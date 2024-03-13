@@ -11,18 +11,18 @@ import java.util.List;
 
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
-//    @Override
-//    public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
-//        resolvers.add(new LoginMemberArgumentResolver());
-//    }
+    @Override
+    public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
+        resolvers.add(new LoginMemberArgumentResolver());
+    }
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new LoginCheckInterceptor())
                 .order(2)
                 .addPathPatterns("/**")
-                .excludePathPatterns("/", "/members/new", "/login", "/logout",
-                        "/css/**","/assets/**", "/Hanbat_Market_File/**", "/*.ico", "/error");
+                .excludePathPatterns("/api/members/new", "/api/login", "/api/members/login", "/api/members/logout",
+                        "/css/**", "/assets/**", "/Hanbat_Market_File/**", "/*.ico", "/error");
     }
 }
 

@@ -36,11 +36,10 @@ public class JpaPreemptionItemRepository implements PreemptionItemRepository {
     public PreemptionItem findByMemberAndItem(Member member, Item item) throws NoResultException {
         Long memberId = member.getId();
         Long itemId = item.getId();
-        return em.createQuery("select p from PreemptionItem p join p.member m join p.item i where m.id = :memberId and i.id = :itemId" +
-                        " and p.item.itemStatus = :itemStatus and p.preemptionItemStatus != :preemptionItemStatus", PreemptionItem.class)
+        return em.createQuery("select p from PreemptionItem p join fetch p.member m join p.item i where m.id = :memberId and i.id = :itemId" +
+                        " and p.item.itemStatus = :itemStatus", PreemptionItem.class)
                 .setParameter("memberId", member.getId())
                 .setParameter("itemStatus", ItemStatus.SALE)
-                .setParameter("preemptionItemStatus", PreemptionItemStatus.CANCEL)
                 .setParameter("itemId", item.getId())
                 .getSingleResult();
     }
@@ -48,7 +47,7 @@ public class JpaPreemptionItemRepository implements PreemptionItemRepository {
     @Override
     public List<PreemptionItem> findAllByMember(Member member) {
         Long memberId = member.getId();
-        return em.createQuery("select p from PreemptionItem p join p.member m where m.id = :memberId" +
+        return em.createQuery("select p from PreemptionItem p join fetch p.member m where m.id = :memberId" +
                         " and p.item.itemStatus = :itemStatus and p.preemptionItemStatus != :preemptionItemStatus", PreemptionItem.class)
                 .setParameter("memberId", member.getId())
                 .setParameter("itemStatus", ItemStatus.SALE)
@@ -59,7 +58,7 @@ public class JpaPreemptionItemRepository implements PreemptionItemRepository {
     @Override
     public List<PreemptionItem> findAllByItem(Item item) {
         Long itemId = item.getId();
-        return em.createQuery("select p from PreemptionItem p join p.item i where i.id = :itemId" +
+        return em.createQuery("select p from PreemptionItem p join fetch p.item i where i.id = :itemId" +
                         " and i.itemStatus = :itemStatus and p.preemptionItemStatus != :preemptionItemStatus", PreemptionItem.class)
                 .setParameter("itemId", item.getId())
                 .setParameter("itemStatus", ItemStatus.SALE)
