@@ -2,7 +2,7 @@ package HM.Hanbat_Market.api;
 
 import HM.Hanbat_Market.api.dto.HomeArticlesDto;
 import HM.Hanbat_Market.api.dto.HomeResponseDto;
-import HM.Hanbat_Market.controller.member.login.SessionConst;
+import HM.Hanbat_Market.api.member.login.SessionConst;
 import HM.Hanbat_Market.domain.entity.Article;
 import HM.Hanbat_Market.domain.entity.Member;
 import HM.Hanbat_Market.domain.entity.PreemptionItem;

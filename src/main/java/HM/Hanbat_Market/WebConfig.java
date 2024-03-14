@@ -1,7 +1,7 @@
 package HM.Hanbat_Market;
 
-import HM.Hanbat_Market.controller.member.login.LoginMemberArgumentResolver;
-import HM.Hanbat_Market.controller.member.login.interceptor.LoginCheckInterceptor;
+import HM.Hanbat_Market.api.member.login.LoginMemberArgumentResolver;
+import HM.Hanbat_Market.api.member.login.interceptor.LoginCheckInterceptor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;

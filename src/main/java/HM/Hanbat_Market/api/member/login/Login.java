@@ -1,4 +1,4 @@
-package HM.Hanbat_Market.controller.member.login;
+package HM.Hanbat_Market.api.member.login;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

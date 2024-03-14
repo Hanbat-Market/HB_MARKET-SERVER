@@ -1,6 +1,5 @@
 package HM.Hanbat_Market.api.member.dto;
 
-import lombok.Data;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
