@@ -1,6 +1,7 @@
 package HM.Hanbat_Market.service.member;
 
 import HM.Hanbat_Market.domain.entity.Member;
+import HM.Hanbat_Market.exception.member.JoinException;
 import HM.Hanbat_Market.repository.member.MemberRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -38,9 +39,8 @@ class MemberServiceTest {
         //when, then
         memberService.join(member1);
 
-        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, ()
+        JoinException e = assertThrows(JoinException.class, ()
                 -> memberService.join(member2));
-        assertEquals("이미 존재하는 닉네임입니다.", e.getMessage());
 
         //변경 감지로 인한 update
         member1.changeMail("123@gmail.com");
@@ -62,9 +62,8 @@ class MemberServiceTest {
         //when, then
         memberService.join(member1);
 
-        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, ()
+        JoinException e = assertThrows(JoinException.class, ()
                 -> memberService.join(member2));
-        assertEquals("이미 존재하는 메일입니다.", e.getMessage());
     }
 
     @Test
@@ -79,8 +78,7 @@ class MemberServiceTest {
         //when, then
         memberService.join(member1);
 
-        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, ()
+        JoinException e = assertThrows(JoinException.class, ()
                 -> memberService.join(member2));
-        assertEquals("이미 존재하는 전화번호입니다.", e.getMessage());
     }
 }

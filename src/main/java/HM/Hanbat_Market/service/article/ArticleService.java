@@ -1,10 +1,10 @@
 package HM.Hanbat_Market.service.article;
 
+import HM.Hanbat_Market.api.article.FileStore;
 import HM.Hanbat_Market.api.article.dto.ArticleCreateRequestDto;
 import HM.Hanbat_Market.api.article.dto.ArticleCreateResponseDto;
 import HM.Hanbat_Market.api.article.dto.ArticleDetailResponseDto;
 import HM.Hanbat_Market.api.dto.HomeArticlesDto;
-import HM.Hanbat_Market.controller.article.FileStore;
 import HM.Hanbat_Market.domain.entity.Article;
 import HM.Hanbat_Market.domain.entity.ImageFile;
 import HM.Hanbat_Market.domain.entity.Item;
@@ -13,7 +13,6 @@ import HM.Hanbat_Market.repository.article.ArticleRepository;
 import HM.Hanbat_Market.repository.article.dto.ArticleCreateDto;
 import HM.Hanbat_Market.repository.article.dto.ArticleSearchDto;
 import HM.Hanbat_Market.repository.article.dto.ArticleUpdateDto;
-import HM.Hanbat_Market.repository.article.dto.ImageFileDto;
 import HM.Hanbat_Market.repository.item.ImageFileRepository;
 import HM.Hanbat_Market.repository.item.dto.ItemCreateDto;
 import HM.Hanbat_Market.repository.member.MemberRepository;

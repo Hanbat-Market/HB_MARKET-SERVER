@@ -1,6 +1,8 @@
-package HM.Hanbat_Market.controller.member.login.interceptor;
+package HM.Hanbat_Market.api.member.login.interceptor;
 
-import HM.Hanbat_Market.controller.member.login.SessionConst;
+import HM.Hanbat_Market.api.member.login.SessionConst;
+import HM.Hanbat_Market.exception.member.AlreadyLoginException;
+import HM.Hanbat_Market.exception.member.UnAuthorizedException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -24,9 +26,7 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
 
         if (session == null || session.getAttribute(SessionConst.LOGIN_MEMBER) == null) {
             log.info("미인증 사용자 요청");
-            //로그인으로 redirect
-            response.sendRedirect(REDIRECT_URL);
-            return false;
+            throw new UnAuthorizedException();
         }
 
         return true;
