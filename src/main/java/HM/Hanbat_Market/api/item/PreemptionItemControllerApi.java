@@ -1,25 +1,16 @@
 package HM.Hanbat_Market.api.item;
 
 import HM.Hanbat_Market.api.Result;
-import HM.Hanbat_Market.api.item.dto.*;
-import HM.Hanbat_Market.controller.member.login.SessionConst;
+import HM.Hanbat_Market.api.member.login.SessionConst;
 import HM.Hanbat_Market.domain.entity.*;
 import HM.Hanbat_Market.repository.item.ItemRepository;
-import HM.Hanbat_Market.repository.item.PreemptionItemRepository;
 import HM.Hanbat_Market.service.item.ItemService;
 import HM.Hanbat_Market.service.member.MemberService;
 import HM.Hanbat_Market.service.preemption.PreemptionItemService;
-import HM.Hanbat_Market.service.trade.TradeService;
 import jakarta.persistence.NoResultException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-
-import static java.util.stream.Collectors.toList;
 
 @RestController
 @RequiredArgsConstructor

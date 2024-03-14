@@ -1,4 +1,4 @@
-package HM.Hanbat_Market.controller.member.login;
+package HM.Hanbat_Market.api.member.login;
 
 import HM.Hanbat_Market.domain.entity.Member;
 import jakarta.servlet.http.HttpServletRequest;

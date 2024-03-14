@@ -1,7 +1,7 @@
 package HM.Hanbat_Market.service.member;
 
-import HM.Hanbat_Market.controller.member.dto.MemberForm;
 import HM.Hanbat_Market.domain.entity.Member;
+import HM.Hanbat_Market.exception.member.JoinException;
 import HM.Hanbat_Market.repository.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -29,18 +29,18 @@ public class MemberService {
     private void validateDuplicateMember(Member member) {
         Optional<Member> findMember = memberRepository.findByNickName((member.getNickname()));
         if (findMember.isPresent()) {
-            throw new IllegalArgumentException("이미 존재하는 닉네임입니다.");
+            throw new JoinException();
         }
 
         findMember = memberRepository.findByMail((member.getMail()));
         if (findMember.isPresent())
         {
-            throw new IllegalArgumentException("이미 존재하는 메일입니다.");
+            throw new JoinException();
         }
 
         findMember = memberRepository.findByPhoneNumber((member.getPhoneNumber()));
         if (findMember.isPresent()) {
-            throw new IllegalArgumentException("이미 존재하는 전화번호입니다.");
+            throw new JoinException();
         }
     }
 

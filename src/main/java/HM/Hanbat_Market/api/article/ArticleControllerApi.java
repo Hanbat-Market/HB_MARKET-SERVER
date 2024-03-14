@@ -3,32 +3,21 @@ package HM.Hanbat_Market.api.article;
 import HM.Hanbat_Market.api.Result;
 import HM.Hanbat_Market.api.article.dto.ArticleCreateRequestDto;
 import HM.Hanbat_Market.api.article.dto.ArticleCreateResponseDto;
-import HM.Hanbat_Market.api.article.dto.ArticleDetailResponseDto;
-import HM.Hanbat_Market.controller.article.ArticleForm;
-import HM.Hanbat_Market.controller.article.FileStore;
-import HM.Hanbat_Market.controller.member.login.SessionConst;
+import HM.Hanbat_Market.api.member.login.SessionConst;
 import HM.Hanbat_Market.domain.entity.*;
-import HM.Hanbat_Market.repository.article.dto.ArticleCreateDto;
-import HM.Hanbat_Market.repository.article.dto.ArticleSearchDto;
-import HM.Hanbat_Market.repository.item.dto.ItemCreateDto;
 import HM.Hanbat_Market.service.article.ArticleService;
 import HM.Hanbat_Market.service.member.MemberService;
 import HM.Hanbat_Market.service.preemption.PreemptionItemService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.util.ArrayList;
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor

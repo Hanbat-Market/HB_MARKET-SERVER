@@ -1,9 +1,7 @@
-package HM.Hanbat_Market.controller.article;
+package HM.Hanbat_Market.api.article;
 
 import HM.Hanbat_Market.domain.entity.ImageFile;
-import HM.Hanbat_Market.repository.article.dto.ImageFileDto;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
+import HM.Hanbat_Market.exception.article.FileException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.multipart.MultipartFile;
@@ -34,9 +32,7 @@ public class FileStore {
                     storeFileResult.add(storeFile(multipartFile));
                 } else {
                     // 확장자가 유효하지 않은 경우 에러 메시지 추가
-                    String fieldName = "imageFile1";
-                    String errorMessage = "사진 파일이 아닙니다.";
-                    bindingResult.addError(new FieldError("articleForm", fieldName, errorMessage));
+                    throw new FileException();
                 }
             }
         }
