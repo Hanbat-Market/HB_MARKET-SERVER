@@ -1,0 +1,72 @@
+package HM.Hanbat_Market.exception;
+
+import HM.Hanbat_Market.exception.article.FileException;
+import HM.Hanbat_Market.exception.member.AlreadyLoginException;
+import HM.Hanbat_Market.exception.member.JoinException;
+import HM.Hanbat_Market.exception.member.LoginException;
+import HM.Hanbat_Market.exception.member.UnAuthorizedException;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+@RestControllerAdvice(annotations = {RestController.class})
+@Slf4j
+public class GlobalExceptionHandler {
+
+    private String BR = "BAD_REQUEST";
+    private String NF = "NOT_FOUND";
+    private String UA = "UNAUTHORIZED";
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(JoinException.class)
+    public ErrorResult JoinExceptionHandler(JoinException e) {
+        log.error("[exceptionHandler] ex", e);
+        return new ErrorResult(e.getStatus(), e.getErrorCode(), e.getErrorMessage());
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(LoginException.class)
+    public ErrorResult LoginExceptionHandler(LoginException e) {
+        log.error("[exceptionHandler] ex", e);
+        return new ErrorResult(e.getStatus(), e.getErrorCode(), e.getErrorMessage());
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(AlreadyLoginException.class)
+    public ErrorResult AlreadyLoginExceptionHandler(AlreadyLoginException e) {
+        log.error("[exceptionHandler] ex", e);
+        return new ErrorResult(e.getStatus(), e.getErrorCode(), e.getErrorMessage());
+    }
+
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(NotFoundException.class)
+    public ErrorResult NFHandler(NotFoundException e) {
+        log.error("[exceptionHandler] ex", e);
+        return new ErrorResult(e.getStatus(), e.getErrorCode(), e.getErrorMessage());
+    }
+
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ExceptionHandler(UnAuthorizedException.class)
+    public ErrorResult UAHandler(UnAuthorizedException e) {
+        log.error("[exceptionHandler] ex", e);
+        return new ErrorResult(e.getStatus(), e.getErrorCode(), e.getErrorMessage());
+    }
+
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    @ExceptionHandler(ForbiddenException.class)
+    public ErrorResult ForbiddenExceptionHandler(ForbiddenException e) {
+        log.error("[exceptionHandler] ex", e);
+        return new ErrorResult(e.getStatus(), e.getErrorCode(), e.getErrorMessage());
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(FileException.class)
+    public ErrorResult FileExceptionHandler(FileException e) {
+        log.error("[exceptionHandler] ex", e);
+        return new ErrorResult(e.getStatus() , e.getErrorCode(), e.getErrorMessage());
+    }
+}
