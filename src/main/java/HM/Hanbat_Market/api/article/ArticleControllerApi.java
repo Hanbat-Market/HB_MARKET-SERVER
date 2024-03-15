@@ -8,6 +8,8 @@ import HM.Hanbat_Market.domain.entity.*;
 import HM.Hanbat_Market.service.article.ArticleService;
 import HM.Hanbat_Market.service.member.MemberService;
 import HM.Hanbat_Market.service.preemption.PreemptionItemService;
+import io.swagger.v3.oas.annotations.Hidden;
+import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -34,7 +36,7 @@ public class ArticleControllerApi {
     public Result create(@RequestPart("imageFile") MultipartFile imageFile,
                          @Valid @RequestPart("articleCreateRequestDto") ArticleCreateRequestDto articleCreateRequestDto,
                          BindingResult result,
-                         @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member sessionMember) throws IOException {
+                         @Parameter(hidden = true) @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member sessionMember) throws IOException {
 
 //        if (sessionMember == null) {
 //            return new Result<>("로그인이 필요합니다");
@@ -48,7 +50,7 @@ public class ArticleControllerApi {
 
     @GetMapping("/articles/{articleId}")
     public Result articleDetail(@PathVariable("articleId") Long articleId,
-                                @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member sessionMember) {
+                                @Parameter(hidden = true) @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member sessionMember) {
 
 //        if (sessionMember == null) {
 //            return new Result<>("로그인이 필요합니다");
@@ -60,9 +62,10 @@ public class ArticleControllerApi {
     }
 
     @ResponseBody
+    @Hidden
     @GetMapping("/images/{filename}")
     public Result downloadImage(@PathVariable("filename") String filename,
-                                @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member sessionMember) throws MalformedURLException {
+                                @Parameter(hidden = true) @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member sessionMember) throws MalformedURLException {
 //        if (sessionMember == null) {
 //            return new Result<>("로그인이 필요합니다");
 //        }

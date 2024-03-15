@@ -14,10 +14,12 @@ spring:
       ddl-auto: create-drop
     defer-datasource-initialization: true
     open-in-view: false
-    properties:
-      hibernate:
-        format_sql: true
-        default_batch_fetch_size: 100
+  springdoc:
+    default-consumes-media-type: application/json
+    default-produces-media-type: application/json
+    swagger-ui:
+      path: /swagger-ui.html
+
   #  sql:
 #    init:
 #      data-locations: classpath:database/data.sql # 더미데이터 파일 연결

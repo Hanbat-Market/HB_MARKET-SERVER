@@ -7,6 +7,8 @@ import HM.Hanbat_Market.api.member.login.SessionConst;
 import HM.Hanbat_Market.domain.entity.Member;
 import HM.Hanbat_Market.exception.member.AlreadyLoginException;
 import HM.Hanbat_Market.service.member.MemberService;
+import io.swagger.v3.oas.annotations.Hidden;
+import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,8 +24,8 @@ public class MemberControllerApi {
     private final MemberService memberService;
 
     @PostMapping("/members/new")
-    public Result create(@RequestBody @Valid MemberRequestDto memberRequestDto, BindingResult result,
-                         @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member sessionMember) {
+    public Result create(@RequestBody @Valid MemberRequestDto memberRequestDto,
+                         @Parameter(hidden = true) @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member sessionMember) {
 
         if (sessionMember != null) {
             throw new AlreadyLoginException();

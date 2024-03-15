@@ -11,6 +11,8 @@ import HM.Hanbat_Market.repository.item.ItemRepository;
 import HM.Hanbat_Market.service.article.ArticleService;
 import HM.Hanbat_Market.service.member.MemberService;
 import HM.Hanbat_Market.service.preemption.PreemptionItemService;
+import io.swagger.v3.oas.annotations.Hidden;
+import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -29,8 +31,8 @@ public class HomeControllerApi {
     private final ItemRepository itemRepository;
 
     @GetMapping("")
-    public Result home(@RequestBody ArticleSearchDto articleSearchDto
-            , @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member sessionMember) {
+    public Result home(@ModelAttribute ArticleSearchDto articleSearchDto
+            , @Parameter(hidden = true) @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member sessionMember) {
         /**
          * 토큰으로 멤버 인증하고 넣어주는 과정 필요함
          */
@@ -49,6 +51,7 @@ public class HomeControllerApi {
     /**
      * 인터셉터로 로그인 인가 후 실패시 리다이렉트 될 임시 로그인 페이지
      */
+    @Hidden
     @GetMapping("/login")
     public Result login(){
         return new Result("로그인이 필요합니다.₩₩₩");

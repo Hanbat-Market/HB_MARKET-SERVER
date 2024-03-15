@@ -1,5 +1,6 @@
 package HM.Hanbat_Market.api.article.dto;
 
+import io.swagger.v3.oas.annotations.Hidden;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -26,5 +27,5 @@ public class ArticleCreateRequestDto {
     @NotEmpty(message = "거래장소를 입력해주세요..")
     private String tradingPlace;
 
-    private MultipartFile imageFile1;
+    @Hidden private MultipartFile imageFile1;
 }
