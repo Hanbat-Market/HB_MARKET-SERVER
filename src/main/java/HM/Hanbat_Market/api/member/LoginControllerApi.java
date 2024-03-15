@@ -7,6 +7,7 @@ import HM.Hanbat_Market.domain.entity.Member;
 import HM.Hanbat_Market.exception.member.AlreadyLoginException;
 import HM.Hanbat_Market.exception.member.LoginException;
 import HM.Hanbat_Market.service.member.MemberService;
+import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -24,8 +25,7 @@ public class LoginControllerApi {
 
     @PostMapping("/login")
     public Result login(@RequestBody LoginRequestDto form, HttpServletRequest request,
-                        @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member sessionMember
-            , @RequestParam(value = "redirectURL", defaultValue = "/") String redirectURL) {
+                        @Parameter(hidden = true) @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member sessionMember) {
 
         if (sessionMember != null) {
             throw new AlreadyLoginException();

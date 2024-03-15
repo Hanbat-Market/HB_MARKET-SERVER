@@ -7,6 +7,7 @@ import HM.Hanbat_Market.repository.item.ItemRepository;
 import HM.Hanbat_Market.service.item.ItemService;
 import HM.Hanbat_Market.service.member.MemberService;
 import HM.Hanbat_Market.service.preemption.PreemptionItemService;
+import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.persistence.NoResultException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,7 +26,7 @@ public class PreemptionItemControllerApi {
 
     @GetMapping("/preemption/{itemId}")
     public Result preemption(@PathVariable("itemId") Long itemId,
-                             @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member sessionMember) {
+                             @Parameter(hidden = true) @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member sessionMember) {
 //        if (sessionMember == null) {
 //            return new Result<>("로그인이 필요합니다");
 //        }
@@ -48,7 +49,7 @@ public class PreemptionItemControllerApi {
     }
 
     @GetMapping("/preemptionItems")
-    public Result myPage(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member sessionMember) {
+    public Result myPage(@Parameter(hidden = true) @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member sessionMember) {
 //        if (sessionMember == null) {
 //            return new Result<>("로그인이 필요합니다");
 //        }
