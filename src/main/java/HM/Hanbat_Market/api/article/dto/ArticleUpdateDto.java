@@ -1,7 +1,8 @@
 package HM.Hanbat_Market.api.article.dto;
 
 import HM.Hanbat_Market.domain.entity.ImageFile;
-import HM.Hanbat_Market.repository.item.dto.ItemUpdateDto;
+import HM.Hanbat_Market.domain.entity.Item;
+import HM.Hanbat_Market.domain.entity.Member;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -17,7 +18,9 @@ public class ArticleUpdateDto {
 
     private String tradingPlace;
 
-    private ItemUpdateDto itemUpdateDto;
+    private Item item;
+
+    private Member member;
 
     private List<ImageFile> imageFiles = new ArrayList<>();
 }

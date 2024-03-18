@@ -18,6 +18,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+
 @Component
 @RequiredArgsConstructor
 public class InitDB {
@@ -39,6 +41,12 @@ public class InitDB {
         private final TradeService tradeService;
 
         public void dbInit1() {
+
+            ArrayList<ImageFile> imageFiles = new ArrayList<>();
+            ImageFile imageFile;
+            Article saveArticle;
+            imageFiles.add(new ImageFile("default_image.png", "default_image.png"));
+
             Member member = Member.createMember("jckim229@gmail.com", "123", "01028564221", "jckim2");
             Member member1 = Member.createMember("wncks0303@naver.com", "123", "01086544221", "wncks0303");
             memberService.join(member);
@@ -52,8 +60,13 @@ public class InitDB {
             articleCreateDto.setTitle("플스4 팝니다.");
             articleCreateDto.setDescription("동해물과 백두산이 마르고 닳도록 하느님이 보우하사 우리나라 만세 무궁화 삼천리 화려강산 대한사람 대한으로 길이 보전하세");
             articleCreateDto.setTradingPlace("대전 서구 월평동");
+            articleCreateDto.setImageFiles(imageFiles);
 
             Long articleId = articleService.regisArticle(member.getId(), articleCreateDto, itemCreateDto);
+            saveArticle = articleService.findArticle(articleId);
+            imageFile = new ImageFile("default_image.png", "default_image.png");
+            ImageFile.createImageFile(saveArticle, imageFile);
+
 
 
             itemCreateDto.setItemName("Nintendo Switch");
@@ -64,6 +77,10 @@ public class InitDB {
             articleCreateDto.setTradingPlace("대전 서구 월평동");
 
             Long articleId1 = articleService.regisArticle(member.getId(), articleCreateDto, itemCreateDto);
+            saveArticle = articleService.findArticle(articleId1);
+            imageFile = new ImageFile("default_image", "default_image");
+            ImageFile.createImageFile(saveArticle, imageFile);
+
 
 
             itemCreateDto.setItemName("야구방망이");
@@ -74,6 +91,10 @@ public class InitDB {
             articleCreateDto.setTradingPlace("대전 서구 월평동");
 
             Long articleId2 = articleService.regisArticle(member.getId(), articleCreateDto, itemCreateDto);
+            saveArticle = articleService.findArticle(articleId2);
+            imageFile = new ImageFile("default_image", "default_image");
+            ImageFile.createImageFile(saveArticle, imageFile);
+
 
 
             itemCreateDto.setItemName("행정학입문");
@@ -84,6 +105,9 @@ public class InitDB {
             articleCreateDto.setTradingPlace("대전 서구 월평동");
 
             Long articleId3 = articleService.regisArticle(member1.getId(), articleCreateDto, itemCreateDto);
+            saveArticle = articleService.findArticle(articleId3);
+            imageFile = new ImageFile("default_image", "default_image");
+            ImageFile.createImageFile(saveArticle, imageFile);
 
 
             itemCreateDto.setItemName("컴퓨터 개론");
@@ -94,6 +118,11 @@ public class InitDB {
             articleCreateDto.setTradingPlace("대전 서구 월평동");
 
             Long articleId4 = articleService.regisArticle(member1.getId(), articleCreateDto, itemCreateDto);
+            saveArticle = articleService.findArticle(articleId4);
+            imageFile = new ImageFile("default_image", "default_image");
+            ImageFile.createImageFile(saveArticle, imageFile);
+
+
 
             Article article = articleService.findArticle(articleId);
             Article article1 = articleService.findArticle(articleId1);
