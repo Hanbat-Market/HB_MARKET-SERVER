@@ -17,16 +17,11 @@ public class WebConfig implements WebMvcConfigurer {
         resolvers.add(new LoginMemberArgumentResolver());
     }
 
-//    @Override
-//    public void addCorsMappings(CorsRegistry registry) {
-//        registry.addMapping("/**")
-//                .allowedOrigins("*")
-//                .allowedMethods("GET", "POST", "PUT", "DELETE")
-//                .allowedHeaders("Authorization", "Content-Type")
-//                .exposedHeaders("Custom-Header")
-//                .allowCredentials(true)
-//                .maxAge(3600);
-//    }
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**")
+                .allowedOrigins("*");
+    }
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
@@ -34,7 +29,7 @@ public class WebConfig implements WebMvcConfigurer {
                 .order(2)
                 .addPathPatterns("/**")
                 .excludePathPatterns("/api/members/new", "/api/login", "/api/members/login", "/api/members/logout",
-                        "/css/**", "/assets/**", "/Hanbat_Market_File/**", "/*.ico", "/error", "/swagger-ui/**", "/swagger-resources/**",
+                        "/css/**", "/assets/**", "/files/**","/api/images/**", "/*.ico", "/error", "/swagger-ui/**", "/swagger-resources/**",
                         "/v3/api-docs/**", "/api-docs/**", "/swagger-ui.html");
     }
 }
