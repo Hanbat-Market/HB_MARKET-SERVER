@@ -2,6 +2,7 @@ package HM.Hanbat_Market.service.member;
 
 import HM.Hanbat_Market.domain.entity.Member;
 import HM.Hanbat_Market.exception.member.JoinException;
+import HM.Hanbat_Market.exception.member.LoginException;
 import HM.Hanbat_Market.repository.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -65,6 +66,6 @@ public class MemberService {
     public Member login(String mail, String passwd) {
         return memberRepository.findByMail(mail)
                 .filter(m -> m.getPasswd().equals(passwd))
-                .orElse(null);
+                .orElseThrow(LoginException::new);
     }
 }

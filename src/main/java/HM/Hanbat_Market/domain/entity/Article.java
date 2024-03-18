@@ -1,7 +1,8 @@
 package HM.Hanbat_Market.domain.entity;
 
+import HM.Hanbat_Market.api.article.dto.ArticleUpdateDto;
+import HM.Hanbat_Market.api.article.dto.ArticleUpdateRequestDto;
 import HM.Hanbat_Market.repository.article.dto.ArticleCreateDto;
-import HM.Hanbat_Market.repository.article.dto.ArticleUpdateDto;
 import HM.Hanbat_Market.repository.item.dto.ItemUpdateDto;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -86,11 +87,11 @@ public class Article {
         return article;
     }
 
-    public void update(ArticleUpdateDto articleUpdateDto) {
+    public void update(ArticleUpdateDto articleUpdateDto, ItemUpdateDto itemUpdateDto) {
         this.title = articleUpdateDto.getTitle();
         this.description = articleUpdateDto.getDescription();
-        this.tradingPlace = articleUpdateDto.getDescription();
-        this.item.updateItem(articleUpdateDto.getItemUpdateDto());
+        this.tradingPlace = articleUpdateDto.getTradingPlace();
+        this.item.updateItem(itemUpdateDto);
     }
 
     public void delete() {
