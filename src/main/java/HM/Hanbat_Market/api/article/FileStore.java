@@ -16,13 +16,13 @@ import java.util.UUID;
 public class FileStore {
 
     //    @Value("${file.dir}")
-    private String fileDir = "/Users/Kimjuchan/Desktop/Hanbat_Market/src/main/resources/static/Hanbat_Market_FIle/";
+    private String fileDir = "/Users/kimjuchan/Desktop/Hanbat_Market/src/main/resources/static/files/";
 
     public String getFullPath(String filename) {
         return fileDir + filename;
     }
 
-    public List<ImageFile> storeFiles(List<MultipartFile> multipartFiles, BindingResult bindingResult) throws IOException {
+    public List<ImageFile> storeFiles(List<MultipartFile> multipartFiles) throws IOException {
         List<ImageFile> storeFileResult = new ArrayList<>();
         for (int i = 0; i < multipartFiles.size(); i++) {
             MultipartFile multipartFile = multipartFiles.get(i);

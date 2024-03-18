@@ -1,7 +1,9 @@
 package HM.Hanbat_Market.service.member;
 
+import HM.Hanbat_Market.api.member.login.Login;
 import HM.Hanbat_Market.domain.entity.Member;
 import HM.Hanbat_Market.exception.member.JoinException;
+import HM.Hanbat_Market.exception.member.LoginException;
 import HM.Hanbat_Market.repository.member.MemberRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -80,5 +82,15 @@ class MemberServiceTest {
 
         JoinException e = assertThrows(JoinException.class, ()
                 -> memberService.join(member2));
+    }
+
+    @Test
+    public void 로그인_실패() {
+        //given
+
+        //when, then
+
+        LoginException e = assertThrows(LoginException.class, ()
+                -> memberService.login("fail@email.com", "failPasswd"));
     }
 }

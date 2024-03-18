@@ -1,7 +1,10 @@
 package HM.Hanbat_Market.service.article;
 
 import HM.Hanbat_Market.CreateTestEntity;
+import HM.Hanbat_Market.api.article.dto.ArticleUpdateRequestDto;
 import HM.Hanbat_Market.domain.entity.*;
+import HM.Hanbat_Market.exception.ForbiddenException;
+import HM.Hanbat_Market.exception.member.LoginException;
 import HM.Hanbat_Market.repository.article.ArticleRepository;
 import HM.Hanbat_Market.repository.article.dto.ArticleCreateDto;
 import HM.Hanbat_Market.repository.article.dto.ArticleSearchDto;
@@ -96,15 +99,16 @@ class ArticleServiceTest {
         Article article = articleService.findArticle(articleId);
 
         //when
-        ArticleUpdateDto articleUpdateDto = new ArticleUpdateDto();
-        articleUpdateDto.setTitle("수정한 게시글 제목");
-        articleUpdateDto.setDescription("qwer");
-        articleUpdateDto.setItemUpdateDto(createItemUpdateDto());
-        articleUpdateDto.setTradingPlace("sdf");
+        ArticleUpdateRequestDto articleUpdateRequestDto = new ArticleUpdateRequestDto();
+        articleUpdateRequestDto.setTitle("수정한 게시글 제목");
+        articleUpdateRequestDto.setDescription("qwer");
+        articleUpdateRequestDto.setItemName("수정 아이템");
+        articleUpdateRequestDto.setPrice(190000L);
+        articleUpdateRequestDto.setTradingPlace("sdf");
 //        imageFilesDto.stream()
 //                .forEach(imageFileDto -> ImageFile.createImageFile(article, imageFileDto));
 
-        articleService.updateArticle(articleId, articleUpdateDto);
+        articleService.updateArticleToDto(articleId, articleUpdateRequestDto, member);
 
         //then (수정된 게시글 제목으로 검색)
         ArticleSearchDto articleSearchDto = new ArticleSearchDto();
@@ -128,10 +132,40 @@ class ArticleServiceTest {
         Long articleId = articleService.regisArticle(member.getId(), articleCreateDto, itemCreateDto);
 
         //when (상태를 변경하는 것으로 softDelete 진행
-        articleService.deleteArticle(articleId);
+        articleService.deleteArticle(articleId, member);
 
         //then (삭제 후 전체 게시글의 수가 0
         assertEquals(0, articleService.findArticles().size());
     }
 
+    @Test
+    public void 게시글_수정_권한_예외() throws Exception {
+        //given
+        Member member = Member.createMember("jckim229@gmail.com", "0303", "01028564221", "김주찬");
+        Member member2 = Member.createMember("asd@asd.asd", "0303", "01023232323", "김수로");
+        memberService.join(member);
+
+        ArticleCreateDto articleCreateDto = createArticleCreateDto("PS5 팝니다.", "싸게 팝니다.", "대전");
+        ItemCreateDto itemCreateDto = createItemCreateDto("PS5", 170000L);
+//        List<ImageFileDto> imageFilesDto = createTestImageFilesDto();
+
+        Long articleId = articleService.regisArticle(member.getId(), articleCreateDto, itemCreateDto);
+        Article article = articleService.findArticle(articleId);
+
+        //when
+        ArticleUpdateRequestDto articleUpdateRequestDto = new ArticleUpdateRequestDto();
+        articleUpdateRequestDto.setTitle("수정한 게시글 제목");
+        articleUpdateRequestDto.setDescription("qwer");
+        articleUpdateRequestDto.setItemName("수정 아이템");
+        articleUpdateRequestDto.setPrice(190000L);
+        articleUpdateRequestDto.setTradingPlace("sdf");
+//        imageFilesDto.stream()
+//                .forEach(imageFileDto -> ImageFile.createImageFile(article, imageFileDto));
+
+        //then
+        ForbiddenException e = assertThrows(ForbiddenException.class, ()
+                -> articleService.updateArticleToDto(articleId, articleUpdateRequestDto, member2));;
+
+
+    }
 }
