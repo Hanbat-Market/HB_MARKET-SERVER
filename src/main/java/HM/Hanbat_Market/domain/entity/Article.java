@@ -87,6 +87,12 @@ public class Article {
         return article;
     }
 
+    public void formatImageFiles() {
+        this.getImageFiles().stream()
+                .forEach(imageFile -> imageFile.format());
+        this.imageFiles = new ArrayList<>();
+    }
+
     public void update(ArticleUpdateDto articleUpdateDto, ItemUpdateDto itemUpdateDto) {
         this.title = articleUpdateDto.getTitle();
         this.description = articleUpdateDto.getDescription();

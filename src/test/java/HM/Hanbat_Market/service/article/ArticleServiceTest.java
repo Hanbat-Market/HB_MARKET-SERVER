@@ -4,6 +4,7 @@ import HM.Hanbat_Market.CreateTestEntity;
 import HM.Hanbat_Market.api.article.dto.ArticleUpdateRequestDto;
 import HM.Hanbat_Market.domain.entity.*;
 import HM.Hanbat_Market.exception.ForbiddenException;
+import HM.Hanbat_Market.exception.article.NoImageException;
 import HM.Hanbat_Market.exception.member.LoginException;
 import HM.Hanbat_Market.repository.article.ArticleRepository;
 import HM.Hanbat_Market.repository.article.dto.ArticleCreateDto;
@@ -108,16 +109,13 @@ class ArticleServiceTest {
 //        imageFilesDto.stream()
 //                .forEach(imageFileDto -> ImageFile.createImageFile(article, imageFileDto));
 
-        articleService.updateArticleToDto(articleId, articleUpdateRequestDto, member);
-
         //then (수정된 게시글 제목으로 검색)
+        NoImageException e = assertThrows(NoImageException.class, ()
+                -> articleService.updateArticleToDto(articleId, articleUpdateRequestDto, member));
+
         ArticleSearchDto articleSearchDto = new ArticleSearchDto();
         articleSearchDto.setTitle("수정한");
-        assertEquals(1, articleService.findArticles(articleSearchDto).size());
-
-        //then (등록한 이미지 파일 2개)
-//        assertEquals(2, articleService.findArticles().get(0).getImageFiles().size());
-
+        assertEquals(0, articleService.findArticles(articleSearchDto).size());
     }
 
     @Test

@@ -4,6 +4,7 @@ import HM.Hanbat_Market.domain.entity.Item;
 import HM.Hanbat_Market.domain.entity.Member;
 import HM.Hanbat_Market.domain.entity.Trade;
 import HM.Hanbat_Market.domain.entity.TradeStatus;
+import HM.Hanbat_Market.exception.trade.AlreadyCompleteTradeException;
 import HM.Hanbat_Market.repository.article.ArticleRepository;
 import HM.Hanbat_Market.repository.item.ItemRepository;
 import HM.Hanbat_Market.repository.member.MemberRepository;
@@ -59,7 +60,7 @@ public class TradeService {
     public void cancelTrade(Long tradeId) {
         Trade trade = tradeRepository.findById(tradeId).get();
         if (trade.getTradeStatus() == TradeStatus.COMP) {
-            throw new IllegalArgumentException("이미 완료된 거래는 취소할 수 없습니다.");
+            throw new AlreadyCompleteTradeException();
         }
         trade.cancel();
     }

@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 
 @Data
@@ -26,7 +27,7 @@ public class HomeArticlesDto {
 
     private String memberNickname;
 
-    private String fileName;
+    private List<String> filePaths;
 
     private LocalDateTime createdAt;
 }

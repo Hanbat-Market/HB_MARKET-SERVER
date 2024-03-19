@@ -1,8 +1,11 @@
 package HM.Hanbat_Market.api.article.dto;
 
+import HM.Hanbat_Market.domain.entity.ImageFile;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -12,5 +15,5 @@ public class ArticleCreateResponseDto {
 
     private String itemName;
 
-    private String fileName;
+    private List<String> filePaths;
 }
