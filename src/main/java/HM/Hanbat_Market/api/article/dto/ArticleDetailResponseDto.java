@@ -34,7 +34,7 @@ public class ArticleDetailResponseDto {
 
     private String nickname;
 
-    private String fileName;
+    private List<String> filePaths;
 
     private LocalDateTime createdAt;
 

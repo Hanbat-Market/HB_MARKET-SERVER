@@ -78,7 +78,7 @@ public class InitDB {
 
             Long articleId1 = articleService.regisArticle(member.getId(), articleCreateDto, itemCreateDto);
             saveArticle = articleService.findArticle(articleId1);
-            imageFile = new ImageFile("default_image", "default_image");
+            imageFile = new ImageFile("default_image.png", "default_image.png");
             ImageFile.createImageFile(saveArticle, imageFile);
 
 
@@ -92,7 +92,7 @@ public class InitDB {
 
             Long articleId2 = articleService.regisArticle(member.getId(), articleCreateDto, itemCreateDto);
             saveArticle = articleService.findArticle(articleId2);
-            imageFile = new ImageFile("default_image", "default_image");
+            imageFile = new ImageFile("default_image.png", "default_image.png");
             ImageFile.createImageFile(saveArticle, imageFile);
 
 
@@ -106,7 +106,7 @@ public class InitDB {
 
             Long articleId3 = articleService.regisArticle(member1.getId(), articleCreateDto, itemCreateDto);
             saveArticle = articleService.findArticle(articleId3);
-            imageFile = new ImageFile("default_image", "default_image");
+            imageFile = new ImageFile("default_image.png", "default_image.png");
             ImageFile.createImageFile(saveArticle, imageFile);
 
 
@@ -119,7 +119,7 @@ public class InitDB {
 
             Long articleId4 = articleService.regisArticle(member1.getId(), articleCreateDto, itemCreateDto);
             saveArticle = articleService.findArticle(articleId4);
-            imageFile = new ImageFile("default_image", "default_image");
+            imageFile = new ImageFile("default_image.png", "default_image.png");
             ImageFile.createImageFile(saveArticle, imageFile);
 
 

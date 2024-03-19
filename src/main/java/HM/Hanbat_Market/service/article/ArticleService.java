@@ -9,6 +9,8 @@ import HM.Hanbat_Market.domain.entity.Item;
 import HM.Hanbat_Market.domain.entity.Member;
 import HM.Hanbat_Market.exception.ForbiddenException;
 import HM.Hanbat_Market.exception.NotFoundException;
+import HM.Hanbat_Market.exception.article.FileOutOfRangeException;
+import HM.Hanbat_Market.exception.article.NoImageException;
 import HM.Hanbat_Market.exception.member.UnAuthorizedException;
 import HM.Hanbat_Market.repository.article.ArticleRepository;
 import HM.Hanbat_Market.repository.article.dto.ArticleCreateDto;
@@ -29,6 +31,7 @@ import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 @Service
@@ -43,6 +46,7 @@ public class ArticleService {
     private final PreemptionItemService preemptionItemService;
     private final FileStore fileStore = new FileStore();
     private final String FILE_URL = "https://7d04-39-119-25-167.ngrok-free.app/api/images/";
+    private final int IMAGE_MAX_RANGE = 5;
 
     //영속성 전이로 ItemRepository에 따로 persist하지 않아도 됨
     @Transactional
@@ -71,9 +75,15 @@ public class ArticleService {
         articleCreateDto.setDescription(form.getDescription());
         articleCreateDto.setTradingPlace(form.getTradingPlace());
 
-        List<MultipartFile> multipartFiles = new ArrayList<>();
-        if (form.getImageFile1() != null) {
-            multipartFiles.add(form.getImageFile1());
+        List<MultipartFile> multipartFiles = form.getImageFiles();
+
+        if (multipartFiles == null) {
+            throw new NoImageException();
+        }
+
+        // 파일 유효성 검사 실패 시 에러 추가
+        if (multipartFiles.size() > IMAGE_MAX_RANGE) {
+            throw new FileOutOfRangeException();
         }
 
         // 파일 유효성 검사 실패 시 에러 추가
@@ -87,23 +97,28 @@ public class ArticleService {
         articleCreateDto.setMember(newMember);
         Article article = Article.create(articleCreateDto);
 
-        if (!articleCreateDto.getImageFiles().isEmpty()) {
+        List<ImageFile> articleImagesFiles = articleCreateDto.getImageFiles();
+
+        if (!articleImagesFiles.isEmpty()) {
             articleCreateDto.getImageFiles().stream()
                     .forEach(imageFile -> ImageFile
                             .createImageFile(article, imageFile));
-        } else if (articleCreateDto.getImageFiles().isEmpty()) {
-            ImageFile imageFile = new ImageFile("default_image.png", "default_image.png");
-            ImageFile.createImageFile(article, imageFile);
+        } else if (articleImagesFiles.isEmpty()) {
+            throw new NoImageException();
         }
 
+        List<String> fileNames = article.getImageFiles().stream()
+                .map(imageFile -> getFullPath(imageFile.getStoreFileName()))
+                .collect(Collectors.toList());
+
         articleRepository.save(article).getId();
+
         return new ArticleCreateResponseDto(
                 article.getTitle(),
                 article.getItem().
                         getItemName(),
-                getFullPath(article.getImageFiles()
-                        .get(0)
-                        .getStoreFileName()));
+                fileNames
+        );
     }
 
     @Transactional
@@ -111,14 +126,12 @@ public class ArticleService {
         Article findArticle = articleRepository.findById(article.getId()).get();
         Item item = findArticle.getItem();
         Member member = findArticle.getMember();
-        String fileName = null;
-        try {
-            fileName = findArticle.getImageFiles().get(0).getStoreFileName();
-        } catch (IndexOutOfBoundsException ex) {
-            log.info("이미지 파일이 null 입니다.");
-        }
+
         int preemptionItemSize = preemptionItemService.findPreemptionItemByMember(loginMember).size();
 
+        List<String> fileNames = findArticle.getImageFiles().stream()
+                .map(imageFile -> getFullPath(imageFile.getStoreFileName()))
+                .collect(Collectors.toList());
 
         return new ArticleDetailResponseDto(
                 findArticle.getTitle(),
@@ -128,7 +141,7 @@ public class ArticleService {
                 item.getItemName(),
                 item.getPrice(),
                 member.getNickname(),
-                getFullPath(fileName),
+                fileNames,
                 findArticle.getCreatedAt(),
                 preemptionItemSize);
     }
@@ -142,9 +155,12 @@ public class ArticleService {
         List<HomeArticlesDto> homeArticlesDtos = articles.stream()
                 .map(a -> {
                     List<ImageFile> imageFiles = imageFileRepository.findByArticle(a);
-                    String storeFileName = null;
+                    List<String> fullFilePaths = new ArrayList<>();
+
                     if (imageFiles != null && !imageFiles.isEmpty()) {
-                        storeFileName = imageFiles.get(0).getStoreFileName();
+                        fullFilePaths = imageFiles.stream()
+                                .map(imageFile -> getFullPath(imageFile.getStoreFileName()))
+                                .collect(Collectors.toList());
                     }
 
                     return new HomeArticlesDto(
@@ -156,11 +172,12 @@ public class ArticleService {
                             a.getItem().getItemName(),
                             a.getItem().getPrice(),
                             a.getMember().getNickname(),
-                            getFullPath(storeFileName),
+                            fullFilePaths,
                             a.getCreatedAt()
                     );
                 })
                 .collect(Collectors.toList());
+
         return homeArticlesDtos;
     }
 
@@ -214,40 +231,58 @@ public class ArticleService {
         articleUpdateDto.setDescription(articleUpdateRequestDto.getDescription());
         articleUpdateDto.setTradingPlace(articleUpdateRequestDto.getTradingPlace());
 
-        Article article = articleRepository.findById(articleId).get();
+        Article article;
+
+        try {
+            article = articleRepository.findById(articleId).get();
+        } catch (NoSuchElementException e) {
+            throw new NotFoundException();
+        }
 
         if (confirmOwner(article, loginMember)) {
             throw new ForbiddenException();
         }
 
-        List<MultipartFile> multipartFiles = new ArrayList<>();
-        if (articleUpdateRequestDto.getImageFile1() != null) {
-            multipartFiles.add(articleUpdateRequestDto.getImageFile1());
+        List<MultipartFile> multipartFiles = articleUpdateRequestDto.getImageFiles();
+
+        if (multipartFiles == null) {
+            throw new NoImageException();
         }
 
-        // 파일 유효성 검사 실패 시 예외 발생
+        if (multipartFiles.size() > IMAGE_MAX_RANGE) {
+            throw new FileOutOfRangeException();
+        }
+
+        // 파일 유효성 검사 실패 시 에러 추가
         if (!multipartFiles.isEmpty()) {
             List<ImageFile> imageFiles = fileStore.storeFiles(multipartFiles);
             articleUpdateDto.setImageFiles(imageFiles);
         }
 
+        article.update(articleUpdateDto, itemUpdateDto);
+
         if (!articleUpdateDto.getImageFiles().isEmpty()) {
+            article.formatImageFiles();
+
             articleUpdateDto.getImageFiles().stream()
-                    .forEach(imageFile -> ImageFile
-                            .createImageFile(article, imageFile));
+                    .forEach(imageFile -> ImageFile.createImageFile(article, imageFile));
+            log.info("------사진 업데이트 성공--------");
         } else if (articleUpdateDto.getImageFiles().isEmpty()) {
-            ImageFile imageFile = new ImageFile("default_image", "default_image");
-            ImageFile.createImageFile(article, imageFile);
+            throw new NoImageException();
         }
 
-        article.update(articleUpdateDto, itemUpdateDto);
+        articleRepository.save(article);
+
+        List<String> fileNames = article.getImageFiles().stream()
+                .map(imageFile -> getFullPath(imageFile.getStoreFileName()))
+                .collect(Collectors.toList());
 
         return new ArticleUpdateResponseDto(article.getTitle(),
                 article.getDescription(),
                 article.getTradingPlace(),
                 article.getItem().getItemName(),
                 article.getItem().getPrice(),
-                getFullPath(article.getImageFiles().get(0).getStoreFileName()));
+                fileNames);
     }
 
     public boolean confirmOwner(Article article, Member member) {
