@@ -2,6 +2,7 @@ package HM.Hanbat_Market.exception;
 
 import HM.Hanbat_Market.exception.article.FileOutOfRangeException;
 import HM.Hanbat_Market.exception.article.FileValidityException;
+import HM.Hanbat_Market.exception.article.IsDeleteArticleException;
 import HM.Hanbat_Market.exception.article.NoImageException;
 import HM.Hanbat_Market.exception.member.AlreadyLoginException;
 import HM.Hanbat_Market.exception.member.JoinException;
@@ -70,27 +71,34 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(FileValidityException.class)
     public ErrorResult FileValidityExceptionHandler(FileValidityException e) {
         log.error("[exceptionHandler] ex", e);
-        return new ErrorResult(e.getStatus() , e.getErrorCode(), e.getErrorMessage());
+        return new ErrorResult(e.getStatus(), e.getErrorCode(), e.getErrorMessage());
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(AlreadyCompleteTradeException.class)
     public ErrorResult AlreadyCompleteTradeExceptionHandler(AlreadyCompleteTradeException e) {
         log.error("[exceptionHandler] ex", e);
-        return new ErrorResult(e.getStatus() , e.getErrorCode(), e.getErrorMessage());
+        return new ErrorResult(e.getStatus(), e.getErrorCode(), e.getErrorMessage());
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(FileOutOfRangeException.class)
     public ErrorResult FileOutOfRangeExceptionHandler(FileOutOfRangeException e) {
         log.error("[exceptionHandler] ex", e);
-        return new ErrorResult(e.getStatus() , e.getErrorCode(), e.getErrorMessage());
+        return new ErrorResult(e.getStatus(), e.getErrorCode(), e.getErrorMessage());
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(NoImageException.class)
     public ErrorResult NoImageExceptionHandler(NoImageException e) {
         log.error("[exceptionHandler] ex", e);
-        return new ErrorResult(e.getStatus() , e.getErrorCode(), e.getErrorMessage());
+        return new ErrorResult(e.getStatus(), e.getErrorCode(), e.getErrorMessage());
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(IsDeleteArticleException.class)
+    public ErrorResult IsDeleteArticleExceptionHandler(IsDeleteArticleException e) {
+        log.error("[exceptionHandler] ex", e);
+        return new ErrorResult(e.getStatus(), e.getErrorCode(), e.getErrorMessage());
     }
 }

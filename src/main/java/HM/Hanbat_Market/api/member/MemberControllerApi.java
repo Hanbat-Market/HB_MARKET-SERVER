@@ -31,8 +31,9 @@ public class MemberControllerApi {
             throw new AlreadyLoginException();
         }
 
-        Member member = Member.createMember(memberRequestDto.getMail(), memberRequestDto.getPasswd(), memberRequestDto.getMail(), memberRequestDto.getNickname());
+        Member member = Member.createMember(memberRequestDto.getMail(), memberRequestDto.getPasswd(), memberRequestDto.getNickname());
         memberService.join(member);
+
         return new Result(new MemberResponseDto(member.getMail()));
     }
 }

@@ -3,13 +3,11 @@ package HM.Hanbat_Market.service.article;
 import HM.Hanbat_Market.api.article.FileStore;
 import HM.Hanbat_Market.api.article.dto.*;
 import HM.Hanbat_Market.api.dto.HomeArticlesDto;
-import HM.Hanbat_Market.domain.entity.Article;
-import HM.Hanbat_Market.domain.entity.ImageFile;
-import HM.Hanbat_Market.domain.entity.Item;
-import HM.Hanbat_Market.domain.entity.Member;
+import HM.Hanbat_Market.domain.entity.*;
 import HM.Hanbat_Market.exception.ForbiddenException;
 import HM.Hanbat_Market.exception.NotFoundException;
 import HM.Hanbat_Market.exception.article.FileOutOfRangeException;
+import HM.Hanbat_Market.exception.article.IsDeleteArticleException;
 import HM.Hanbat_Market.exception.article.NoImageException;
 import HM.Hanbat_Market.exception.member.UnAuthorizedException;
 import HM.Hanbat_Market.repository.article.ArticleRepository;
@@ -47,6 +45,7 @@ public class ArticleService {
     private final FileStore fileStore = new FileStore();
     private final String FILE_URL = "https://7d04-39-119-25-167.ngrok-free.app/api/images/";
     private final int IMAGE_MAX_RANGE = 5;
+    private final int THUMBNAIL_FILE_INDEX = 0;
 
     //영속성 전이로 ItemRepository에 따로 persist하지 않아도 됨
     @Transactional
@@ -124,6 +123,11 @@ public class ArticleService {
     @Transactional
     public ArticleDetailResponseDto articleDetailToDto(Article article, Member loginMember) {
         Article findArticle = articleRepository.findById(article.getId()).get();
+
+        if(findArticle.getArticleStatus() == ArticleStatus.HIDE){
+            throw new IsDeleteArticleException();
+        }
+
         Item item = findArticle.getItem();
         Member member = findArticle.getMember();
 
@@ -172,7 +176,7 @@ public class ArticleService {
                             a.getItem().getItemName(),
                             a.getItem().getPrice(),
                             a.getMember().getNickname(),
-                            fullFilePaths,
+                            fullFilePaths.get(THUMBNAIL_FILE_INDEX),
                             a.getCreatedAt()
                     );
                 })
@@ -237,6 +241,10 @@ public class ArticleService {
             article = articleRepository.findById(articleId).get();
         } catch (NoSuchElementException e) {
             throw new NotFoundException();
+        }
+
+        if(article.getArticleStatus() == ArticleStatus.HIDE){
+            throw new IsDeleteArticleException();
         }
 
         if (confirmOwner(article, loginMember)) {

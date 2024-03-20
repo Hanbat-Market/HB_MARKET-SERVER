@@ -38,11 +38,6 @@ public class MemberService {
         {
             throw new JoinException();
         }
-
-        findMember = memberRepository.findByPhoneNumber((member.getPhoneNumber()));
-        if (findMember.isPresent()) {
-            throw new JoinException();
-        }
     }
 
     /**

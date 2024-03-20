@@ -27,7 +27,7 @@ public class HomeArticlesDto {
 
     private String memberNickname;
 
-    private List<String> filePaths;
+    private String thumbnailFilePath;
 
     private LocalDateTime createdAt;
 }

@@ -23,9 +23,6 @@ public class Member {
     private String passwd;
 
     @Column(nullable = false, unique = true)
-    private String phoneNumber;
-
-    @Column(nullable = false, unique = true)
     private String nickname;
 
     @OneToMany(mappedBy = "member")
@@ -44,15 +41,14 @@ public class Member {
         this.mail = mail;
     }
 
-    private Member(String mail, String passwd, String phoneNumber, String nickname) {
+    private Member(String mail, String passwd, String nickname) {
         this.mail = mail;
         this.passwd = passwd;
-        this.phoneNumber = phoneNumber;
         this.nickname = nickname;
     }
 
-    public static Member createMember(String mail, String passwd, String phoneNumber, String nickname) {
-        return new Member(mail, passwd, phoneNumber, nickname);
+    public static Member createMember(String mail, String passwd, String nickname) {
+        return new Member(mail, passwd, nickname);
     }
 
     public void changeMail(String mail) {
