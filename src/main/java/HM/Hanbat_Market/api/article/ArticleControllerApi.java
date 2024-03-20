@@ -37,24 +37,24 @@ public class ArticleControllerApi {
     @PostMapping("/articles/new")
     public Result create(@RequestPart(value = "imageFiles", required = false) List<MultipartFile> imageFiles,
                          @Valid @RequestPart("articleCreateRequestDto") ArticleCreateRequestDto articleCreateRequestDto,
-                         BindingResult result,
                          @Parameter(hidden = true) @SessionAttribute(name = SessionConst.LOGIN_MEMBER,
                                  required = false) Member sessionMember) throws IOException {
 
         articleCreateRequestDto.setImageFiles(imageFiles);
         ArticleCreateResponseDto articleCreateResponseDto = articleService.createArticleToDto(sessionMember.getId(), articleCreateRequestDto);
 
+
         return new Result(articleCreateResponseDto);
     }
 
     @GetMapping("/articles/edit/{articleId}")
+    @Hidden
     public Result updateDetail(@PathVariable("articleId") Long articleId,
                                @Parameter(hidden = true)
                                @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false)
                                Member sessionMember) {
 
-        Article article = articleService.findArticle(articleId);
-
+        Article article = articleService.findUpdateArticle(articleId, sessionMember);
         return new Result(articleService.articleDetailToDto(article, sessionMember));
     }
 
@@ -87,7 +87,8 @@ public class ArticleControllerApi {
                                 @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false)
                                 Member sessionMember) {
 
-        Article article = articleService.findUpdateArticle(articleId, sessionMember);
+        Article article = articleService.findArticle(articleId);
+
         return new Result(articleService.articleDetailToDto(article, sessionMember));
     }
 

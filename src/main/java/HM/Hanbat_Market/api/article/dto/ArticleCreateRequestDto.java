@@ -29,5 +29,6 @@ public class ArticleCreateRequestDto {
     @NotEmpty(message = "거래장소를 입력해주세요..")
     private String tradingPlace;
 
+    @Hidden
     private List<MultipartFile> imageFiles;
 }
