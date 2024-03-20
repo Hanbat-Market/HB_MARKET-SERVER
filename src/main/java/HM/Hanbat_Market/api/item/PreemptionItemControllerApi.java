@@ -49,7 +49,7 @@ public class PreemptionItemControllerApi {
     }
 
     @GetMapping("/preemptionItems")
-    public Result myPage(@Parameter(hidden = true) @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member sessionMember) {
+    public Result preemptionItems(@Parameter(hidden = true) @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member sessionMember) {
 //        if (sessionMember == null) {
 //            return new Result<>("로그인이 필요합니다");
 //        }

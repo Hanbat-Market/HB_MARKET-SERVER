@@ -36,7 +36,7 @@ class ArticleServiceTest {
     @Test
     public void 게시글_등록() throws Exception {
         //given
-        Member member = Member.createMember("jckim229@gmail.com", "0303", "01028564221", "김주찬");
+        Member member = Member.createMember("jckim229@gmail.com", "0303",  "김주찬");
         memberService.join(member);
         ArticleCreateDto articleCreateDto = createArticleCreateDto("PS5 팝니다.", "싸게 팝니다.", "대전");
         ItemCreateDto itemCreateDto = createItemCreateDto("PS5", 170000L);
@@ -55,7 +55,7 @@ class ArticleServiceTest {
     @Test
     public void 게시글_등록_검색() throws Exception {
         //given
-        Member member = Member.createMember("jckim229@gmail.com", "0303", "01028564221", "김주찬");
+        Member member = Member.createMember("jckim229@gmail.com", "0303", "김주찬");
         memberService.join(member);
 
         ArticleCreateDto articleCreateDto = createArticleCreateDto("PS5 팝니다.", "싸게 팝니다.", "대전");
@@ -89,7 +89,7 @@ class ArticleServiceTest {
     @Test
     public void 게시글_수정() throws Exception {
         //given
-        Member member = Member.createMember("jckim229@gmail.com", "0303", "01028564221", "김주찬");
+        Member member = Member.createMember("jckim229@gmail.com", "0303", "김주찬");
         memberService.join(member);
 
         ArticleCreateDto articleCreateDto = createArticleCreateDto("PS5 팝니다.", "싸게 팝니다.", "대전");
@@ -121,7 +121,7 @@ class ArticleServiceTest {
     @Test
     public void 게시글_삭제() throws Exception {
         //given
-        Member member = Member.createMember("jckim229@gmail.com", "0303", "01028564221", "김주찬");
+        Member member = Member.createMember("jckim229@gmail.com", "0303", "김주찬");
         memberService.join(member);
 
         ArticleCreateDto articleCreateDto = createArticleCreateDto("PS5 팝니다.", "싸게 팝니다.", "대전");
@@ -139,8 +139,8 @@ class ArticleServiceTest {
     @Test
     public void 게시글_수정_권한_예외() throws Exception {
         //given
-        Member member = Member.createMember("jckim229@gmail.com", "0303", "01028564221", "김주찬");
-        Member member2 = Member.createMember("asd@asd.asd", "0303", "01023232323", "김수로");
+        Member member = Member.createMember("jckim229@gmail.com", "0303", "김주찬");
+        Member member2 = Member.createMember("asd@asd.asd", "0303",  "김수로");
         memberService.join(member);
 
         ArticleCreateDto articleCreateDto = createArticleCreateDto("PS5 팝니다.", "싸게 팝니다.", "대전");
