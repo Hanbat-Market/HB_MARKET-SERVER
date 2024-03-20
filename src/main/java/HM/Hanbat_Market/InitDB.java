@@ -95,8 +95,7 @@ public class InitDB {
             imageFile = new ImageFile("default_image.png", "default_image.png");
             ImageFile.createImageFile(saveArticle, imageFile);
 
-
-
+            
             itemCreateDto.setItemName("행정학입문");
             itemCreateDto.setPrice(34000L);
 
@@ -109,7 +108,6 @@ public class InitDB {
             imageFile = new ImageFile("default_image.png", "default_image.png");
             ImageFile.createImageFile(saveArticle, imageFile);
 
-
             itemCreateDto.setItemName("컴퓨터 개론");
             itemCreateDto.setPrice(25000L);
 
@@ -121,8 +119,6 @@ public class InitDB {
             saveArticle = articleService.findArticle(articleId4);
             imageFile = new ImageFile("default_image.png", "default_image.png");
             ImageFile.createImageFile(saveArticle, imageFile);
-
-
 
             Article article = articleService.findArticle(articleId);
             Article article1 = articleService.findArticle(articleId1);
@@ -138,7 +134,6 @@ public class InitDB {
             Long tradeId3 = tradeService.reservation(member.getId(), article3.getItem().getId());
             Long tradeId4 = tradeService.reservation(member.getId(), article4.getItem().getId());
             tradeService.tradeComplete(tradeId4);
-
         }
 
     }

@@ -25,28 +25,34 @@ public class ItemService {
     private final PreemptionItemService preemptionItemService;
     private final TradeService tradeService;
 
-    public MyPageResponseDto myPageToDto(Member loginMember) {
+    private final int THUMBNAIL_FILE_INDEX = 0;
+    private final String FILE_URL = "https://7d04-39-119-25-167.ngrok-free.app/api/images/";
+
+    public SalesHistoryResponseDto salesHistoryToDto(Member loginMember) {
         try {
             List<Item> itemByMember = itemRepository.findAllByMember(loginMember);
+            List<SalesDto> salesDtos = new ArrayList<>();
             List<CompletedDto> completedDtos = new ArrayList<>();
             List<ReservedDto> reservedDtos = new ArrayList<>();
             for (Item item : itemByMember) {
+                String filePath = getFullPath(item.getArticle().getImageFiles().get(THUMBNAIL_FILE_INDEX).getStoreFileName());
                 Trade trade = item.getTrade();
                 if (trade == null) {
+                    salesDtos.add(new SalesDto(item, filePath));
                     continue;
                 }
                 if (trade.getTradeStatus() == TradeStatus.RESERVATION) {
-                    reservedDtos.add(new ReservedDto(loginMember, trade));
+                    reservedDtos.add(new ReservedDto(loginMember, trade, filePath));
                 } else if (item.getTrade().getTradeStatus() == TradeStatus.COMP) {
-                    completedDtos.add(new CompletedDto(loginMember, trade));
+                    completedDtos.add(new CompletedDto(loginMember, trade, filePath));
                 }
             }
             List<PreemptionItem> preemptionItemByMember = preemptionItemService.findPreemptionItemByMember(loginMember);
 
-            return new MyPageResponseDto(preemptionItemByMember.size(), reservedDtos, completedDtos);
+            return new SalesHistoryResponseDto(preemptionItemByMember.size(), salesDtos, reservedDtos, completedDtos);
         } catch (NoResultException e) {
             List<PreemptionItem> preemptionItemByMember = preemptionItemService.findPreemptionItemByMember(loginMember);
-            return new MyPageResponseDto(preemptionItemByMember.size(), null, null);
+            return new SalesHistoryResponseDto(preemptionItemByMember.size(), null, null, null);
         }
     }
 
@@ -57,11 +63,11 @@ public class ItemService {
             List<PreemptionItem> preemptionItemByMember = preemptionItemService.findPreemptionItemByMember(loginMember);
 
             List<ReservedDto> reservedDtos = reservedByMember.stream()
-                    .map(r -> new ReservedDto(loginMember, r))
+                    .map(r -> new ReservedDto(loginMember, r, getFilePathByTrade(r)))
                     .collect(toList());
 
             List<CompletedDto> completedDtos = completedByMember.stream()
-                    .map(c -> new CompletedDto(loginMember, c))
+                    .map(c -> new CompletedDto(loginMember, c, getFilePathByTrade(c)))
                     .collect(toList());
 
 
@@ -77,7 +83,7 @@ public class ItemService {
             List<PreemptionItem> preemptionItemByMember = preemptionItemService.findPreemptionItemByMember(loginMember);
 
             List<PreemptionItemDto> preemptionItemDtos = preemptionItemByMember.stream()
-                    .map(p -> new PreemptionItemDto(p.getItem().getMember(), p))
+                    .map(p -> new PreemptionItemDto(p.getItem().getMember(), p, getFilePathByPreemptionItem(p)))
                     .collect(toList());
 
             return new PreemptionItemsResult(preemptionItemByMember.size(), preemptionItemDtos);
@@ -85,5 +91,19 @@ public class ItemService {
             List<PreemptionItem> preemptionItemByMember = preemptionItemService.findPreemptionItemByMember(loginMember);
             return new PreemptionItemsResult(preemptionItemByMember.size(), null);
         }
+    }
+
+    private String getFullPath(String filename) {
+        return FILE_URL + filename;
+    }
+
+    private String getFilePathByTrade(Trade trade) {
+        String filePath = getFullPath(trade.getItem().getArticle().getImageFiles().get(THUMBNAIL_FILE_INDEX).getStoreFileName());
+        return filePath;
+    }
+
+    private String getFilePathByPreemptionItem(PreemptionItem preemptionItem) {
+        String filePath = getFullPath(preemptionItem.getItem().getArticle().getImageFiles().get(THUMBNAIL_FILE_INDEX).getStoreFileName());
+        return filePath;
     }
 }
