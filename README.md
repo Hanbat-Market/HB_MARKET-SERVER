@@ -4,10 +4,10 @@
 > 교내 중고거래 플랫폼 어플리케이션
 
 ### Team
-Back-End(Spring-boot): 김주찬
-Front-End(ios): 진동규
-Front-End(aos): 김병수
-Designer: 전지우
+- Back-End(Spring-boot): 김주찬
+- Front-End(ios): 진동규
+- Front-End(aos): 김병수
+- Designer: 전지우
 
 ## 회원가입
 
