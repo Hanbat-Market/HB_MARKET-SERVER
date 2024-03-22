@@ -3,11 +3,13 @@ package HM.Hanbat_Market.service.item;
 import HM.Hanbat_Market.api.item.dto.*;
 import HM.Hanbat_Market.domain.entity.*;
 import HM.Hanbat_Market.repository.item.ItemRepository;
+import HM.Hanbat_Market.service.APIURL;
 import HM.Hanbat_Market.service.member.MemberService;
 import HM.Hanbat_Market.service.preemption.PreemptionItemService;
 import HM.Hanbat_Market.service.trade.TradeService;
 import jakarta.persistence.NoResultException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,7 +28,8 @@ public class ItemService {
     private final TradeService tradeService;
 
     private final int THUMBNAIL_FILE_INDEX = 0;
-    private final String FILE_URL = "https://cce1-39-119-25-167.ngrok-free.app/api/images/";
+
+    private final String FILE_URL = APIURL.url;
 
     public SalesHistoryResponseDto salesHistoryToDto(Member loginMember) {
         try {

@@ -4,7 +4,6 @@ build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
-application.yml
 
 ### STS ###
 .apt_generated
@@ -26,6 +25,9 @@ bin/
 out/
 !**/src/main/**/out/
 !**/src/test/**/out/
+application.yml
+src/main/resources/application.yml
+*.yml
 
 ### NetBeans ###
 /nbproject/private/
@@ -36,3 +38,5 @@ out/
 
 ### VS Code ###
 .vscode/
+/src/main/java/HM/Hanbat_Market/service/APIURL.java
+/src/main/resources/static/files/
