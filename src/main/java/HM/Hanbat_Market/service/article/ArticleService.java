@@ -17,6 +17,7 @@ import HM.Hanbat_Market.repository.item.ImageFileRepository;
 import HM.Hanbat_Market.repository.item.dto.ItemCreateDto;
 import HM.Hanbat_Market.repository.item.dto.ItemUpdateDto;
 import HM.Hanbat_Market.repository.member.MemberRepository;
+import HM.Hanbat_Market.service.APIURL;
 import HM.Hanbat_Market.service.preemption.PreemptionItemService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -43,7 +44,7 @@ public class ArticleService {
     private final ImageFileRepository imageFileRepository;
     private final PreemptionItemService preemptionItemService;
     private final FileStore fileStore = new FileStore();
-    private final String FILE_URL = "https://cce1-39-119-25-167.ngrok-free.app/api/images/";
+    private final String FILE_URL = APIURL.url;
     private final int IMAGE_MAX_RANGE = 5;
     private final int THUMBNAIL_FILE_INDEX = 0;
 
