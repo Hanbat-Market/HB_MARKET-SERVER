@@ -43,7 +43,7 @@ public class ArticleService {
     private final ImageFileRepository imageFileRepository;
     private final PreemptionItemService preemptionItemService;
     private final FileStore fileStore = new FileStore();
-    private final String FILE_URL = "https://7d04-39-119-25-167.ngrok-free.app/api/images/";
+    private final String FILE_URL = "https://cce1-39-119-25-167.ngrok-free.app/api/images/";
     private final int IMAGE_MAX_RANGE = 5;
     private final int THUMBNAIL_FILE_INDEX = 0;
 
@@ -131,7 +131,7 @@ public class ArticleService {
         Item item = findArticle.getItem();
         Member member = findArticle.getMember();
 
-        int preemptionItemSize = preemptionItemService.findPreemptionItemByMember(loginMember).size();
+        int preemptionItemSize = preemptionItemService.findPreemptionItemByItem(item).size();
 
         List<String> fileNames = findArticle.getImageFiles().stream()
                 .map(imageFile -> getFullPath(imageFile.getStoreFileName()))
@@ -160,6 +160,7 @@ public class ArticleService {
                 .map(a -> {
                     List<ImageFile> imageFiles = imageFileRepository.findByArticle(a);
                     List<String> fullFilePaths = new ArrayList<>();
+                    List<PreemptionItem> preemptionItemByItem = preemptionItemService.findPreemptionItemByItem(a.getItem());
 
                     if (imageFiles != null && !imageFiles.isEmpty()) {
                         fullFilePaths = imageFiles.stream()
@@ -177,7 +178,9 @@ public class ArticleService {
                             a.getItem().getPrice(),
                             a.getMember().getNickname(),
                             fullFilePaths.get(THUMBNAIL_FILE_INDEX),
-                            a.getCreatedAt()
+                            a.getCreatedAt(),
+                            preemptionItemByItem.size(),
+                            a.getItem().getItemStatus()
                     );
                 })
                 .collect(Collectors.toList());

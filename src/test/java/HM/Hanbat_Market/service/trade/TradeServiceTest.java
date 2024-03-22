@@ -1,12 +1,15 @@
 package HM.Hanbat_Market.service.trade;
 
 import HM.Hanbat_Market.domain.entity.*;
+import HM.Hanbat_Market.repository.trade.TradeRepository;
 import HM.Hanbat_Market.service.article.ArticleService;
 import HM.Hanbat_Market.service.member.MemberService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDateTime;
 
 import static HM.Hanbat_Market.CreateTestEntity.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -21,6 +24,8 @@ class TradeServiceTest {
     ArticleService articleService;
     @Autowired
     TradeService tradeService;
+    @Autowired
+    TradeRepository tradeRepository;
 
 
     @Test
@@ -35,7 +40,7 @@ class TradeServiceTest {
                 createItemCreateDto("플스", 170000L));
         //when
         Article article = articleService.findArticle(articleId);
-        Trade trade = Trade.reservation(testMember2, article.getItem());
+        Trade trade = Trade.reservation(testMember2, article.getItem(), LocalDateTime.now());
         //then
         assertEquals(tradeService.findReservedByMember(testMember2).get(0).getTradeStatus(), TradeStatus.RESERVATION);
     }
@@ -52,9 +57,10 @@ class TradeServiceTest {
                 createItemCreateDto("플스", 170000L));
 
         Article article = articleService.findArticle(articleId);
-        Long tradeId = tradeService.reservation(testMember2.getId(), article.getItem().getId());
+        Long tradeId = tradeService.reservation(testMember2.getId(), article.getItem().getId(), LocalDateTime.now());
+        Trade trade = tradeRepository.findById(tradeId).get();
         //when
-        tradeService.tradeComplete(tradeId);
+        tradeService.tradeComplete(testMember2.getNickname(), trade.getItem().getArticle().getId());
         //then
         assertEquals(tradeService.findCompletedByMember(testMember2).get(0).getTradeStatus(), TradeStatus.COMP);
     }
@@ -69,7 +75,7 @@ class TradeServiceTest {
                 createItemCreateDto("플스", 170000L));
 
         Article article = articleService.findArticle(articleId);
-        Long tradeId = tradeService.reservation(testMember.getId(), article.getItem().getId());
+        Long tradeId = tradeService.reservation(testMember.getId(), article.getItem().getId(), LocalDateTime.now());
 
         //when
         tradeService.cancelTrade(tradeId);

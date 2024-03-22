@@ -1,5 +1,6 @@
 package HM.Hanbat_Market.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -25,13 +26,16 @@ public class Trade {
     @JoinColumn(name = "user_id")
     private Member member;
 
+    @Convert(converter = Jsr310JpaConverters.LocalDateTimeConverter.class)
+    private LocalDateTime transactionAppointmentDateTime;
+
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "item_id")
+    @JoinColumn(name = "item_id") // NULL 허용하지 않음
     private Item item;
 
     @CreatedDate
     @Convert(converter = Jsr310JpaConverters.LocalDateTimeConverter.class)
-    private LocalDateTime tradeDate;
+    private LocalDateTime reservationDate;
 
     @Enumerated(EnumType.STRING)
     private TradeStatus tradeStatus;
@@ -53,21 +57,28 @@ public class Trade {
     /**
      * 비즈니스 로직
      */
-    public static Trade reservation(Member member, Item item) {
+    public static Trade reservation(Member member, Item item, LocalDateTime transactionAppointmentDateTime) {
         Trade trade = new Trade();
+        trade.transactionAppointmentDateTime = setCreatedAt(transactionAppointmentDateTime);
         trade.regisItem(item);
         trade.regisMember(member);
         trade.tradeStatus = TradeStatus.RESERVATION;
+        item.reservationItemStatus();
         return trade;
     }
 
     public Trade complete() {
         this.tradeStatus = TradeStatus.COMP;
-        this.item.changeItemStatus();
+        this.item.compItemStatus();
         return this;
     }
 
-    public void cancel(){
+    public void cancel() {
         this.tradeStatus = TradeStatus.CANCEL;
+    }
+
+    private static LocalDateTime setCreatedAt(LocalDateTime createdAt) {
+        // LocalDateTime 값을 밀리초로 변환하여 설정
+        return createdAt.withNano(0);
     }
 }

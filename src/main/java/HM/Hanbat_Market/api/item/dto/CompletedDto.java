@@ -1,8 +1,6 @@
 package HM.Hanbat_Market.api.item.dto;
 
-import HM.Hanbat_Market.domain.entity.ArticleStatus;
-import HM.Hanbat_Market.domain.entity.Member;
-import HM.Hanbat_Market.domain.entity.Trade;
+import HM.Hanbat_Market.domain.entity.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,6 +11,8 @@ import java.time.LocalDateTime;
 public class CompletedDto {
 
     private Long id;
+
+    private Long tradeId;
 
     private String seller;
 
@@ -36,18 +36,25 @@ public class CompletedDto {
 
     private LocalDateTime reservedDate;
 
-    public CompletedDto(Member member, Trade trade, String thumbnailFilePath) {
-        this.id = trade.getItem().getArticle().getId();
-        this.seller = trade.getItem().getMember().getNickname();
-        this.purchaser = trade.getMember().getNickname();
-        this.title = trade.getItem().getArticle().getTitle();
-        this.description = trade.getItem().getArticle().getDescription();
-        this.tradingPlace = trade.getItem().getArticle().getTradingPlace();
-        this.articleStatus = trade.getItem().getArticle().getArticleStatus();
-        this.itemName = trade.getItem().getItemName();
-        this.price = trade.getItem().getPrice();
+    private ItemStatus itemStatus;
+
+    private int preemptionSize;
+
+    public CompletedDto(Member member, Item item, String thumbnailFilePath, int preemptionSize) {
+        this.id = item.getArticle().getId();
+        this.tradeId = item.getTrade().getId();
+        this.seller = item.getMember().getNickname();
+        this.purchaser = item.getTrade().getMember().getNickname();
+        this.title = item.getArticle().getTitle();
+        this.description = item.getArticle().getDescription();
+        this.tradingPlace = item.getArticle().getTradingPlace();
+        this.articleStatus = item.getArticle().getArticleStatus();
+        this.itemName = item.getItemName();
+        this.price = item.getPrice();
         this.thumbnailFilePath = thumbnailFilePath;
-        this.createdAt = trade.getItem().getArticle().getCreatedAt();
-        this.reservedDate = trade.getTradeDate();
+        this.createdAt = item.getArticle().getCreatedAt();
+        this.reservedDate = item.getTrade().getReservationDate();
+        this.itemStatus = item.getItemStatus();
+        this.preemptionSize = preemptionSize;
     }
 }

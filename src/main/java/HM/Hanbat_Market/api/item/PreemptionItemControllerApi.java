@@ -24,7 +24,7 @@ public class PreemptionItemControllerApi {
     private final ItemService itemService;
     private final MemberService memberService;
 
-    @GetMapping("/preemption/{itemId}")
+    @PostMapping("/preemption/{itemId}")
     public Result preemption(@PathVariable("itemId") Long itemId,
                              @Parameter(hidden = true) @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member sessionMember) {
 //        if (sessionMember == null) {

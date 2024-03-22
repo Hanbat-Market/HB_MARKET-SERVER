@@ -57,7 +57,7 @@ public class Article {
         this.title = title;
         this.description = description;
         this.tradingPlace = tradingPlace;
-        this.createdAt = LocalDateTime.now();
+        this.createdAt = setCreatedAt(LocalDateTime.now());
         this.articleStatus = ArticleStatus.OPEN;
     }
 
@@ -85,6 +85,15 @@ public class Article {
         article.regisItem(articleCreateDto.getItem());
 
         return article;
+    }
+
+    /**
+     * 유틸
+     */
+
+    public LocalDateTime setCreatedAt(LocalDateTime createdAt) {
+        // LocalDateTime 값을 밀리초로 변환하여 설정
+        return createdAt.withNano(0);
     }
 
     public void formatImageFiles() {
