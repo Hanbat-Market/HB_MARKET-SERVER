@@ -18,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 @Component
@@ -95,7 +96,7 @@ public class InitDB {
             imageFile = new ImageFile("default_image.png", "default_image.png");
             ImageFile.createImageFile(saveArticle, imageFile);
 
-            
+
             itemCreateDto.setItemName("행정학입문");
             itemCreateDto.setPrice(34000L);
 
@@ -126,14 +127,14 @@ public class InitDB {
             Article article3 = articleService.findArticle(articleId3);
             Article article4 = articleService.findArticle(articleId4);
 
-            Long tradeId = tradeService.reservation(member1.getId(), article.getItem().getId());
-            Long tradeId1 = tradeService.reservation(member1.getId(), article1.getItem().getId());
-            Long tradeId2 = tradeService.reservation(member1.getId(), article2.getItem().getId());
-            tradeService.tradeComplete(tradeId2);
+            Long tradeId = tradeService.reservation(member1.getId(), article.getId(), LocalDateTime.now());
+            Long tradeId1 = tradeService.reservation(member1.getId(), article1.getId(), LocalDateTime.now());
+            Long tradeId2 = tradeService.reservation(member1.getId(), article2.getId(), LocalDateTime.now());
+            tradeService.tradeComplete(member1.getNickname(), article2.getId());
 
-            Long tradeId3 = tradeService.reservation(member.getId(), article3.getItem().getId());
-            Long tradeId4 = tradeService.reservation(member.getId(), article4.getItem().getId());
-            tradeService.tradeComplete(tradeId4);
+            Long tradeId3 = tradeService.reservation(member.getId(), article3.getId(), LocalDateTime.now());
+            Long tradeId4 = tradeService.reservation(member.getId(), article4.getId(), LocalDateTime.now());
+            tradeService.tradeComplete(member.getNickname(), article4.getId());
         }
 
     }

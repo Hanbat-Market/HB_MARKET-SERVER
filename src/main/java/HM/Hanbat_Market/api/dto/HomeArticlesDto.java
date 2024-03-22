@@ -1,6 +1,8 @@
 package HM.Hanbat_Market.api.dto;
 
 import HM.Hanbat_Market.domain.entity.ArticleStatus;
+import HM.Hanbat_Market.domain.entity.ItemStatus;
+import HM.Hanbat_Market.domain.entity.TradeStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -30,4 +32,9 @@ public class HomeArticlesDto {
     private String thumbnailFilePath;
 
     private LocalDateTime createdAt;
+
+    private int preemptionSize;
+
+    private ItemStatus itemStatus;
+
 }

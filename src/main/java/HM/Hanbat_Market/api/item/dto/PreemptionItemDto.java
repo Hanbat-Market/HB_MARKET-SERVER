@@ -1,8 +1,6 @@
 package HM.Hanbat_Market.api.item.dto;
 
-import HM.Hanbat_Market.domain.entity.ArticleStatus;
-import HM.Hanbat_Market.domain.entity.Member;
-import HM.Hanbat_Market.domain.entity.PreemptionItem;
+import HM.Hanbat_Market.domain.entity.*;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -32,7 +30,11 @@ public class PreemptionItemDto {
 
     private LocalDateTime createdAt;
 
-    public PreemptionItemDto(Member member, PreemptionItem preemptionItem, String thumbnailFilePath) {
+    private ItemStatus itemStatus;
+
+    private int preemptionSize;
+
+    public PreemptionItemDto(Member member, PreemptionItem preemptionItem, String thumbnailFilePath, int preemptionSize) {
         this.id = preemptionItem.getItem().getArticle().getId();
         this.seller = member.getNickname();
         this.title = preemptionItem.getItem().getArticle().getTitle();
@@ -43,5 +45,7 @@ public class PreemptionItemDto {
         this.price = preemptionItem.getItem().getPrice();
         this.thumbnailFilePath = thumbnailFilePath;
         this.createdAt = preemptionItem.getItem().getArticle().getCreatedAt();
+        this.itemStatus = preemptionItem.getItem().getItemStatus();
+        this.preemptionSize = preemptionSize;
     }
 }

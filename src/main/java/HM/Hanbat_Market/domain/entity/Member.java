@@ -54,5 +54,4 @@ public class Member {
     public void changeMail(String mail) {
         setMail(mail);
     }
-
 }

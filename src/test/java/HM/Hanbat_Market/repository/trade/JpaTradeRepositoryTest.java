@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+
 import static HM.Hanbat_Market.CreateTestEntity.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -35,7 +37,7 @@ class JpaTradeRepositoryTest {
 
         jpaArticleRepository.save(article);
         //when
-        Trade trade = Trade.reservation(newMember, testItem);
+        Trade trade = Trade.reservation(newMember, testItem, LocalDateTime.now());
         trade.complete();
         jpaTradeRepository.save(trade);
 
