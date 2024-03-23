@@ -3,7 +3,7 @@
 ### Team
 - Back-End(Spring-boot): 김주찬
 - Front-End(ios): 진동규
-- Front-End(aos): 김병수
+- Front-End(aos): 강병수
 - Designer: 전지우
 
 ## 한밭마켓
