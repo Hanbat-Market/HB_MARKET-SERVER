@@ -24,7 +24,7 @@ public class PreemptionItemControllerApi {
     private final ItemService itemService;
     private final MemberService memberService;
 
-    @GetMapping("/preemption/{itemId}")
+    @PostMapping("/preemption/{itemId}")
     public Result preemption(@PathVariable("itemId") Long itemId,
                              @Parameter(hidden = true) @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member sessionMember) {
 //        if (sessionMember == null) {
@@ -42,14 +42,15 @@ public class PreemptionItemControllerApi {
                 preemptionItemService.cancelPreemption(preemptionItemId);
             }
             return new Result("Toggle ok " + preemptionItem.getPreemptionItemStatus());
-        } catch (NoResultException e) {
+        } catch (NullPointerException e) {
             preemptionItemService.regisPreemption(sessionMember.getId(), itemId);
             return new Result("Regis ok");
         }
     }
 
+
     @GetMapping("/preemptionItems")
-    public Result myPage(@Parameter(hidden = true) @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member sessionMember) {
+    public Result preemptionItems(@Parameter(hidden = true) @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member sessionMember) {
 //        if (sessionMember == null) {
 //            return new Result<>("로그인이 필요합니다");
 //        }

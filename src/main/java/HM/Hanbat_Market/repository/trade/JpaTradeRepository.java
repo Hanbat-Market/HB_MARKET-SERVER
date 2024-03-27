@@ -1,9 +1,8 @@
 package HM.Hanbat_Market.repository.trade;
 
-import HM.Hanbat_Market.domain.entity.Member;
-import HM.Hanbat_Market.domain.entity.Trade;
-import HM.Hanbat_Market.domain.entity.TradeStatus;
+import HM.Hanbat_Market.domain.entity.*;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -23,8 +22,22 @@ public class JpaTradeRepository implements TradeRepository {
     }
 
     @Override
+    public void remove(Trade trade) {
+        em.remove(trade); //직접 삭제말고 다른 방법도 고민
+    }
+
+
+    @Override
     public Optional<Trade> findById(Long id) {
         return Optional.ofNullable(em.find(Trade.class, id));
+    }
+
+    @Override
+    public Optional<Trade> findByItem(Long itemId) throws NoResultException {
+        return Optional.ofNullable(em.createQuery("select t from Trade t join fetch t.item i" +
+                        " where i.id = :itemId", Trade.class)
+                .setParameter("itemId", itemId)
+                .getSingleResult());
     }
 
     //추후에 동적쿼리로 원하는 구매내역만을 볼 수 있는 기능 추가예정
@@ -51,4 +64,23 @@ public class JpaTradeRepository implements TradeRepository {
                 .setParameter("purchaseMember", member.getNickname())
                 .getResultList();
     }
+
+    @Override
+    public Trade findReservationByPurchaserAndSeller(Member purchaser, Member seller, Long articleId) {
+        return em.createQuery("select t from Trade t where " +
+                        "t.tradeStatus = :tradeStatus and" +
+                        " t.item.member.nickname != :purchaserNickname and" +
+                        " t.member.nickname = :purchaserNickname and" +
+                        " t.item.member.nickname = :sellerNickname and" +
+                        " t.member.nickname != :sellerNickname and" +
+                        " t.item.article.id = :articleId", Trade.class)
+
+                .setParameter("tradeStatus", TradeStatus.RESERVATION)
+                .setParameter("purchaserNickname", purchaser.getNickname())
+                .setParameter("sellerNickname", seller.getNickname())
+                .setParameter("articleId", articleId)
+                .getSingleResult();
+    }
+
+
 }

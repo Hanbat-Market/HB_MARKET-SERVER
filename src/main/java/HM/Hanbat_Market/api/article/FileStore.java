@@ -1,9 +1,7 @@
 package HM.Hanbat_Market.api.article;
 
 import HM.Hanbat_Market.domain.entity.ImageFile;
-import HM.Hanbat_Market.exception.article.FileException;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
+import HM.Hanbat_Market.exception.article.FileValidityException;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -32,7 +30,7 @@ public class FileStore {
                     storeFileResult.add(storeFile(multipartFile));
                 } else {
                     // 확장자가 유효하지 않은 경우 에러 메시지 추가
-                    throw new FileException();
+                    throw new FileValidityException();
                 }
             }
         }

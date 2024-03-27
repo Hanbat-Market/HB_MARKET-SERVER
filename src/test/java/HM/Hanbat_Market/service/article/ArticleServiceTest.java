@@ -4,6 +4,7 @@ import HM.Hanbat_Market.CreateTestEntity;
 import HM.Hanbat_Market.api.article.dto.ArticleUpdateRequestDto;
 import HM.Hanbat_Market.domain.entity.*;
 import HM.Hanbat_Market.exception.ForbiddenException;
+import HM.Hanbat_Market.exception.article.NoImageException;
 import HM.Hanbat_Market.exception.member.LoginException;
 import HM.Hanbat_Market.repository.article.ArticleRepository;
 import HM.Hanbat_Market.repository.article.dto.ArticleCreateDto;
@@ -35,7 +36,7 @@ class ArticleServiceTest {
     @Test
     public void 게시글_등록() throws Exception {
         //given
-        Member member = Member.createMember("jckim229@gmail.com", "0303", "01028564221", "김주찬");
+        Member member = Member.createMember("jckim229@gmail.com", "0303",  "김주찬");
         memberService.join(member);
         ArticleCreateDto articleCreateDto = createArticleCreateDto("PS5 팝니다.", "싸게 팝니다.", "대전");
         ItemCreateDto itemCreateDto = createItemCreateDto("PS5", 170000L);
@@ -54,7 +55,7 @@ class ArticleServiceTest {
     @Test
     public void 게시글_등록_검색() throws Exception {
         //given
-        Member member = Member.createMember("jckim229@gmail.com", "0303", "01028564221", "김주찬");
+        Member member = Member.createMember("jckim229@gmail.com", "0303", "김주찬");
         memberService.join(member);
 
         ArticleCreateDto articleCreateDto = createArticleCreateDto("PS5 팝니다.", "싸게 팝니다.", "대전");
@@ -88,7 +89,7 @@ class ArticleServiceTest {
     @Test
     public void 게시글_수정() throws Exception {
         //given
-        Member member = Member.createMember("jckim229@gmail.com", "0303", "01028564221", "김주찬");
+        Member member = Member.createMember("jckim229@gmail.com", "0303", "김주찬");
         memberService.join(member);
 
         ArticleCreateDto articleCreateDto = createArticleCreateDto("PS5 팝니다.", "싸게 팝니다.", "대전");
@@ -108,22 +109,19 @@ class ArticleServiceTest {
 //        imageFilesDto.stream()
 //                .forEach(imageFileDto -> ImageFile.createImageFile(article, imageFileDto));
 
-        articleService.updateArticleToDto(articleId, articleUpdateRequestDto, member);
-
         //then (수정된 게시글 제목으로 검색)
+        NoImageException e = assertThrows(NoImageException.class, ()
+                -> articleService.updateArticleToDto(articleId, articleUpdateRequestDto, member));
+
         ArticleSearchDto articleSearchDto = new ArticleSearchDto();
         articleSearchDto.setTitle("수정한");
-        assertEquals(1, articleService.findArticles(articleSearchDto).size());
-
-        //then (등록한 이미지 파일 2개)
-//        assertEquals(2, articleService.findArticles().get(0).getImageFiles().size());
-
+        assertEquals(0, articleService.findArticles(articleSearchDto).size());
     }
 
     @Test
     public void 게시글_삭제() throws Exception {
         //given
-        Member member = Member.createMember("jckim229@gmail.com", "0303", "01028564221", "김주찬");
+        Member member = Member.createMember("jckim229@gmail.com", "0303", "김주찬");
         memberService.join(member);
 
         ArticleCreateDto articleCreateDto = createArticleCreateDto("PS5 팝니다.", "싸게 팝니다.", "대전");
@@ -141,8 +139,8 @@ class ArticleServiceTest {
     @Test
     public void 게시글_수정_권한_예외() throws Exception {
         //given
-        Member member = Member.createMember("jckim229@gmail.com", "0303", "01028564221", "김주찬");
-        Member member2 = Member.createMember("asd@asd.asd", "0303", "01023232323", "김수로");
+        Member member = Member.createMember("jckim229@gmail.com", "0303", "김주찬");
+        Member member2 = Member.createMember("asd@asd.asd", "0303",  "김수로");
         memberService.join(member);
 
         ArticleCreateDto articleCreateDto = createArticleCreateDto("PS5 팝니다.", "싸게 팝니다.", "대전");

@@ -42,10 +42,9 @@ public class HomeControllerApi {
 //        }
 
         List<Article> articles = articleService.findArticles(articleSearchDto);
-        List<HomeArticlesDto> homeArticlesDtos = articleService.findArticlesToDto(articles);
-        List<PreemptionItem> preemptionItemByMember = preemptionItemService.findPreemptionItemByMember(sessionMember);
+        List<HomeArticlesDto> homeArticlesDtos = articleService.findArticlesToDto(sessionMember, articles);
 
-        return new Result<>(new HomeResponseDto(preemptionItemByMember.size(), homeArticlesDtos.size(), homeArticlesDtos));
+        return new Result<>(new HomeResponseDto(homeArticlesDtos.size(), homeArticlesDtos));
     }
 
     /**

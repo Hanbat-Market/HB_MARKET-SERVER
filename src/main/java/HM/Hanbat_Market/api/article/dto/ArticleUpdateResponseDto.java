@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -22,5 +23,5 @@ public class ArticleUpdateResponseDto {
 
     private Long price;
 
-    private String filePath;
+    private List<String> filePaths;
 }

@@ -8,6 +8,8 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 @Getter
 @Setter
 public class ArticleCreateRequestDto {
@@ -27,5 +29,6 @@ public class ArticleCreateRequestDto {
     @NotEmpty(message = "거래장소를 입력해주세요..")
     private String tradingPlace;
 
-    @Hidden private MultipartFile imageFile1;
+    @Hidden
+    private List<MultipartFile> imageFiles;
 }

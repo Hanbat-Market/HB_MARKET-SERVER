@@ -32,8 +32,8 @@ class JpaMemberRepositoryTest {
     public void 전체회원조회() throws Exception {
         //given
         Member member1 = CreateTestEntity.createTestMember1();
-        Member member2 = Member.createMember("wncks0303@naver.com", "321", "010-321-321", "토마스");
-        Member member3 = Member.createMember("wncks0303@sadf.com", "213123", "010-4244-321", "케빈");
+        Member member2 = Member.createMember("wncks0303@naver.com", "321", "토마스");
+        Member member3 = Member.createMember("wncks0303@sadf.com", "213123", "케빈");
 
         jpaMemberRepository.save(member1);
         jpaMemberRepository.save(member2);

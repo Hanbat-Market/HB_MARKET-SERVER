@@ -17,12 +17,14 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
+import org.springframework.http.MediaType;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -34,43 +36,43 @@ public class ArticleControllerApi {
     private final FileStore fileStore = new FileStore();
 
     @PostMapping("/articles/new")
-    public Result create(@RequestPart("imageFile") MultipartFile imageFile,
+    public Result create(@RequestPart(value = "imageFiles", required = false) List<MultipartFile> imageFiles,
                          @Valid @RequestPart("articleCreateRequestDto") ArticleCreateRequestDto articleCreateRequestDto,
-                         BindingResult result,
                          @Parameter(hidden = true) @SessionAttribute(name = SessionConst.LOGIN_MEMBER,
                                  required = false) Member sessionMember) throws IOException {
 
-        articleCreateRequestDto.setImageFile1(imageFile);
+        articleCreateRequestDto.setImageFiles(imageFiles);
         ArticleCreateResponseDto articleCreateResponseDto = articleService.createArticleToDto(sessionMember.getId(), articleCreateRequestDto);
+
 
         return new Result(articleCreateResponseDto);
     }
 
     @GetMapping("/articles/edit/{articleId}")
+    @Hidden
     public Result updateDetail(@PathVariable("articleId") Long articleId,
                                @Parameter(hidden = true)
                                @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false)
                                Member sessionMember) {
 
-        Article article = articleService.findArticle(articleId);
-
+        Article article = articleService.findUpdateArticle(articleId, sessionMember);
         return new Result(articleService.articleDetailToDto(article, sessionMember));
     }
 
-    @PatchMapping("/articles/edit/{articleId}")
+    @PutMapping("/articles/edit/{articleId}")
     public Result update(@PathVariable("articleId") Long articleId,
-                         @RequestPart("imageFile") MultipartFile imageFile,
+                         @RequestPart(value = "imageFiles", required = false) List<MultipartFile> imageFiles,
                          @RequestPart("articleUpdateRequestDto") ArticleUpdateRequestDto articleUpdateRequestDto,
                          @Parameter(hidden = true) @SessionAttribute(name = SessionConst.LOGIN_MEMBER,
                                  required = false) Member sessionMember) throws IOException {
 
-        articleUpdateRequestDto.setImageFile1(imageFile);
+        articleUpdateRequestDto.setImageFiles(imageFiles);
         ArticleUpdateResponseDto articleUpdateResponseDto = articleService.updateArticleToDto(articleId, articleUpdateRequestDto, sessionMember);
 
         return new Result(articleUpdateResponseDto);
     }
 
-    @PostMapping("/articles/delete/{articleId}")
+    @DeleteMapping("/articles/delete/{articleId}")
     public Result delete(@PathVariable("articleId") Long articleId,
                          @Parameter(hidden = true) @SessionAttribute(name = SessionConst.LOGIN_MEMBER,
                                  required = false) Member sessionMember) throws IOException {
@@ -86,7 +88,8 @@ public class ArticleControllerApi {
                                 @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false)
                                 Member sessionMember) {
 
-        Article article = articleService.findUpdateArticle(articleId, sessionMember);
+        Article article = articleService.findArticle(articleId);
+
         return new Result(articleService.articleDetailToDto(article, sessionMember));
     }
 
