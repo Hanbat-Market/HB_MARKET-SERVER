@@ -14,6 +14,8 @@ public interface TradeRepository {
 
     Optional<Trade> findById(Long id);
 
+    Optional<Trade> findByItem(Long itemId);
+
     List<Trade> findAll();
 
     List<Trade> findCompleteByMember(Member member);

@@ -42,7 +42,9 @@ public class ReservedDto {
 
     private int preemptionSize;
 
-    public ReservedDto(Member member, Item item, String thumbnailFilePath, int preemptionSize){
+    private PreemptionItemStatus preemptionItemStatus;
+
+    public ReservedDto(Member member, Item item, String thumbnailFilePath, int preemptionSize, PreemptionItemStatus preemptionItemStatus){
         this.id = item.getArticle().getId();
         this.tradeId = item.getId();
         this.seller = item.getMember().getNickname();
@@ -59,5 +61,6 @@ public class ReservedDto {
         this.reservedDate = item.getTrade().getReservationDate();
         this.itemStatus = item.getItemStatus();
         this.preemptionSize = preemptionSize;
+        this.preemptionItemStatus = preemptionItemStatus;
     }
 }

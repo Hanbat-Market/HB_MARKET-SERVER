@@ -2,6 +2,7 @@ package HM.Hanbat_Market.repository.trade;
 
 import HM.Hanbat_Market.domain.entity.*;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -29,6 +30,14 @@ public class JpaTradeRepository implements TradeRepository {
     @Override
     public Optional<Trade> findById(Long id) {
         return Optional.ofNullable(em.find(Trade.class, id));
+    }
+
+    @Override
+    public Optional<Trade> findByItem(Long itemId) throws NoResultException {
+        return Optional.ofNullable(em.createQuery("select t from Trade t join fetch t.item i" +
+                        " where i.id = :itemId", Trade.class)
+                .setParameter("itemId", itemId)
+                .getSingleResult());
     }
 
     //추후에 동적쿼리로 원하는 구매내역만을 볼 수 있는 기능 추가예정
@@ -72,7 +81,6 @@ public class JpaTradeRepository implements TradeRepository {
                 .setParameter("articleId", articleId)
                 .getSingleResult();
     }
-
 
 
 }

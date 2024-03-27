@@ -1,9 +1,6 @@
 package HM.Hanbat_Market.api.article.dto;
 
-import HM.Hanbat_Market.domain.entity.ArticleStatus;
-import HM.Hanbat_Market.domain.entity.ImageFile;
-import HM.Hanbat_Market.domain.entity.Item;
-import HM.Hanbat_Market.domain.entity.Member;
+import HM.Hanbat_Market.domain.entity.*;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -26,8 +23,6 @@ public class ArticleDetailResponseDto {
 
     private String tradingPlace;
 
-    private ArticleStatus articleStatus;
-
     private String itemName;
 
     private Long price;
@@ -38,5 +33,9 @@ public class ArticleDetailResponseDto {
 
     private LocalDateTime createdAt;
 
+    private PreemptionItemStatus preemptionItemStatus;
+
     private int preemptionItemSize;
+
+    private ItemStatus itemStatus;
 }

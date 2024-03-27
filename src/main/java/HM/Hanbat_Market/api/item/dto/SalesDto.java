@@ -1,9 +1,6 @@
 package HM.Hanbat_Market.api.item.dto;
 
-import HM.Hanbat_Market.domain.entity.ArticleStatus;
-import HM.Hanbat_Market.domain.entity.Item;
-import HM.Hanbat_Market.domain.entity.Member;
-import HM.Hanbat_Market.domain.entity.Trade;
+import HM.Hanbat_Market.domain.entity.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -22,8 +19,6 @@ public class SalesDto {
 
     private String tradingPlace;
 
-    private ArticleStatus articleStatus;
-
     private String itemName;
 
     private Long price;
@@ -32,13 +27,15 @@ public class SalesDto {
 
     private LocalDateTime createdAt;
 
+    private ItemStatus itemStatus;
+
     public SalesDto(Item item, String thumbnailFilePath){
         this.id = item.getArticle().getId();
         this.seller = item.getMember().getNickname();
         this.title = item.getArticle().getTitle();
         this.description = item.getArticle().getDescription();
         this.tradingPlace = item.getArticle().getTradingPlace();
-        this.articleStatus = item.getArticle().getArticleStatus();
+        this.itemStatus = item.getItemStatus();
         this.itemName = item.getItemName();
         this.price = item.getPrice();
         this.thumbnailFilePath = thumbnailFilePath;

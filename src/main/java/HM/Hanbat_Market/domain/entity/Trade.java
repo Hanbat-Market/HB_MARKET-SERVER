@@ -73,8 +73,14 @@ public class Trade {
         return this;
     }
 
+    public void cancelStatusToReservation() {
+        this.tradeStatus = TradeStatus.RESERVATION;
+        this.item.reservationItemStatus();
+    }
+
     public void cancel() {
         this.tradeStatus = TradeStatus.CANCEL;
+        this.item.cancelReservation();
     }
 
     private static LocalDateTime setCreatedAt(LocalDateTime createdAt) {

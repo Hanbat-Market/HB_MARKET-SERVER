@@ -31,6 +31,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -123,14 +124,23 @@ public class ArticleService {
 
     @Transactional
     public ArticleDetailResponseDto articleDetailToDto(Article article, Member loginMember) {
-        Article findArticle = articleRepository.findById(article.getId()).get();
+        Article findArticle = articleRepository.findById(article.getId())
+                .orElseThrow(NotFoundException::new);
 
-        if(findArticle.getArticleStatus() == ArticleStatus.HIDE){
+        if (findArticle.getArticleStatus() == ArticleStatus.HIDE) {
             throw new IsDeleteArticleException();
         }
 
         Item item = findArticle.getItem();
         Member member = findArticle.getMember();
+
+        PreemptionItemStatus preemptionItemStatus = PreemptionItemStatus.CANCEL;
+
+        PreemptionItem preemptionItemByMemberAndItem = preemptionItemService.findPreemptionItemByMemberAndItem(loginMember, item);
+
+        if (preemptionItemByMemberAndItem != null) {
+            preemptionItemStatus = preemptionItemByMemberAndItem.getPreemptionItemStatus();
+        }
 
         int preemptionItemSize = preemptionItemService.findPreemptionItemByItem(item).size();
 
@@ -142,13 +152,15 @@ public class ArticleService {
                 findArticle.getTitle(),
                 findArticle.getDescription(),
                 findArticle.getTradingPlace(),
-                findArticle.getArticleStatus(),
                 item.getItemName(),
                 item.getPrice(),
                 member.getNickname(),
                 fileNames,
                 findArticle.getCreatedAt(),
-                preemptionItemSize);
+                preemptionItemStatus,
+                preemptionItemSize,
+                item.getItemStatus()
+        );
     }
 
     //검색
@@ -156,12 +168,20 @@ public class ArticleService {
         return articleRepository.findAllBySearch(articleSearchDto);
     }
 
-    public List<HomeArticlesDto> findArticlesToDto(List<Article> articles) {
+    public List<HomeArticlesDto> findArticlesToDto(Member loginMember, List<Article> articles) {
         List<HomeArticlesDto> homeArticlesDtos = articles.stream()
                 .map(a -> {
                     List<ImageFile> imageFiles = imageFileRepository.findByArticle(a);
                     List<String> fullFilePaths = new ArrayList<>();
                     List<PreemptionItem> preemptionItemByItem = preemptionItemService.findPreemptionItemByItem(a.getItem());
+
+                    PreemptionItemStatus preemptionItemStatus = PreemptionItemStatus.CANCEL;
+
+                    PreemptionItem preemptionItemByMemberAndItem = preemptionItemService.findPreemptionItemByMemberAndItem(loginMember, a.getItem());
+
+                    if (preemptionItemByMemberAndItem != null) {
+                        preemptionItemStatus = preemptionItemByMemberAndItem.getPreemptionItemStatus();
+                    }
 
                     if (imageFiles != null && !imageFiles.isEmpty()) {
                         fullFilePaths = imageFiles.stream()
@@ -181,7 +201,8 @@ public class ArticleService {
                             fullFilePaths.get(THUMBNAIL_FILE_INDEX),
                             a.getCreatedAt(),
                             preemptionItemByItem.size(),
-                            a.getItem().getItemStatus()
+                            a.getItem().getItemStatus(),
+                            preemptionItemStatus
                     );
                 })
                 .collect(Collectors.toList());
@@ -224,6 +245,7 @@ public class ArticleService {
         }
 
         article.delete();
+        article.getItem().deleteItem();
     }
 
     @Transactional
@@ -247,7 +269,7 @@ public class ArticleService {
             throw new NotFoundException();
         }
 
-        if(article.getArticleStatus() == ArticleStatus.HIDE){
+        if (article.getArticleStatus() == ArticleStatus.HIDE) {
             throw new IsDeleteArticleException();
         }
 

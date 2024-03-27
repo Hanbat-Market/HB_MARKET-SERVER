@@ -78,7 +78,7 @@ class TradeServiceTest {
         Long tradeId = tradeService.reservation(testMember.getId(), article.getItem().getId(), LocalDateTime.now());
 
         //when
-        tradeService.cancelTrade(tradeId);
+        tradeService.cancelTrade(testMember, testMember.getNickname(), tradeId);
 
         //then
         assertEquals(tradeService.findReservedByMember(testMember).size(), 0);

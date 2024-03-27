@@ -42,11 +42,12 @@ public class PreemptionItemControllerApi {
                 preemptionItemService.cancelPreemption(preemptionItemId);
             }
             return new Result("Toggle ok " + preemptionItem.getPreemptionItemStatus());
-        } catch (NoResultException e) {
+        } catch (NullPointerException e) {
             preemptionItemService.regisPreemption(sessionMember.getId(), itemId);
             return new Result("Regis ok");
         }
     }
+
 
     @GetMapping("/preemptionItems")
     public Result preemptionItems(@Parameter(hidden = true) @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member sessionMember) {
