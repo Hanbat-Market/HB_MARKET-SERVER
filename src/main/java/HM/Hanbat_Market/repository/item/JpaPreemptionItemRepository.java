@@ -33,25 +33,27 @@ public class JpaPreemptionItemRepository implements PreemptionItemRepository {
     }
 
     @Override
-    public PreemptionItem findByMemberAndItem(Member member, Item item) throws NoResultException {
+    public PreemptionItem findByMemberAndItem(Member member, Item item) {
         Long memberId = member.getId();
         Long itemId = item.getId();
-        return em.createQuery("select p from PreemptionItem p join fetch p.member m join p.item i where m.id = :memberId and i.id = :itemId" +
-                        " and p.item.itemStatus = :itemStatus", PreemptionItem.class)
-                .setParameter("memberId", member.getId())
-                .setParameter("itemStatus", ItemStatus.SALE)
-                .setParameter("itemId", item.getId())
-                .getSingleResult();
+        try {
+            return em.createQuery("select p from PreemptionItem p where p.member.id = :memberId and p.item.id = :itemId",
+                            PreemptionItem.class)
+                    .setParameter("memberId", memberId)
+                    .setParameter("itemId", itemId)
+                    .getSingleResult();
+        }catch (NoResultException e){
+            return null;
+        }
     }
 
     @Override
     public List<PreemptionItem> findAllByMember(Member member) {
         Long memberId = member.getId();
         return em.createQuery("select p from PreemptionItem p join fetch p.member m where m.id = :memberId" +
-                        " and p.item.itemStatus = :itemStatus and p.preemptionItemStatus != :preemptionItemStatus", PreemptionItem.class)
+                        " and p.preemptionItemStatus = :preemptionItemStatus", PreemptionItem.class)
                 .setParameter("memberId", member.getId())
-                .setParameter("itemStatus", ItemStatus.SALE)
-                .setParameter("preemptionItemStatus", PreemptionItemStatus.CANCEL)
+                .setParameter("preemptionItemStatus", PreemptionItemStatus.PREEMPTION)
                 .getResultList();
     }
 
@@ -59,10 +61,9 @@ public class JpaPreemptionItemRepository implements PreemptionItemRepository {
     public List<PreemptionItem> findAllByItem(Item item) {
         Long itemId = item.getId();
         return em.createQuery("select p from PreemptionItem p join fetch p.item i where i.id = :itemId" +
-                        " and i.itemStatus = :itemStatus and p.preemptionItemStatus != :preemptionItemStatus", PreemptionItem.class)
+                        " and p.preemptionItemStatus = :preemptionItemStatus", PreemptionItem.class)
                 .setParameter("itemId", item.getId())
-                .setParameter("itemStatus", ItemStatus.SALE)
-                .setParameter("preemptionItemStatus", PreemptionItemStatus.CANCEL)
+                .setParameter("preemptionItemStatus", PreemptionItemStatus.PREEMPTION)
                 .getResultList();
     }
 

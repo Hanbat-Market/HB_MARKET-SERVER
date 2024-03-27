@@ -19,7 +19,7 @@ public class CreateTestEntity {
         String phoneNumber = "010-4321-4321";
         String nickname = "토마스";
 
-        return Member.createMember(mail, passwd, phoneNumber, nickname);
+        return Member.createMember(mail, passwd, nickname);
     }
 
     public static Member createTestMember1() {
@@ -28,7 +28,7 @@ public class CreateTestEntity {
         String phoneNumber = "010-1234-1234";
         String nickname = "김주찬";
 
-        return Member.createMember(mail, passwd, phoneNumber, nickname);
+        return Member.createMember(mail, passwd, nickname);
     }
 
     public static Item createTestItem(Member member, String name, Long price) {
@@ -52,7 +52,7 @@ public class CreateTestEntity {
 
     public static Member createTestMember(String nickname, String mail, String phoneNumber) {
         String passwd = "1234";
-        return Member.createMember(mail, passwd, phoneNumber, nickname);
+        return Member.createMember(mail, passwd, nickname);
     }
 
     public static Item createTestItem(Member member) {

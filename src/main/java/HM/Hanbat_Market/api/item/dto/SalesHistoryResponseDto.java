@@ -14,8 +14,9 @@ import java.util.List;
 @Getter
 @Setter
 @AllArgsConstructor
-public class MyPageResponseDto {
+public class SalesHistoryResponseDto {
     private int preemptionSize;
+    private List<SalesDto> salesDtos;
     private List<ReservedDto> reservedDtos;
     private List<CompletedDto> completedDtos;
 }

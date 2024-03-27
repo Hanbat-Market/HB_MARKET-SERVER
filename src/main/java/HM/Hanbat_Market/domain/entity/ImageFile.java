@@ -39,6 +39,10 @@ public class ImageFile {
         article.getImageFiles().add(this);
     }
 
+    public void format(){
+        this.article = null;
+    }
+
     /**
      * 생성 메서드
      */

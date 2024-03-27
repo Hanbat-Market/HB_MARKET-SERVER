@@ -1,5 +1,5 @@
 package HM.Hanbat_Market.domain.entity;
 
 public enum ItemStatus {
-    SALE, COMP, HIDE;
+    SALE, RESERVATION, COMP, HIDE;
 }

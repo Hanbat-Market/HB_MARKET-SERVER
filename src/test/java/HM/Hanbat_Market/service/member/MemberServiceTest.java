@@ -69,22 +69,6 @@ class MemberServiceTest {
     }
 
     @Test
-    public void 중복회원_예외_전화번호() {
-        //given
-        Member member1 = createTestMember("hello",
-                "jckim229@gmail.com", "01012341234");
-
-        Member member2 = createTestMember("hello123",
-                "zxcv@gmail.com", "01012341234");
-
-        //when, then
-        memberService.join(member1);
-
-        JoinException e = assertThrows(JoinException.class, ()
-                -> memberService.join(member2));
-    }
-
-    @Test
     public void 로그인_실패() {
         //given
 

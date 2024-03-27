@@ -89,6 +89,22 @@ public class Item {
         }
     }
 
+    public void cancelReservation(){
+        this.itemStatus = ItemStatus.SALE;
+    }
+
+    public void reservationItemStatus(){
+        this.itemStatus = ItemStatus.RESERVATION;
+    }
+
+    public void saleItemStatus(){
+        this.itemStatus = ItemStatus.SALE;
+    }
+
+    public void compItemStatus(){
+        this.itemStatus = ItemStatus.COMP;
+    }
+
     public void updateItem(ItemUpdateDto itemUpdateDto){
         this.price = itemUpdateDto.getPrice();
         this.itemName = itemUpdateDto.getItemName();
