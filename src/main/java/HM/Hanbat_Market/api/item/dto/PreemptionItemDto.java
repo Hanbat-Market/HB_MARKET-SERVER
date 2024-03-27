@@ -34,7 +34,9 @@ public class PreemptionItemDto {
 
     private int preemptionSize;
 
-    public PreemptionItemDto(Member member, PreemptionItem preemptionItem, String thumbnailFilePath, int preemptionSize) {
+    private PreemptionItemStatus preemptionItemStatus;
+
+    public PreemptionItemDto(Member member, PreemptionItem preemptionItem, String thumbnailFilePath, int preemptionSize, PreemptionItemStatus preemptionItemStatus) {
         this.id = preemptionItem.getItem().getArticle().getId();
         this.seller = member.getNickname();
         this.title = preemptionItem.getItem().getArticle().getTitle();
@@ -47,5 +49,6 @@ public class PreemptionItemDto {
         this.createdAt = preemptionItem.getItem().getArticle().getCreatedAt();
         this.itemStatus = preemptionItem.getItem().getItemStatus();
         this.preemptionSize = preemptionSize;
+        this.preemptionItemStatus = preemptionItemStatus;
     }
 }

@@ -45,9 +45,11 @@ public class ItemService {
                     continue;
                 }
                 if (itemStatus == ItemStatus.RESERVATION) {
-                    reservedDtos.add(new ReservedDto(loginMember, item, filePath, getPreemptionSize(item)));
+                    reservedDtos.add(new ReservedDto(loginMember, item, filePath, getPreemptionSize(item),
+                            returnPreemptionItemStatus(loginMember, item)));
                 } else if (itemStatus == ItemStatus.COMP) {
-                    completedDtos.add(new CompletedDto(loginMember, item, filePath, getPreemptionSize(item)));
+                    completedDtos.add(new CompletedDto(loginMember, item, filePath, getPreemptionSize(item),
+                            returnPreemptionItemStatus(loginMember, item)));
                 }
             }
             List<PreemptionItem> preemptionItemByMember = preemptionItemService.findPreemptionItemByMember(loginMember);
@@ -66,11 +68,13 @@ public class ItemService {
             List<PreemptionItem> preemptionItemByMember = preemptionItemService.findPreemptionItemByMember(loginMember);
 
             List<ReservedDto> reservedDtos = reservedByMember.stream()
-                    .map(r -> new ReservedDto(loginMember, r.getItem(), getFilePathByTrade(r), getPreemptionSize(r.getItem())))
+                    .map(r -> new ReservedDto(loginMember, r.getItem(), getFilePathByTrade(r), getPreemptionSize(r.getItem()),
+                            returnPreemptionItemStatus(loginMember, r.getItem())))
                     .collect(toList());
 
             List<CompletedDto> completedDtos = completedByMember.stream()
-                    .map(c -> new CompletedDto(loginMember, c.getItem(), getFilePathByTrade(c), getPreemptionSize(c.getItem())))
+                    .map(c -> new CompletedDto(loginMember, c.getItem(), getFilePathByTrade(c), getPreemptionSize(c.getItem()),
+                            returnPreemptionItemStatus(loginMember, c.getItem())))
                     .collect(toList());
 
 
@@ -86,7 +90,8 @@ public class ItemService {
             List<PreemptionItem> preemptionItemByMember = preemptionItemService.findPreemptionItemByMember(loginMember);
 
             List<PreemptionItemDto> preemptionItemDtos = preemptionItemByMember.stream()
-                    .map(p -> new PreemptionItemDto(p.getItem().getMember(), p, getFilePathByPreemptionItem(p), getPreemptionSize(p.getItem())))
+                    .map(p -> new PreemptionItemDto(p.getItem().getMember(), p, getFilePathByPreemptionItem(p), getPreemptionSize(p.getItem()),
+                            returnPreemptionItemStatus(loginMember, p.getItem())))
                     .collect(toList());
 
             return new PreemptionItemsResult(preemptionItemByMember.size(), preemptionItemDtos);
@@ -112,5 +117,16 @@ public class ItemService {
 
     private int getPreemptionSize(Item item) {
         return preemptionItemService.findPreemptionItemByItem(item).size();
+    }
+
+    private PreemptionItemStatus returnPreemptionItemStatus(Member loginMember, Item item) {
+        PreemptionItemStatus preemptionItemStatus = PreemptionItemStatus.CANCEL;
+
+        PreemptionItem preemptionItemByMemberAndItem = preemptionItemService.findPreemptionItemByMemberAndItem(loginMember, item);
+
+        if (preemptionItemByMemberAndItem != null) {
+            preemptionItemStatus = preemptionItemByMemberAndItem.getPreemptionItemStatus();
+        }
+        return preemptionItemStatus;
     }
 }

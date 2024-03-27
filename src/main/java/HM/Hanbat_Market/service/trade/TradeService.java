@@ -1,13 +1,14 @@
 package HM.Hanbat_Market.service.trade;
 
 import HM.Hanbat_Market.domain.entity.*;
-import HM.Hanbat_Market.exception.trade.AlreadyCompleteTradeException;
-import HM.Hanbat_Market.exception.trade.IsNotReservationTradeException;
+import HM.Hanbat_Market.exception.NotFoundException;
+import HM.Hanbat_Market.exception.trade.*;
 import HM.Hanbat_Market.repository.article.ArticleRepository;
 import HM.Hanbat_Market.repository.item.ItemRepository;
 import HM.Hanbat_Market.repository.member.MemberRepository;
 import HM.Hanbat_Market.repository.trade.TradeRepository;
 import HM.Hanbat_Market.service.member.MemberService;
+import jakarta.persistence.NoResultException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.coyote.BadRequestException;
@@ -31,17 +32,33 @@ public class TradeService {
 
     //판매자의 구매자가 약속을 체결하면 예약
     @Transactional
-    public Long reservation(String memberNickname, Long articleId, LocalDateTime transactionAppointmentDateTime) {
+    public Long reservation(Member loginMember, String memberNickname, Long articleId, LocalDateTime transactionAppointmentDateTime) {
 
-        if(transactionAppointmentDateTime == null){
+        if (transactionAppointmentDateTime == null) {
             transactionAppointmentDateTime = LocalDateTime.now();
         }
-
         log.info("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@transactionAppointmentDateTime: " + transactionAppointmentDateTime);
-        Article article = articleRepository.findById(articleId).get();
+        Trade trade = null;
+
+        Article article = articleRepository.findById(articleId)
+                .orElseThrow(NotFoundException::new);
+
         Member member = memberRepository.findByNickName(memberNickname).get();
         Item item = itemRepository.findById(article.getId()).get();
-        Trade trade = Trade.reservation(member, item, transactionAppointmentDateTime);
+
+        if (item.getMember().getId() != loginMember.getId()) {
+            throw new OnlyReservationOwnerException();
+        }
+
+        try {
+            trade = tradeRepository.findByItem(item.getId()).get();
+            if (trade.getTradeStatus() == TradeStatus.COMP) {
+                throw new AlreadyCompleteTradeCantReservationException();
+            }
+            trade.cancelStatusToReservation();
+        } catch (NoResultException e) {
+            trade = Trade.reservation(member, item, transactionAppointmentDateTime);
+        }
 
         tradeRepository.save(trade);
 
@@ -78,11 +95,16 @@ public class TradeService {
     }
 
     @Transactional
-    public Long tradeComplete(Long tradeId) {
+    public Long tradeComplete(Member loginMember, Long tradeId) {
 
-        Trade reservationByPurchaserAndSeller = tradeRepository.findById(tradeId).get();
+        Trade trade = tradeRepository.findById(tradeId)
+                .orElseThrow(NotFoundException::new);
 
-        Trade complete = reservationByPurchaserAndSeller.complete();
+        if (trade.getItem().getMember().getId() != loginMember.getId()) {
+            throw new OnlyCompleteTradeOwnerException();
+        }
+
+        Trade complete = trade.complete();
 
         return complete.getId();
     }
@@ -99,16 +121,25 @@ public class TradeService {
 
     //예약취소(판매자가 다룰 수 있음)
     @Transactional
-    public void cancelTrade(Long tradeId) {
-        Trade trade = tradeRepository.findById(tradeId).get();
+    public void cancelTrade(Member loginMember, String requestMemberNickName, Long tradeId) {
+        Trade trade = tradeRepository.findById(tradeId)
+                .orElseThrow(NotFoundException::new);
 
         if (trade.getTradeStatus() == TradeStatus.COMP) {
             throw new AlreadyCompleteTradeException();
         }
-        if(trade.getTradeStatus() == TradeStatus.RESERVATION){
-            tradeRepository.remove(trade);
-            //        trade.cancel();
-        }else{
+
+        Member requestMember = memberService.findOne(requestMemberNickName).get();
+
+        if (requestMember.getId() != trade.getMember().getId() && requestMember.getId() != trade.getItem().getMember().getId()) {
+            throw new OnlyCancelTraderException();
+        }
+
+        if (trade.getTradeStatus() == TradeStatus.RESERVATION) {
+            trade.getItem().cancelReservation();
+//            tradeRepository.remove(trade);
+            trade.cancel();
+        } else {
             throw new IsNotReservationTradeException();
         }
     }

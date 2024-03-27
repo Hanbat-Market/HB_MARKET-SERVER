@@ -8,8 +8,7 @@ import HM.Hanbat_Market.exception.member.AlreadyLoginException;
 import HM.Hanbat_Market.exception.member.JoinException;
 import HM.Hanbat_Market.exception.member.LoginException;
 import HM.Hanbat_Market.exception.member.UnAuthorizedException;
-import HM.Hanbat_Market.exception.trade.AlreadyCompleteTradeException;
-import HM.Hanbat_Market.exception.trade.IsNotReservationTradeException;
+import HM.Hanbat_Market.exception.trade.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 
@@ -106,6 +105,34 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(IsNotReservationTradeException.class)
     public ErrorResult IsNotReservationTradeExceptionHandler(IsNotReservationTradeException e) {
+        log.error("[exceptionHandler] ex", e);
+        return new ErrorResult(e.getStatus(), e.getErrorCode(), e.getErrorMessage());
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(AlreadyCompleteTradeCantReservationException.class)
+    public ErrorResult AlreadyCompleteTradeCantReservationExceptionHandler(AlreadyCompleteTradeCantReservationException e) {
+        log.error("[exceptionHandler] ex", e);
+        return new ErrorResult(e.getStatus(), e.getErrorCode(), e.getErrorMessage());
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(OnlyCancelTraderException.class)
+    public ErrorResult OnlyCancelTraderExceptionHandler(OnlyCancelTraderException e) {
+        log.error("[exceptionHandler] ex", e);
+        return new ErrorResult(e.getStatus(), e.getErrorCode(), e.getErrorMessage());
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(OnlyCompleteTradeOwnerException.class)
+    public ErrorResult OnlyCompleteTradeOwnerExceptionHandler(OnlyCompleteTradeOwnerException e) {
+        log.error("[exceptionHandler] ex", e);
+        return new ErrorResult(e.getStatus(), e.getErrorCode(), e.getErrorMessage());
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(OnlyReservationOwnerException.class)
+    public ErrorResult OnlyReservationOwnerExceptionHandler(OnlyReservationOwnerException e) {
         log.error("[exceptionHandler] ex", e);
         return new ErrorResult(e.getStatus(), e.getErrorCode(), e.getErrorMessage());
     }

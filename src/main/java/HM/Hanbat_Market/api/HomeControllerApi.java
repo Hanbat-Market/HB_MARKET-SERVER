@@ -42,7 +42,7 @@ public class HomeControllerApi {
 //        }
 
         List<Article> articles = articleService.findArticles(articleSearchDto);
-        List<HomeArticlesDto> homeArticlesDtos = articleService.findArticlesToDto(articles);
+        List<HomeArticlesDto> homeArticlesDtos = articleService.findArticlesToDto(sessionMember, articles);
 
         return new Result<>(new HomeResponseDto(homeArticlesDtos.size(), homeArticlesDtos));
     }

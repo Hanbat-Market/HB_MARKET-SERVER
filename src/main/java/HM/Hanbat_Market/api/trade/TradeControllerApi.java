@@ -26,7 +26,7 @@ public class TradeControllerApi {
                               @Parameter(hidden = true) @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member sessionMember) {
 
         //구매자의 멤버 id와 판매 게시글의 id를 통해 예약 체결 (판매자의 권한으로)
-        Long reservationId = tradeService.reservation(reservationRequestDto.getMemberNickname(), reservationRequestDto.getArticleId(), reservationRequestDto.getTransactionAppointmentDateTime());
+        Long reservationId = tradeService.reservation(sessionMember ,reservationRequestDto.getMemberNickname(), reservationRequestDto.getArticleId(), reservationRequestDto.getTransactionAppointmentDateTime());
 
         return new Result(new ReservationResponseDto(reservationId));
     }
@@ -35,7 +35,7 @@ public class TradeControllerApi {
     public Result complete(@RequestBody CompleteTradeRequestDto completeTradeRequestDto,
                            @Parameter(hidden = true) @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member sessionMember) {
 
-        tradeService.tradeComplete(completeTradeRequestDto.getTradeId());
+        tradeService.tradeComplete(sessionMember, completeTradeRequestDto.getTradeId());
 
         return new Result("ok");
     }
@@ -44,7 +44,7 @@ public class TradeControllerApi {
     public Result cancel(@RequestBody CancelTradeRequestDto cancelTradeRequestDto,
                          @Parameter(hidden = true) @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member sessionMember) {
 
-        tradeService.cancelTrade(cancelTradeRequestDto.getTradeId());
+        tradeService.cancelTrade(sessionMember,cancelTradeRequestDto.getRequestMemberNickname(), cancelTradeRequestDto.getTradeId());
 
         return new Result("ok");
     }
