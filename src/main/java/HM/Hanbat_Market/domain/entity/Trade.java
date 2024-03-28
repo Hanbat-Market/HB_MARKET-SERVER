@@ -40,6 +40,8 @@ public class Trade {
     @Enumerated(EnumType.STRING)
     private TradeStatus tradeStatus;
 
+    private String reservationPlace;
+
 
     /**
      * 연관관계 편의 메서드
@@ -57,13 +59,14 @@ public class Trade {
     /**
      * 비즈니스 로직
      */
-    public static Trade reservation(Member member, Item item, LocalDateTime transactionAppointmentDateTime) {
+    public static Trade reservation(Member member, Item item, LocalDateTime transactionAppointmentDateTime, String reservationPlace) {
         Trade trade = new Trade();
         trade.transactionAppointmentDateTime = setCreatedAt(transactionAppointmentDateTime);
         trade.regisItem(item);
         trade.regisMember(member);
         trade.tradeStatus = TradeStatus.RESERVATION;
         item.reservationItemStatus();
+        trade.reservationPlace = reservationPlace;
         return trade;
     }
 

@@ -37,7 +37,7 @@ class JpaTradeRepositoryTest {
 
         jpaArticleRepository.save(article);
         //when
-        Trade trade = Trade.reservation(newMember, testItem, LocalDateTime.now());
+        Trade trade = Trade.reservation(newMember, testItem, LocalDateTime.now(), "임시 저장 장소");
         trade.complete();
         jpaTradeRepository.save(trade);
 

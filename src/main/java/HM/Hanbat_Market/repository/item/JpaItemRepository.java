@@ -37,6 +37,15 @@ public class JpaItemRepository implements ItemRepository {
     }
 
     @Override
+    public Item findByItemNameAndSellerName(String itemName, String sellerName) {
+        return em.createQuery("select i from Item i join fetch i.member m where i.itemName =:itemName" +
+                        " and m.nickname = :sellerName", Item.class)
+                .setParameter("itemName", itemName)
+                .setParameter("sellerName", sellerName)
+                .getSingleResult();
+    }
+
+    @Override
     public Item findAllByArticle(Article article) {
         Long articleId = article.getId();
         return em.createQuery("select i from Item i join fetch i.article a where a.id = :articleId", Item.class)
