@@ -23,4 +23,6 @@ public interface TradeRepository {
     List<Trade> findReservationByMember(Member member);
 
     Trade findReservationByPurchaserAndSeller(Member purchaser, Member seller, Long articleId);
+
+    Trade findTradeByPurchaserAndSeller(Member purchaser, Member seller, Long articleId);
 }

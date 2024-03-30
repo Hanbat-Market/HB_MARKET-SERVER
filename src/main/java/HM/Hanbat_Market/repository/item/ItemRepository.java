@@ -12,6 +12,8 @@ public interface ItemRepository {
 
     Optional<Item> findById(Long id);
 
+    Item findByItemNameAndSellerName(String itemName, String sellerName);
+
     List<Item> findAllByMember(Member member);
 
     Item findAllByArticle(Article article);
