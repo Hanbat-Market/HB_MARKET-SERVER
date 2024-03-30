@@ -8,6 +8,6 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class CompleteTradeRequestDto {
-
-    private Long tradeId;
+    Long articleId;
+    String purchaserNickname;
 }

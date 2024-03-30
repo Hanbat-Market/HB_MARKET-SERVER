@@ -1,5 +1,6 @@
 package HM.Hanbat_Market.service.trade;
 
+import HM.Hanbat_Market.api.trade.dto.GetTradeIdResponseDto;
 import HM.Hanbat_Market.domain.entity.*;
 import HM.Hanbat_Market.exception.NotFoundException;
 import HM.Hanbat_Market.exception.trade.*;
@@ -17,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -32,7 +34,8 @@ public class TradeService {
 
     //판매자의 구매자가 약속을 체결하면 예약
     @Transactional
-    public Long reservation(Member loginMember, String memberNickname, Long articleId, LocalDateTime transactionAppointmentDateTime) {
+    public Long reservation(Member loginMember, String purchaserNickname, Long articleId, LocalDateTime transactionAppointmentDateTime,
+                            String reservationPlace) {
 
         if (transactionAppointmentDateTime == null) {
             transactionAppointmentDateTime = LocalDateTime.now();
@@ -43,7 +46,7 @@ public class TradeService {
         Article article = articleRepository.findById(articleId)
                 .orElseThrow(NotFoundException::new);
 
-        Member member = memberRepository.findByNickName(memberNickname).get();
+        Member member = memberRepository.findByNickName(purchaserNickname).get();
         Item item = itemRepository.findById(article.getId()).get();
 
         if (item.getMember().getId() != loginMember.getId()) {
@@ -57,7 +60,7 @@ public class TradeService {
             }
             trade.cancelStatusToReservation();
         } catch (NoResultException e) {
-            trade = Trade.reservation(member, item, transactionAppointmentDateTime);
+            trade = Trade.reservation(member, item, transactionAppointmentDateTime, reservationPlace);
         }
 
         tradeRepository.save(trade);
@@ -73,7 +76,7 @@ public class TradeService {
         Article article = articleRepository.findById(articleId).get();
         Member member = memberRepository.findById(memberId).get();
         Item item = itemRepository.findById(article.getId()).get();
-        Trade trade = Trade.reservation(member, item, transactionAppointmentDateTime);
+        Trade trade = Trade.reservation(member, item, transactionAppointmentDateTime, "임시 예약 장소");
 
         tradeRepository.save(trade);
 
@@ -92,6 +95,26 @@ public class TradeService {
         Trade complete = reservationByPurchaserAndSeller.complete();
 
         return complete.getId();
+    }
+
+    @Transactional
+    public GetTradeIdResponseDto getTradeId(String purchaserNickname, Long articleId) {
+
+        Article article = articleRepository.findById(articleId).get();
+        Item item = article.getItem();
+        Member purchaser = memberService.findOne(purchaserNickname).get();
+        Member seller = item.getMember();
+
+        Trade reservationByPurchaserAndSeller = tradeRepository.findTradeByPurchaserAndSeller(purchaser, seller, item.getArticle().getId());
+        Item findItem = reservationByPurchaserAndSeller.getItem();
+
+        return new GetTradeIdResponseDto(
+                findItem.getItemName(),
+                findItem.getMember().getNickname(),
+                findItem.getTrade().getMember().getNickname(),
+                findItem.getTrade().getId(),
+                findItem.getItemStatus()
+        );
     }
 
     @Transactional

@@ -46,10 +46,10 @@ public class ItemService {
                 }
                 if (itemStatus == ItemStatus.RESERVATION) {
                     reservedDtos.add(new ReservedDto(loginMember, item, filePath, getPreemptionSize(item),
-                            returnPreemptionItemStatus(loginMember, item)));
+                            returnPreemptionItemStatus(loginMember, item), item.getTrade().getReservationPlace()));
                 } else if (itemStatus == ItemStatus.COMP) {
                     completedDtos.add(new CompletedDto(loginMember, item, filePath, getPreemptionSize(item),
-                            returnPreemptionItemStatus(loginMember, item)));
+                            returnPreemptionItemStatus(loginMember, item), item.getTrade().getReservationPlace()));
                 }
             }
             List<PreemptionItem> preemptionItemByMember = preemptionItemService.findPreemptionItemByMember(loginMember);
@@ -69,12 +69,12 @@ public class ItemService {
 
             List<ReservedDto> reservedDtos = reservedByMember.stream()
                     .map(r -> new ReservedDto(loginMember, r.getItem(), getFilePathByTrade(r), getPreemptionSize(r.getItem()),
-                            returnPreemptionItemStatus(loginMember, r.getItem())))
+                            returnPreemptionItemStatus(loginMember, r.getItem()), r.getReservationPlace()))
                     .collect(toList());
 
             List<CompletedDto> completedDtos = completedByMember.stream()
                     .map(c -> new CompletedDto(loginMember, c.getItem(), getFilePathByTrade(c), getPreemptionSize(c.getItem()),
-                            returnPreemptionItemStatus(loginMember, c.getItem())))
+                            returnPreemptionItemStatus(loginMember, c.getItem()), c.getReservationPlace()))
                     .collect(toList());
 
 

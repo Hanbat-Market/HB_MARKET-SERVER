@@ -82,5 +82,20 @@ public class JpaTradeRepository implements TradeRepository {
                 .getSingleResult();
     }
 
+    @Override
+    public Trade findTradeByPurchaserAndSeller(Member purchaser, Member seller, Long articleId) {
+        return em.createQuery("select t from Trade t where" +
+                        " t.item.member.nickname != :purchaserNickname and" +
+                        " t.member.nickname = :purchaserNickname and" +
+                        " t.item.member.nickname = :sellerNickname and" +
+                        " t.member.nickname != :sellerNickname and" +
+                        " t.item.article.id = :articleId", Trade.class)
+                .setParameter("purchaserNickname", purchaser.getNickname())
+                .setParameter("sellerNickname", seller.getNickname())
+                .setParameter("articleId", articleId)
+                .getSingleResult();
+    }
+
+
 
 }

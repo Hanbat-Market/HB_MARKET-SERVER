@@ -40,7 +40,7 @@ class TradeServiceTest {
                 createItemCreateDto("플스", 170000L));
         //when
         Article article = articleService.findArticle(articleId);
-        Trade trade = Trade.reservation(testMember2, article.getItem(), LocalDateTime.now());
+        Trade trade = Trade.reservation(testMember2, article.getItem(), LocalDateTime.now(), "임시 저장 장소");
         //then
         assertEquals(tradeService.findReservedByMember(testMember2).get(0).getTradeStatus(), TradeStatus.RESERVATION);
     }

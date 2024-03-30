@@ -42,7 +42,10 @@ public class CompletedDto {
 
     private PreemptionItemStatus preemptionItemStatus;
 
-    public CompletedDto(Member member, Item item, String thumbnailFilePath, int preemptionSize, PreemptionItemStatus preemptionItemStatus) {
+    private String reservationPlace;
+
+    public CompletedDto(Member member, Item item, String thumbnailFilePath, int preemptionSize, PreemptionItemStatus preemptionItemStatus,
+                         String reservationPlace) {
         this.id = item.getArticle().getId();
         this.tradeId = item.getTrade().getId();
         this.seller = item.getMember().getNickname();
@@ -59,5 +62,6 @@ public class CompletedDto {
         this.itemStatus = item.getItemStatus();
         this.preemptionSize = preemptionSize;
         this.preemptionItemStatus = preemptionItemStatus;
+        this.reservationPlace = reservationPlace;
     }
 }
