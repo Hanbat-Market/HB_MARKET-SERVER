@@ -55,4 +55,10 @@ public class HomeControllerApi {
     public Result login(){
         return new Result("로그인이 필요합니다.₩₩₩");
     }
+
+    @Hidden
+    @GetMapping("/login/success")
+    public Result loginSuccess(){
+        return new Result("OauthLogin success");
+    }
 }

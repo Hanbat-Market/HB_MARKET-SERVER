@@ -1,4 +1,4 @@
-package HM.Hanbat_Market;
+package HM.Hanbat_Market.config;
 
 import HM.Hanbat_Market.api.member.login.LoginMemberArgumentResolver;
 import HM.Hanbat_Market.api.member.login.interceptor.LoginCheckInterceptor;
