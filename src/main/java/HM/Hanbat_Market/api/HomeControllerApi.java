@@ -8,11 +8,14 @@ import HM.Hanbat_Market.domain.entity.Member;
 import HM.Hanbat_Market.domain.entity.PreemptionItem;
 import HM.Hanbat_Market.repository.article.dto.ArticleSearchDto;
 import HM.Hanbat_Market.repository.item.ItemRepository;
+import HM.Hanbat_Market.repository.member.MemberRepository;
+import HM.Hanbat_Market.service.account.jwt.JWTUtil;
 import HM.Hanbat_Market.service.article.ArticleService;
 import HM.Hanbat_Market.service.member.MemberService;
 import HM.Hanbat_Market.service.preemption.PreemptionItemService;
 import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.Parameter;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -29,20 +32,21 @@ public class HomeControllerApi {
     private final PreemptionItemService preemptionItemService;
     private final MemberService memberService;
     private final ItemRepository itemRepository;
+    private final JWTUtil jwtUtil;
+    private final MemberRepository memberRepository;
 
     @GetMapping("")
-    public Result home(@ModelAttribute ArticleSearchDto articleSearchDto
-            , @Parameter(hidden = true) @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member sessionMember) {
-        /**
-         * 토큰으로 멤버 인증하고 넣어주는 과정 필요함
-         */
+    public Result home(@ModelAttribute ArticleSearchDto articleSearchDto, HttpServletRequest request) {
 
-//        if (sessionMember == null) {
-//            return new Result<>("로그인이 필요합니다");
-//        }
+        String token = jwtUtil.resolveTokenFromRequest(request);
+        String mail = jwtUtil.getUsername(token);
+
+        Member sessionMember = memberRepository.findByMail(mail).get();
 
         List<Article> articles = articleService.findArticles(articleSearchDto);
         List<HomeArticlesDto> homeArticlesDtos = articleService.findArticlesToDto(sessionMember, articles);
+
+        log.info(sessionMember.getMail() + "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
 
         return new Result<>(new HomeResponseDto(homeArticlesDtos.size(), homeArticlesDtos));
     }
@@ -52,13 +56,13 @@ public class HomeControllerApi {
      */
     @Hidden
     @GetMapping("/login")
-    public Result login(){
+    public Result login() {
         return new Result("로그인이 필요합니다.₩₩₩");
     }
 
     @Hidden
     @GetMapping("/login/success")
-    public Result loginSuccess(){
+    public Result loginSuccess() {
         return new Result("OauthLogin success");
     }
 }

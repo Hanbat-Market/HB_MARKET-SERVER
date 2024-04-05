@@ -4,6 +4,7 @@ import HM.Hanbat_Market.api.member.login.SessionConst;
 import HM.Hanbat_Market.domain.entity.Member;
 import HM.Hanbat_Market.repository.member.MemberRepository;
 import HM.Hanbat_Market.service.account.dto.SessionMember;
+import HM.Hanbat_Market.service.account.jwt.CustomOAuth2User;
 import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -52,13 +53,8 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         // 사용자 저장 또는 업데이트
         Member user = saveOrUpdate(attributes);
 
-        // 세션에 사용자 정보 저장
-        httpSession.setAttribute(SessionConst.LOGIN_MEMBER, user);
 
-        return new DefaultOAuth2User(
-                Collections.singleton(new SimpleGrantedAuthority(user.getRoleKey())),
-                attributes.getAttributes(),
-                attributes.getNameAttributeKey());
+        return new CustomOAuth2User(user);
     }
 
     private Member saveOrUpdate(OAuthAttributes attributes) {
