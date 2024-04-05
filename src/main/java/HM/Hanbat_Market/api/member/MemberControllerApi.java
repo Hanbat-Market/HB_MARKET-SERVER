@@ -6,9 +6,12 @@ import HM.Hanbat_Market.api.member.dto.MemberResponseDto;
 import HM.Hanbat_Market.api.member.login.SessionConst;
 import HM.Hanbat_Market.domain.entity.Member;
 import HM.Hanbat_Market.exception.member.AlreadyLoginException;
+import HM.Hanbat_Market.repository.member.MemberRepository;
+import HM.Hanbat_Market.service.account.jwt.JWTUtil;
 import HM.Hanbat_Market.service.member.MemberService;
 import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.Parameter;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,10 +25,16 @@ import org.springframework.web.bind.annotation.*;
 public class MemberControllerApi {
 
     private final MemberService memberService;
-
+    private final MemberRepository memberRepository;
+    private final JWTUtil jwtUtil;
     @PostMapping("/members/new")
     public Result create(@RequestBody @Valid MemberRequestDto memberRequestDto,
-                         @Parameter(hidden = true) @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member sessionMember) {
+                         HttpServletRequest request) {
+
+        String token = jwtUtil.resolveTokenFromRequest(request);
+        String mail = jwtUtil.getUsername(token);
+
+        Member sessionMember = memberRepository.findByMail(mail).get();
 
         if (sessionMember != null) {
             throw new AlreadyLoginException();
