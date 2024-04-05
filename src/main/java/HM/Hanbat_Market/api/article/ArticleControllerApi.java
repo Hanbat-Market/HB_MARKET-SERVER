@@ -7,11 +7,14 @@ import HM.Hanbat_Market.api.article.dto.ArticleUpdateRequestDto;
 import HM.Hanbat_Market.api.article.dto.ArticleUpdateResponseDto;
 import HM.Hanbat_Market.api.member.login.SessionConst;
 import HM.Hanbat_Market.domain.entity.*;
+import HM.Hanbat_Market.repository.member.MemberRepository;
+import HM.Hanbat_Market.service.account.jwt.JWTUtil;
 import HM.Hanbat_Market.service.article.ArticleService;
 import HM.Hanbat_Market.service.member.MemberService;
 import HM.Hanbat_Market.service.preemption.PreemptionItemService;
 import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.Parameter;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -34,12 +37,18 @@ public class ArticleControllerApi {
 
     private final ArticleService articleService;
     private final FileStore fileStore = new FileStore();
+    private final JWTUtil jwtUtil;
+    private final MemberRepository memberRepository;
 
     @PostMapping("/articles/new")
     public Result create(@RequestPart(value = "imageFiles", required = false) List<MultipartFile> imageFiles,
-                         @Valid @RequestPart("articleCreateRequestDto") ArticleCreateRequestDto articleCreateRequestDto,
-                         @Parameter(hidden = true) @SessionAttribute(name = SessionConst.LOGIN_MEMBER,
-                                 required = false) Member sessionMember) throws IOException {
+                         @RequestPart("articleCreateRequestDto") ArticleCreateRequestDto articleCreateRequestDto,
+                         HttpServletRequest request) throws IOException {
+
+        String token = jwtUtil.resolveTokenFromRequest(request);
+        String mail = jwtUtil.getUsername(token);
+
+        Member sessionMember = memberRepository.findByMail(mail).get();
 
         articleCreateRequestDto.setImageFiles(imageFiles);
         ArticleCreateResponseDto articleCreateResponseDto = articleService.createArticleToDto(sessionMember.getId(), articleCreateRequestDto);
@@ -51,9 +60,12 @@ public class ArticleControllerApi {
     @GetMapping("/articles/edit/{articleId}")
     @Hidden
     public Result updateDetail(@PathVariable("articleId") Long articleId,
-                               @Parameter(hidden = true)
-                               @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false)
-                               Member sessionMember) {
+                               HttpServletRequest request) {
+
+        String token = jwtUtil.resolveTokenFromRequest(request);
+        String mail = jwtUtil.getUsername(token);
+
+        Member sessionMember = memberRepository.findByMail(mail).get();
 
         Article article = articleService.findUpdateArticle(articleId, sessionMember);
         return new Result(articleService.articleDetailToDto(article, sessionMember));
@@ -63,8 +75,12 @@ public class ArticleControllerApi {
     public Result update(@PathVariable("articleId") Long articleId,
                          @RequestPart(value = "imageFiles", required = false) List<MultipartFile> imageFiles,
                          @RequestPart("articleUpdateRequestDto") ArticleUpdateRequestDto articleUpdateRequestDto,
-                         @Parameter(hidden = true) @SessionAttribute(name = SessionConst.LOGIN_MEMBER,
-                                 required = false) Member sessionMember) throws IOException {
+                         HttpServletRequest request) throws IOException {
+
+        String token = jwtUtil.resolveTokenFromRequest(request);
+        String mail = jwtUtil.getUsername(token);
+
+        Member sessionMember = memberRepository.findByMail(mail).get();
 
         articleUpdateRequestDto.setImageFiles(imageFiles);
         ArticleUpdateResponseDto articleUpdateResponseDto = articleService.updateArticleToDto(articleId, articleUpdateRequestDto, sessionMember);
@@ -74,8 +90,12 @@ public class ArticleControllerApi {
 
     @DeleteMapping("/articles/delete/{articleId}")
     public Result delete(@PathVariable("articleId") Long articleId,
-                         @Parameter(hidden = true) @SessionAttribute(name = SessionConst.LOGIN_MEMBER,
-                                 required = false) Member sessionMember) throws IOException {
+                         HttpServletRequest request) throws IOException {
+
+        String token = jwtUtil.resolveTokenFromRequest(request);
+        String mail = jwtUtil.getUsername(token);
+
+        Member sessionMember = memberRepository.findByMail(mail).get();
 
         articleService.deleteArticle(articleId, sessionMember);
 
@@ -84,9 +104,12 @@ public class ArticleControllerApi {
 
     @GetMapping("/articles/{articleId}")
     public Result articleDetail(@PathVariable("articleId") Long articleId,
-                                @Parameter(hidden = true)
-                                @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false)
-                                Member sessionMember) {
+                                HttpServletRequest request) {
+
+        String token = jwtUtil.resolveTokenFromRequest(request);
+        String mail = jwtUtil.getUsername(token);
+
+        Member sessionMember = memberRepository.findByMail(mail).get();
 
         Article article = articleService.findArticle(articleId);
 

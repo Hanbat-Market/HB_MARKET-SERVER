@@ -12,10 +12,10 @@ import java.util.List;
 
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
-    @Override
-    public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
-        resolvers.add(new LoginMemberArgumentResolver());
-    }
+//    @Override
+//    public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
+//        resolvers.add(new LoginMemberArgumentResolver());
+//    }
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
@@ -23,13 +23,13 @@ public class WebConfig implements WebMvcConfigurer {
                 .allowedOrigins("*");
     }
 
-    @Override
-    public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new LoginCheckInterceptor())
-                .order(2)
-                .addPathPatterns("/**")
-                .excludePathPatterns("/api/members/new", "/api/login", "/api/members/login", "/api/members/logout",
-                        "/css/**", "/assets/**", "/files/**","/api/images/**", "/*.ico", "/error", "/swagger-ui/**", "/swagger-resources/**",
-                        "/v3/api-docs/**", "/api-docs/**", "/swagger-ui.html");
-    }
+//    @Override
+//    public void addInterceptors(InterceptorRegistry registry) {
+//        registry.addInterceptor(new LoginCheckInterceptor())
+//                .order(2)
+//                .addPathPatterns("/**")
+//                .excludePathPatterns("/api/members/new", "/api/login", "/api/members/login", "/api/members/logout",
+//                        "/css/**", "/assets/**", "/files/**","/api/images/**", "/*.ico", "/error", "/swagger-ui/**", "/swagger-resources/**",
+//                        "/v3/api-docs/**", "/api-docs/**", "/swagger-ui.html");
+//    }
 }
