@@ -2,8 +2,10 @@ package HM.Hanbat_Market.domain.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 @Entity
@@ -79,5 +81,21 @@ public class Member {
 
     public String getRoleKey() {
         return this.role.getKey();
+    }
+
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+
+        Collection<GrantedAuthority> collection = new ArrayList<>();
+
+        collection.add(new GrantedAuthority() {
+
+            @Override
+            public String getAuthority() {
+
+                return Role.USER.getKey();
+            }
+        });
+
+        return collection;
     }
 }
