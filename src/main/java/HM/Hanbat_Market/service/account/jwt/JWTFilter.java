@@ -14,6 +14,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
 public class JWTFilter extends OncePerRequestFilter {
 
@@ -26,6 +28,22 @@ public class JWTFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+
+        // 스웨거 관련 경로 리스트
+        List<String> swaggerPaths = Arrays.asList("/css/", "/assets/", "/files/", "/api/images/", "/favicon.ico", "/error", "/swagger-ui/", "/swagger-resources/",
+                "/v3/api-docs", "/api-docs", "/swagger-ui.html", "/google79674106d1aa552b.html");
+
+        // 요청된 경로
+        String path = request.getRequestURI();
+
+        // 스웨거 관련 경로 또는 다른 허용된 경로인 경우 체크
+        boolean isSwaggerPath = swaggerPaths.stream().anyMatch(swaggerPath -> path.startsWith(request.getContextPath() + swaggerPath));
+
+        // 스웨거 관련 경로 또는 다른 허용된 경로인 경우, 필터 체인을 계속 진행
+        if (isSwaggerPath) {
+            filterChain.doFilter(request, response);
+            return; // 필터링 종료
+        }
 
         //cookie들을 불러온 뒤 Authorization Key에 담긴 쿠키를 찾음
         String authorization = null;
