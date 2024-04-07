@@ -43,7 +43,7 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         String token = jwtUtil.createJwt(mail, role, 60 * 60 * 24 * 7 * 1000L);
 
         response.addCookie(createCookie("Authorization", token));
-        response.sendRedirect("http://localhost:8080/");
+        response.sendRedirect("https://hanbatmarket.loca.lt");
     }
 
     private Cookie createCookie(String key, String value) {
