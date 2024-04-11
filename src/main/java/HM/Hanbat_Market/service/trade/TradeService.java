@@ -105,6 +105,10 @@ public class TradeService {
         Member purchaser = memberService.findOne(purchaserNickname).get();
         Member seller = item.getMember();
 
+        if (purchaser.getId() == seller.getId()) {
+            throw new PurchaserAndSellerIsSameException();
+        }
+
         Trade reservationByPurchaserAndSeller = tradeRepository.findTradeByPurchaserAndSeller(purchaser, seller, item.getArticle().getId());
         Item findItem = reservationByPurchaserAndSeller.getItem();
 
