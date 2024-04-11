@@ -95,7 +95,4 @@ public class JpaTradeRepository implements TradeRepository {
                 .setParameter("articleId", articleId)
                 .getSingleResult();
     }
-
-
-
 }

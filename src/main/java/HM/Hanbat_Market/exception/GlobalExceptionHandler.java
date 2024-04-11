@@ -136,4 +136,12 @@ public class GlobalExceptionHandler {
         log.error("[exceptionHandler] ex", e);
         return new ErrorResult(e.getStatus(), e.getErrorCode(), e.getErrorMessage());
     }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(PurchaserAndSellerIsSameException.class)
+    public ErrorResult PurchaserAndSellerIsSameExceptionHandler(PurchaserAndSellerIsSameException e) {
+        log.error("[exceptionHandler] ex", e);
+        return new ErrorResult(e.getStatus(), e.getErrorCode(), e.getErrorMessage());
+    }
 }
+
