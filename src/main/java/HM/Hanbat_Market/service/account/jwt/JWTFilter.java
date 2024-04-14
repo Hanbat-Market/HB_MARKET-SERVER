@@ -8,6 +8,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -17,6 +18,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+@Slf4j
 public class JWTFilter extends OncePerRequestFilter {
 
     private final JWTUtil jwtUtil;
@@ -31,7 +33,7 @@ public class JWTFilter extends OncePerRequestFilter {
 
         // 스웨거 관련 경로 리스트
         List<String> swaggerPaths = Arrays.asList("/css/", "/assets/", "/files/", "/api/images/", "/favicon.ico", "/error", "/swagger-ui/", "/swagger-resources/",
-                "/v3/api-docs", "/api-docs", "/swagger-ui.html", "/google79674106d1aa552b.html");
+                "/v3/api-docs", "/api-docs", "/swagger-ui.html", "/google79674106d1aa552b.html","/chat","/chat-front/chat.html");
 
         // 요청된 경로
         String path = request.getRequestURI();
@@ -47,15 +49,32 @@ public class JWTFilter extends OncePerRequestFilter {
 
         //cookie들을 불러온 뒤 Authorization Key에 담긴 쿠키를 찾음
         String authorization = null;
-        Cookie[] cookies = request.getCookies();
-        for (Cookie cookie : cookies) {
+
+        log.info(request.getCookies().toString());
+        log.info("@@@@@@@@@@@@@@@@@@@@");
+        Cookie[] asd = request.getCookies();
+
+        for (Cookie cookie : asd) {
 
             System.out.println(cookie.getName());
-            if (cookie.getName().equals("Authorization")) {
-
-                authorization = cookie.getValue();
-            }
+            System.out.println(cookie.getValue());
         }
+
+
+        try {
+            Cookie[] cookies = request.getCookies();
+
+            for (Cookie cookie : cookies) {
+
+                System.out.println(cookie.getName());
+                if (cookie.getName().equals("Authorization")) {
+                    authorization = cookie.getValue();
+                }
+            }
+        }catch (NullPointerException e){
+            System.out.println("쿠키가 없습니다.");
+        }
+
 
         //Authorization 헤더 검증
         if (authorization == null) {
