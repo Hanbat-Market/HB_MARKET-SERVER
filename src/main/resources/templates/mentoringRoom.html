@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>프렌토피아</title>
+
+    <link th:href="@{/css/common.css}" rel="stylesheet">
+    <link th:href="@{/css/main1.css}" rel="stylesheet">
+    <link th:href="@{/css/mentoring.css}" rel="stylesheet">
+    <link th:href="@{/css/room.css}" rel="stylesheet">
+    <!--font-->
+    <link th:href="@{img/favicon.png}" rel="shortcut icon">
+    <script src="/webjars/jquery/jquery.min.js"></script>
+    <script src="/webjars/sockjs-client/sockjs.min.js"></script>
+    <script src="/webjars/stomp-websocket/stomp.min.js"></script>
+</head>
+<body>
+<header>
+    <a th:href="@{/}" class="logo">프렌토피아</a>
+    <nav>
+        <ul class="gnb">
+            <li th:if="${userRole} != 'ADMIN'"><a th:href="@{/myPage}">마이페이지</a></li>
+            <li th:if="${userRole} == 'ADMIN'"><a th:href="@{/admin}">관리페이지</a></li>
+            <li> | </li>
+            <li th:if="${userName} == null"><a th:href="@{/oauth2/authorization/google}">로그인</a></li>
+            <li th:if="${userName} != null" th:text="${userName} + '님, 환영합니다!'"></li>
+            <li th:if="${userName} != null"><a th:href="@{/logout}">로그아웃</a></li>
+        </ul>
+    </nav>
+</header>
+<!-- board -->
+<div class="wrap">
+    <div id="main_img_bar">
+        <!--            <img src="./imgs/main_img.png">-->
+    </div>
+    <div class="page-title">
+        <div class="container">
+            <h3 th:text="${mentor} + ' 멘토의 멘토링 룸'"></h3>
+        </div>
+    </div>
+    <div >
+        <button class="btn btn-primary" th:if="${userEmail} == ${mentorEmail}" th:onclick="|location.href='@{/mentoring/room/{room_id}/mentor/post(room_id=${room_id})}'|">글쓰기</button>
+        <button class="btn btn-primary" th:unless="${userEmail} == ${mentorEmail}" th:onclick="|location.href='@{/mentoring/room/{room_id}/board/post(room_id=${room_id})}'|">글쓰기</button>
+    </div>
+    <div class="container">
+        <ul class="sideBar">
+
+        </ul>
+        <div id="board-list">
+            <div class="container">
+                <table class="board-table">
+                    <thead>
+                    <tr>
+                        <!--                            <th scope="col" class="th-num">번호</th>-->
+                        <th scope="col" class="th-title">제목</th>
+                        <th scope="col" class="th-author">작성자</th>
+                        <th scope="col" class="th-date">날짜</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div id="chatToggle">
+        <button class="trigger">채팅</button>
+    </div>
+    <div id="compiler">
+        <button class="trigger" onclick="open_compiler()">코드 실행기</button>
+    </div>
+    <div class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <div class="row">
+                <div class="col-md-12">
+                    <table id="conversation" class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th th:text="${mentor} + ' 멘토의 멘토링 룸'"></th>
+                        </tr>
+                        </thead>
+                        <tbody id="chatting">
+                        </tbody>
+                    </table>
+                </div>
+                <div class="chatBox">
+                    <form class="form-inline">
+                        <div class="form-group">
+                            <input type="text" id="message" class="form-control" placeholder="메시지 내용">
+                            <button id="send" class="btn btn-default" type="submit">보내기</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--footer-->
+<footer>
+    <h2 class="footerLogo">프렌토피아</h2>
+    <div class="box">
+        <h2>
+            당신 옆의 멘토, 프렌토피아<br>
+            For Your Mentor, Frientopia
+        </h2>
+    </div>
+</footer>
+</body>
+<script th:inline="javascript">
+    var stompClient = null;
+    var roomId = [[${roomId}]];
+    var chatList = [[${chatList}]];
+    var sender = [[${userName}]];
+    var senderEmail = [[${userEmail}]];
+
+    function setConnected(connected) {
+        $("#connect").prop("disabled", connected);
+        $("#disconnect").prop("disabled", !connected);
+        if (connected) {
+            $("#conversation").show();
+        }
+        else {
+            $("#conversation").hide();
+        }
+        $("#chatting").html("");
+    }
+
+    function connect() {
+        var socket = new SockJS("/ws-stomp");
+        stompClient = Stomp.over(socket);
+        stompClient.connect({}, function (frame) {
+            setConnected(true);
+            console.log('Connected: ' + frame);
+            loadChat(chatList)  //저장된 채팅 불러오기
+
+            //구독
+            stompClient.subscribe('/room/'+roomId, function (chatMessage) {
+                showChat(JSON.parse(chatMessage.body));
+            });
+        });
+    }
+
+    function disconnect() {
+        if (stompClient !== null) {
+            stompClient.disconnect();
+        }
+        setConnected(false);
+        console.log("Disconnected");
+    }
+
+    //html 에서 입력값, roomId 를 받아서 Controller 로 전달
+    function sendChat() {
+        if ($("#message").val() != "") {
+            stompClient.send("/send/"+roomId, {},
+                JSON.stringify({
+                    'sender': sender,
+                    'senderEmail': senderEmail,
+                    'message' : $("#message").val()
+                }));
+            $("#message").val('');
+        }
+    }
+
+    //저장된 채팅 불러오기
+    function loadChat(chatList){
+        if(chatList != null) {
+            for(chat in chatList) {
+                if (chatList[chat].senderEmail == senderEmail) {
+                    $("#chatting").append(
+                        "<div class = 'chatting_own'><tr><td>" + chatList[chat].message + "</td></tr></div>"
+                    );
+                } else {
+                    $("#chatting").append(
+                        "<div class = 'chatting'><tr><td>" + "[" + chatList[chat].sender + "] " + chatList[chat].message + "</td></tr></div>"
+                    );
+                }
+            }
+        }
+        $('.col-md-12').scrollTop($('.col-md-12')[0].scrollHeight); // 채팅이 많아질시에 자동 스크롤
+    }
+
+    //보낸 채팅 보기
+    function showChat(chatMessage) {
+        if (chatMessage.senderEmail == senderEmail) {
+            $("#chatting").append(
+                "<div class = 'chatting_own'><tr><td>" + chatMessage.message + "</td></tr></div>"
+            );
+        } else {
+            $("#chatting").append(
+                "<div class = 'chatting'><tr><td>" + "[" + chatMessage.sender + "] " + chatMessage.message + "</td></tr></div>"
+            );
+        }
+        $('.col-md-12').scrollTop($('.col-md-12')[0].scrollHeight);
+    }
+
+    $(function () {
+        $("form").on('submit', function (e) {
+            e.preventDefault();
+        });
+        $( "#connect" ).click(function() { connect(); });
+        $( "#disconnect" ).click(function() { disconnect(); });
+        $( "#send" ).click(function() { sendChat(); });
+    });
+</script>
+<script>
+    //창 키면 바로 연결
+    window.onload = function (){
+        connect();
+    }
+
+    window.BeforeUnloadEvent = function (){
+        disconnect();
+    }
+</script>
+<script>
+    var modal = document.querySelector(".modal");
+    var trigger = document.querySelector(".trigger");
+    var closeButton = document.querySelector(".close-button");
+
+    //console.log(modal);
+
+    function toggleModal() {
+        modal.classList.toggle("show-modal");
+    }
+
+    trigger.addEventListener("click", toggleModal);
+    closeButton.addEventListener("click", toggleModal);
+</script>
+<script>
+    function open_compiler(){
+        const url = '/compiler';
+        const windowName = '프렌토피아 결제';
+        const windowFeatures = 'width=800, height=1000';
+
+        window.open(url, windowName, windowFeatures);
+    }
+</script>
+</htm
