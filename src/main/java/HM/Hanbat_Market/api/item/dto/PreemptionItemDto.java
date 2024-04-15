@@ -10,6 +10,8 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 public class PreemptionItemDto {
+    private String uuid;
+
     private Long id;
 
     private String seller;
@@ -37,6 +39,7 @@ public class PreemptionItemDto {
     private PreemptionItemStatus preemptionItemStatus;
 
     public PreemptionItemDto(Member member, PreemptionItem preemptionItem, String thumbnailFilePath, int preemptionSize, PreemptionItemStatus preemptionItemStatus) {
+        this.uuid = member.getUuid();
         this.id = preemptionItem.getItem().getArticle().getId();
         this.seller = member.getNickname();
         this.title = preemptionItem.getItem().getArticle().getTitle();

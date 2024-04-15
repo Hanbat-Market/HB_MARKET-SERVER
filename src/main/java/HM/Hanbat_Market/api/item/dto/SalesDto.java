@@ -9,6 +9,9 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 public class SalesDto {
+
+    private String sellerUUID;
+
     private Long id;
 
     private String seller;
@@ -30,6 +33,7 @@ public class SalesDto {
     private ItemStatus itemStatus;
 
     public SalesDto(Item item, String thumbnailFilePath){
+        this.sellerUUID = item.getMember().getUuid();
         this.id = item.getArticle().getId();
         this.seller = item.getMember().getNickname();
         this.title = item.getArticle().getTitle();

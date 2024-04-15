@@ -13,6 +13,8 @@ import java.util.List;
 @AllArgsConstructor
 public class ArticleUpdateResponseDto {
 
+    private String uuid;
+
     private String title;
 
     private String description;
