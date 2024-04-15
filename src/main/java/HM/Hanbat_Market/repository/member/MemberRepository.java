@@ -13,6 +13,8 @@ public interface MemberRepository {
 
     Optional<Member> findByNickName(String name);
 
+    Optional<Member> findByUUID(String uuid);
+
     Optional<Member> findByMail(String mail);
 
     Optional<Member> findByPhoneNumber(String phoneNumber);

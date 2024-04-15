@@ -149,6 +149,7 @@ public class ArticleService {
                 .collect(Collectors.toList());
 
         return new ArticleDetailResponseDto(
+                member.getUuid(),
                 findArticle.getTitle(),
                 findArticle.getDescription(),
                 findArticle.getTradingPlace(),
@@ -311,7 +312,9 @@ public class ArticleService {
                 .map(imageFile -> getFullPath(imageFile.getStoreFileName()))
                 .collect(Collectors.toList());
 
-        return new ArticleUpdateResponseDto(article.getTitle(),
+        return new ArticleUpdateResponseDto(
+                article.getMember().getUuid(),
+                article.getTitle(),
                 article.getDescription(),
                 article.getTradingPlace(),
                 article.getItem().getItemName(),

@@ -40,10 +40,19 @@ public class JpaMemberRepository implements MemberRepository {
                 .filter(m -> m.getMail().equals(mail))
                 .findFirst();
     }
+
     @Override
     public Optional<Member> findByMail(String mail) {
         List<Member> result = em.createQuery("select m from Member m where m.mail like :mail", Member.class)
                 .setParameter("mail", mail)
+                .getResultList();
+        return result.stream().findAny();
+    }
+
+    @Override
+    public Optional<Member> findByUUID(String uuid) {
+        List<Member> result = em.createQuery("select m from Member m where m.uuid like :uuid", Member.class)
+                .setParameter("uuid", uuid)
                 .getResultList();
         return result.stream().findAny();
     }

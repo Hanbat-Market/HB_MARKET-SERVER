@@ -10,6 +10,10 @@ import java.time.LocalDateTime;
 @Setter
 public class CompletedDto {
 
+    private String sellerUUID;
+
+    private String purchaserUUID;
+
     private Long id;
 
     private Long tradeId;
@@ -46,6 +50,8 @@ public class CompletedDto {
 
     public CompletedDto(Member member, Item item, String thumbnailFilePath, int preemptionSize, PreemptionItemStatus preemptionItemStatus,
                          String reservationPlace) {
+        this.sellerUUID = item.getMember().getUuid();
+        this.purchaserUUID = item.getTrade().getMember().getUuid();
         this.id = item.getArticle().getId();
         this.tradeId = item.getTrade().getId();
         this.seller = item.getMember().getNickname();
