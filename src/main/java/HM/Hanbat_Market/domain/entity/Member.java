@@ -7,6 +7,7 @@ import org.springframework.security.core.GrantedAuthority;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Getter
@@ -17,6 +18,8 @@ public class Member {
     @GeneratedValue
     @Column(name = "user_id")
     private Long id; //동시성 문제해결을 위해 추후에 AtomicLong 사용
+
+    private String uuid;
 
     @Column(nullable = false, unique = true)
     private String mail;
@@ -55,6 +58,7 @@ public class Member {
     }
 
     private Member(String mail, String name, String passwd, String nickname, Role role) {
+        this.uuid = UUID.randomUUID().toString();
         this.mail = mail;
         this.name = name;
         this.passwd = passwd;
