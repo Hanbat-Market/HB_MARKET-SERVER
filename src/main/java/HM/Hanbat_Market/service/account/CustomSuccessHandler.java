@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.UUID;
 
 @Component
 public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
@@ -38,9 +39,9 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         Iterator<? extends GrantedAuthority> iterator = authorities.iterator();
         GrantedAuthority auth = iterator.next();
         String role = auth.getAuthority();
+        String uuid = customUserDetails.getUUID();
 
-
-        String token = jwtUtil.createJwt(mail, role, 60 * 60 * 24 * 7 * 1000L);
+        String token = jwtUtil.createJwt(uuid, mail, role, 60 * 60 * 24 * 7 * 1000L);
 
         response.addCookie(createCookie("Authorization", token));
         response.sendRedirect("https://hanbatmarket.loca.lt");

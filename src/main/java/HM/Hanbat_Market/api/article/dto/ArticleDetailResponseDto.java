@@ -17,6 +17,8 @@ import java.util.List;
 @AllArgsConstructor
 public class ArticleDetailResponseDto {
 
+    private String uuid;
+
     private String title;
 
     private String description;
