@@ -1,5 +1,6 @@
 package HM.Hanbat_Market.chat;
 
+import org.springframework.data.mongodb.repository.Aggregation;
 import org.springframework.data.mongodb.repository.Query;
 import org.springframework.data.mongodb.repository.ReactiveMongoRepository;
 import org.springframework.data.mongodb.repository.Tailable;
@@ -19,4 +20,11 @@ public interface ChatRepository extends ReactiveMongoRepository<Chat, String> {
     @Tailable
     @Query("{ sender: ?0 }")
     Flux<Chat> mFindBySender(String sender);
+
+    @Aggregation(pipeline = {
+            "{ $match: { $or: [ { sender: ?0 }, { receiver: ?0 } ] } }",
+            "{ $sort: { createdAt: -1 } }",
+            "{ $group: { _id: '$roomNum', msg: { $first: '$msg' }, sender: { $first: '$sender' }, senderNickName: { $first: '$senderNickName' }, receiver: { $first: '$receiver' }, receiverNickName: { $first: '$receiverNickName' }, roomNum: { $first: '$roomNum' }, createdAt: { $first: '$createdAt' } } }"
+    })
+    Flux<Chat> findLatestChatBySenderOrReceiver(String user);
 }
