@@ -92,6 +92,10 @@ public class TradeService {
 
         Trade reservationByPurchaserAndSeller = tradeRepository.findReservationByPurchaserAndSeller(member, article.getMember(), articleId);
 
+        if(reservationByPurchaserAndSeller.getTradeStatus() == TradeStatus.CANCEL){
+            throw new IsCancelTradeException();
+        }
+
         Trade complete = reservationByPurchaserAndSeller.complete();
 
         return complete.getId();

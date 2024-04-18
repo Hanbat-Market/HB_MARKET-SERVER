@@ -67,7 +67,9 @@ public class Member {
     }
 
     public static Member createMember(String mail, String passwd, String nickname) {
-        return new Member(mail, passwd, nickname);
+        Member member = new Member(mail, passwd, nickname);
+        member.uuid = "test" + passwd;
+        return member;
     }
 
     public static Member createMember(String mail, String name, String passwd, String nickname, Role role) {

@@ -2,6 +2,9 @@ package HM.Hanbat_Market.service.account.jwt;
 
 import HM.Hanbat_Market.domain.entity.Member;
 import HM.Hanbat_Market.domain.entity.Role;
+import HM.Hanbat_Market.exception.account.NullTokenException;
+import HM.Hanbat_Market.exception.account.TokenExpiredException;
+import HM.Hanbat_Market.exception.account.TokenNotValidException;
 import HM.Hanbat_Market.service.account.jwt.JWTUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -50,18 +53,18 @@ public class JWTFilter extends OncePerRequestFilter {
         //cookie들을 불러온 뒤 Authorization Key에 담긴 쿠키를 찾음
         String authorization = null;
 
-        log.info(request.getCookies().toString());
-        log.info("@@@@@@@@@@@@@@@@@@@@");
-        Cookie[] asd = request.getCookies();
-
-        for (Cookie cookie : asd) {
-
-            System.out.println(cookie.getName());
-            System.out.println(cookie.getValue());
-        }
-
 
         try {
+            log.info(request.getCookies().toString());
+            log.info("@@@@@@@@@@@@@@@@@@@@");
+            Cookie[] asd = request.getCookies();
+
+            for (Cookie cookie : asd) {
+
+                System.out.println(cookie.getName());
+                System.out.println(cookie.getValue());
+            }
+
             Cookie[] cookies = request.getCookies();
 
             for (Cookie cookie : cookies) {
@@ -72,8 +75,10 @@ public class JWTFilter extends OncePerRequestFilter {
                 }
             }
         }catch (NullPointerException e){
-            System.out.println("쿠키가 없습니다.");
+//            throw new TokenNotValidException();
+            return;
         }
+
 
 
         //Authorization 헤더 검증
