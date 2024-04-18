@@ -48,8 +48,8 @@ public class InitDB {
             Article saveArticle;
             imageFiles.add(new ImageFile("default_image.png", "default_image.png"));
 
-            Member member = Member.createMember("jckim2229@gmail.com", "123",  "jckim2");
-            Member member1 = Member.createMember("wncks0303@naver.com", "123",  "wncks0303");
+            Member member = Member.createMember("jckim2229@gmail.com", "1",  "jckim2");
+            Member member1 = Member.createMember("wncks0303@naver.com", "2",  "wncks0303");
             memberService.join(member);
             memberService.join(member1);
 

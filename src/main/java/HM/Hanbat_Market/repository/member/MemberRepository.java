@@ -17,7 +17,5 @@ public interface MemberRepository {
 
     Optional<Member> findByMail(String mail);
 
-    Optional<Member> findByPhoneNumber(String phoneNumber);
-
     List<Member> findAll();
 }

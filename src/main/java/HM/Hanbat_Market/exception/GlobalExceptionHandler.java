@@ -1,13 +1,13 @@
 package HM.Hanbat_Market.exception;
 
+import HM.Hanbat_Market.exception.account.NullTokenException;
+import HM.Hanbat_Market.exception.account.TokenExpiredException;
+import HM.Hanbat_Market.exception.account.TokenNotValidException;
 import HM.Hanbat_Market.exception.article.FileOutOfRangeException;
 import HM.Hanbat_Market.exception.article.FileValidityException;
 import HM.Hanbat_Market.exception.article.IsDeleteArticleException;
 import HM.Hanbat_Market.exception.article.NoImageException;
-import HM.Hanbat_Market.exception.member.AlreadyLoginException;
-import HM.Hanbat_Market.exception.member.JoinException;
-import HM.Hanbat_Market.exception.member.LoginException;
-import HM.Hanbat_Market.exception.member.UnAuthorizedException;
+import HM.Hanbat_Market.exception.member.*;
 import HM.Hanbat_Market.exception.trade.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -140,6 +140,41 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(PurchaserAndSellerIsSameException.class)
     public ErrorResult PurchaserAndSellerIsSameExceptionHandler(PurchaserAndSellerIsSameException e) {
+        log.error("[exceptionHandler] ex", e);
+        return new ErrorResult(e.getStatus(), e.getErrorCode(), e.getErrorMessage());
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(NullTokenException.class)
+    public ErrorResult NullTokenExceptionHandler(NullTokenException e) {
+        log.error("[exceptionHandler] ex", e);
+        return new ErrorResult(e.getStatus(), e.getErrorCode(), e.getErrorMessage());
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(TokenNotValidException.class)
+    public ErrorResult TokenNotValidExceptionHandler(TokenNotValidException e) {
+        log.error("[exceptionHandler] ex", e);
+        return new ErrorResult(e.getStatus(), e.getErrorCode(), e.getErrorMessage());
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(TokenExpiredException.class)
+    public ErrorResult TokenExpiredExceptionHandler(TokenExpiredException e) {
+        log.error("[exceptionHandler] ex", e);
+        return new ErrorResult(e.getStatus(), e.getErrorCode(), e.getErrorMessage());
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(IsCancelTradeException.class)
+    public ErrorResult IsCancelTradeExceptionHandler(IsCancelTradeException e) {
+        log.error("[exceptionHandler] ex", e);
+        return new ErrorResult(e.getStatus(), e.getErrorCode(), e.getErrorMessage());
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(NotExistUuidException.class)
+    public ErrorResult NotExistUuidExceptionHandler(NotExistUuidException e) {
         log.error("[exceptionHandler] ex", e);
         return new ErrorResult(e.getStatus(), e.getErrorCode(), e.getErrorMessage());
     }
