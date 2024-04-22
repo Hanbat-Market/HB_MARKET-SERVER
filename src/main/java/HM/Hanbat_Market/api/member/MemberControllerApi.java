@@ -1,6 +1,7 @@
 package HM.Hanbat_Market.api.member;
 
 import HM.Hanbat_Market.api.Result;
+import HM.Hanbat_Market.api.member.dto.FcmTokenRequest;
 import HM.Hanbat_Market.api.member.dto.MemberRequestDto;
 import HM.Hanbat_Market.api.member.dto.MemberResponseDto;
 import HM.Hanbat_Market.api.member.login.SessionConst;
@@ -27,8 +28,10 @@ public class MemberControllerApi {
     private final MemberService memberService;
     private final MemberRepository memberRepository;
     private final JWTUtil jwtUtil;
+
+    @Hidden
     @PostMapping("/members/new")
-    public Result create(@RequestBody @Valid MemberRequestDto memberRequestDto,
+    public Result create(@RequestBody MemberRequestDto memberRequestDto,
                          HttpServletRequest request) {
 
         String token = jwtUtil.resolveTokenFromRequest(request);
@@ -44,5 +47,15 @@ public class MemberControllerApi {
         memberService.join(member);
 
         return new Result(new MemberResponseDto(member.getMail()));
+    }
+
+    @PostMapping("/fcm/save")
+    public Result saveFcmToken(@RequestBody FcmTokenRequest fcmTokenRequest, HttpServletRequest request) {
+
+        Member member = memberRepository.findByUUID(fcmTokenRequest.getTargetMemberUuid()).get();
+
+        String fcmToken = memberService.updateFcmToken(member.getId(), fcmTokenRequest.getFcmToken());
+
+        return new Result("success save - " + fcmToken);
     }
 }

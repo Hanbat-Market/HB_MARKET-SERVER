@@ -15,11 +15,11 @@ public interface ChatRepository extends ReactiveMongoRepository<Chat, String> {
 
     @Tailable
     @Query("{ roomNum: ?0 }")
-    Flux<Chat> mFindByRoomNum(Integer roomNum);
+    Flux<Chat> mFindByRoomNum(String roomNum);
 
     @Tailable
-    @Query("{ sender: ?0 }")
-    Flux<Chat> mFindBySender(String sender);
+    @Query("{ $or: [ { sender: ?0, receiver: ?1 }, { sender: ?1, receiver: ?0 } ] }")
+    Flux<Chat> mFindBySenderOrReceiver(String sender, String receiver);
 
     @Aggregation(pipeline = {
             "{ $match: { $or: [ { sender: ?0 }, { receiver: ?0 } ] } }",
