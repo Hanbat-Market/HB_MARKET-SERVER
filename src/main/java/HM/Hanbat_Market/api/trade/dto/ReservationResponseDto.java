@@ -10,5 +10,5 @@ import lombok.Setter;
 public class ReservationResponseDto {
 
     private final Long tradeId;
-
+    private final String purchaser;
 }

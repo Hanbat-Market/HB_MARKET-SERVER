@@ -13,11 +13,11 @@ public class ChatResponseDto {
     private String senderNickname;
     private String receiverNickname;
     private String lastChat;
-    private Long roomNum;
+    private String roomNum;
     private LocalDateTime createdAt;
 
     // Constructor, Getters, and Setters
-    public ChatResponseDto(String senderUuid, String receiverUuid, String senderNickname, String receiverNickname, String lastChat, Long roomNum, LocalDateTime createdAt) {
+    public ChatResponseDto(String senderUuid, String receiverUuid, String senderNickname, String receiverNickname, String lastChat, String roomNum, LocalDateTime createdAt) {
         this.senderUuid = senderUuid;
         this.receiverUuid = receiverUuid;
         this.senderNickname = senderNickname;

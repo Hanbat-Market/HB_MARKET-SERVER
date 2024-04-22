@@ -47,8 +47,15 @@ public class Trade {
      * 연관관계 편의 메서드
      */
     private void regisMember(Member member) {
-        this.member = member;
-        member.getTrades().add(this);
+        try {
+            Member beforePurchaser = this.member;
+            beforePurchaser.getTrades().remove(this);
+            this.member = member;
+            member.getTrades().add(this);
+        } catch (NullPointerException e) {
+            this.member = member;
+            member.getTrades().add(this);
+        }
     }
 
     private void regisItem(Item item) {
@@ -76,9 +83,13 @@ public class Trade {
         return this;
     }
 
-    public void cancelStatusToReservation() {
+    public void StatusToReservation(Member purchaser) {
+        this.transactionAppointmentDateTime = setCreatedAt(transactionAppointmentDateTime);
+        this.regisItem(item);
+        this.regisMember(purchaser);
         this.tradeStatus = TradeStatus.RESERVATION;
-        this.item.reservationItemStatus();
+        item.reservationItemStatus();
+        this.reservationPlace = reservationPlace;
     }
 
     public void cancel() {
