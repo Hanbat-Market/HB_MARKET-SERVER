@@ -9,6 +9,7 @@ import HM.Hanbat_Market.exception.member.LoginException;
 import HM.Hanbat_Market.repository.member.MemberRepository;
 import HM.Hanbat_Market.service.account.jwt.JWTUtil;
 import HM.Hanbat_Market.service.member.MemberService;
+import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -27,6 +28,7 @@ public class LoginControllerApi {
     private final MemberRepository memberRepository;
     private final JWTUtil jwtUtil;
 
+    @Hidden
     @PostMapping("/login")
     public Result login(@RequestBody LoginRequestDto form, HttpServletRequest request) {
 
@@ -44,6 +46,7 @@ public class LoginControllerApi {
         return new Result<>("ok");
     }
 
+    @Hidden
     @PostMapping("/logout")
     public Result logout(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
@@ -52,4 +55,7 @@ public class LoginControllerApi {
         }
         return new Result<>("ok");
     }
+
+
+
 }

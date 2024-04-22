@@ -4,6 +4,8 @@ build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
+/Users/kimjuchan/Desktop/Hanbat_Market/src/main/resources/hanbatmarketfcm-firebase-adminsdk-nxq2g-9053a4269b.json
+hanbatmarketfcm-firebase-adminsdk-nxq2g-9053a4269b.json
 
 ### STS ###
 .apt_generated
@@ -26,6 +28,8 @@ out/
 !**/src/main/**/out/
 !**/src/test/**/out/
 application.yml
+application-test.yml
+src/main/resources/application-test.yml
 src/main/resources/application.yml
 *.yml
 
