@@ -10,3 +10,15 @@
 1710239085549|0|statement|connection 37|url jdbc:h2:mem:323131ed-5aec-474f-8e0e-f312bdd446a4|drop sequence if exists member_seq|drop sequence if exists member_seq
 1710239085549|0|statement|connection 37|url jdbc:h2:mem:323131ed-5aec-474f-8e0e-f312bdd446a4|drop sequence if exists preemption_item_seq|drop sequence if exists preemption_item_seq
 1710239085549|0|statement|connection 37|url jdbc:h2:mem:323131ed-5aec-474f-8e0e-f312bdd446a4|drop sequence if exists trade_seq|drop sequence if exists trade_seq
+1713509434081|1|statement|connection 34|url jdbc:h2:mem:testdb|drop table if exists article cascade |drop table if exists article cascade 
+1713509434082|0|statement|connection 34|url jdbc:h2:mem:testdb|drop table if exists image_file cascade |drop table if exists image_file cascade 
+1713509434083|0|statement|connection 34|url jdbc:h2:mem:testdb|drop table if exists item cascade |drop table if exists item cascade 
+1713509434083|0|statement|connection 34|url jdbc:h2:mem:testdb|drop table if exists member cascade |drop table if exists member cascade 
+1713509434083|0|statement|connection 34|url jdbc:h2:mem:testdb|drop table if exists preemption_item cascade |drop table if exists preemption_item cascade 
+1713509434084|0|statement|connection 34|url jdbc:h2:mem:testdb|drop table if exists trade cascade |drop table if exists trade cascade 
+1713509434084|0|statement|connection 34|url jdbc:h2:mem:testdb|drop sequence if exists article_seq|drop sequence if exists article_seq
+1713509434084|0|statement|connection 34|url jdbc:h2:mem:testdb|drop sequence if exists image_file_seq|drop sequence if exists image_file_seq
+1713509434084|0|statement|connection 34|url jdbc:h2:mem:testdb|drop sequence if exists item_seq|drop sequence if exists item_seq
+1713509434084|0|statement|connection 34|url jdbc:h2:mem:testdb|drop sequence if exists member_seq|drop sequence if exists member_seq
+1713509434085|0|statement|connection 34|url jdbc:h2:mem:testdb|drop sequence if exists preemption_item_seq|drop sequence if exists preemption_item_seq
+1713509434085|0|statement|connection 34|url jdbc:h2:mem:testdb|drop sequence if exists trade_seq|drop sequence if exists trade_seq
