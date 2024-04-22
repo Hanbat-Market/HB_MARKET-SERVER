@@ -32,6 +32,8 @@ public class Member {
 
     private String name;
 
+    private String fcmToken;
+
     @Enumerated(EnumType.STRING) // Enum 타입은 문자열 형태로 저장해야 함
     private Role role;
 
@@ -64,6 +66,11 @@ public class Member {
         this.passwd = passwd;
         this.nickname = nickname;
         this.role = role;
+    }
+
+    public String saveFcmToken(String fcmToken){
+        this.fcmToken = fcmToken;
+        return fcmToken;
     }
 
     public static Member createMember(String mail, String passwd, String nickname) {

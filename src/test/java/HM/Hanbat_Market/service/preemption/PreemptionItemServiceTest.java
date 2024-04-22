@@ -7,6 +7,8 @@ import HM.Hanbat_Market.service.article.ArticleService;
 import HM.Hanbat_Market.service.member.MemberService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.jdbc.EmbeddedDatabaseConnection;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,6 +17,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
+@AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 class PreemptionItemServiceTest {
     @Autowired
     PreemptionItemService preemptionItemService;

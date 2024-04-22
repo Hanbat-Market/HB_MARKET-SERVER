@@ -78,8 +78,10 @@ public class Article {
      * 생성 메서드
      */
     public static Article create(ArticleCreateDto articleCreateDto) {
-        Article article = new Article(articleCreateDto.getTitle(),
-                articleCreateDto.getDescription(), articleCreateDto.getTradingPlace());
+        Article article = new Article(
+                articleCreateDto.getTitle(),
+                articleCreateDto.getDescription(),
+                articleCreateDto.getTradingPlace());
 
         article.regisMember(articleCreateDto.getMember());
         article.regisItem(articleCreateDto.getItem());

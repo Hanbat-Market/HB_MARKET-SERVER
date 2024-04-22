@@ -1,6 +1,7 @@
 package HM.Hanbat_Market.service.trade;
 
 import HM.Hanbat_Market.api.trade.dto.GetTradeIdResponseDto;
+import HM.Hanbat_Market.api.trade.dto.ReservationResponseDto;
 import HM.Hanbat_Market.domain.entity.*;
 import HM.Hanbat_Market.exception.NotFoundException;
 import HM.Hanbat_Market.exception.trade.*;
@@ -58,7 +59,7 @@ public class TradeService {
             if (trade.getTradeStatus() == TradeStatus.COMP) {
                 throw new AlreadyCompleteTradeCantReservationException();
             }
-            trade.cancelStatusToReservation();
+            trade.StatusToReservation(member);
         } catch (NoResultException e) {
             trade = Trade.reservation(member, item, transactionAppointmentDateTime, reservationPlace);
         }
@@ -76,11 +77,26 @@ public class TradeService {
         Article article = articleRepository.findById(articleId).get();
         Member member = memberRepository.findById(memberId).get();
         Item item = itemRepository.findById(article.getId()).get();
+
+        try {
+            if (item.getTrade().getTradeStatus() == TradeStatus.RESERVATION) {
+                throw new AlreadyReservationException();
+            }
+        } catch (NullPointerException e) {
+            log.info("첫 예약입니다.");
+        }
+
         Trade trade = Trade.reservation(member, item, transactionAppointmentDateTime, "임시 예약 장소");
 
         tradeRepository.save(trade);
 
         return trade.getId();
+    }
+
+    public ReservationResponseDto mappingReservationResponseDto(Trade trade){
+        Trade reservationTrade = tradeRepository.findById(trade.getId()).get();
+
+        return new ReservationResponseDto(reservationTrade.getId(), reservationTrade.getMember().getNickname());
     }
 
     //판매자가 판매를 완료하거나 구매자를 확실히 결정하면 구매완료
@@ -92,7 +108,7 @@ public class TradeService {
 
         Trade reservationByPurchaserAndSeller = tradeRepository.findReservationByPurchaserAndSeller(member, article.getMember(), articleId);
 
-        if(reservationByPurchaserAndSeller.getTradeStatus() == TradeStatus.CANCEL){
+        if (reservationByPurchaserAndSeller.getTradeStatus() == TradeStatus.CANCEL) {
             throw new IsCancelTradeException();
         }
 

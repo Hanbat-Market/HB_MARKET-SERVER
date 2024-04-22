@@ -14,12 +14,13 @@ public class Chat {
     private String id;
     private String msg;
     private String sender; // 보내는 사람
-    @Hidden
+//    @Hidden
     private String senderNickName;
     private String receiver; // 받는 사람 (귓속말)
-    @Hidden
+//    @Hidden
     private String receiverNickName;
-    private Long roomNum; // 방 번호
+    private String roomNum; // 방 번호
     @Hidden
     private LocalDateTime createdAt;
+    private int fcmOk;
 }

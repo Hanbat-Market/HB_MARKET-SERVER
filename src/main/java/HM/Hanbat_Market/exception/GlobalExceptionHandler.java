@@ -178,5 +178,12 @@ public class GlobalExceptionHandler {
         log.error("[exceptionHandler] ex", e);
         return new ErrorResult(e.getStatus(), e.getErrorCode(), e.getErrorMessage());
     }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(AlreadyReservationException.class)
+    public ErrorResult AlreadyReservationExceptionHandler(AlreadyReservationException e) {
+        log.error("[exceptionHandler] ex", e);
+        return new ErrorResult(e.getStatus(), e.getErrorCode(), e.getErrorMessage());
+    }
 }
 

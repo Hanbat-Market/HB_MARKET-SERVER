@@ -4,7 +4,9 @@ import HM.Hanbat_Market.api.Result;
 import HM.Hanbat_Market.api.member.login.SessionConst;
 import HM.Hanbat_Market.api.trade.dto.*;
 import HM.Hanbat_Market.domain.entity.Member;
+import HM.Hanbat_Market.domain.entity.Trade;
 import HM.Hanbat_Market.repository.member.MemberRepository;
+import HM.Hanbat_Market.repository.trade.TradeRepository;
 import HM.Hanbat_Market.service.account.jwt.JWTUtil;
 import HM.Hanbat_Market.service.article.ArticleService;
 import HM.Hanbat_Market.service.trade.TradeService;
@@ -22,6 +24,7 @@ public class TradeControllerApi {
 
     private final TradeService tradeService;
     private final MemberRepository memberRepository;
+    private final TradeRepository tradeRepository;
     private final JWTUtil jwtUtil;
 
     @PostMapping("/trade/reservation")
@@ -37,7 +40,8 @@ public class TradeControllerApi {
         Long reservationId = tradeService.reservation(sessionMember, reservationRequestDto.getPurchaserNickname(), reservationRequestDto.getArticleId(), reservationRequestDto.getTransactionAppointmentDateTime(),
                 reservationRequestDto.getReservationPlace());
 
-        return new Result(new ReservationResponseDto(reservationId));
+        Trade trade = tradeRepository.findById(reservationId).get();
+        return new Result(tradeService.mappingReservationResponseDto(trade));
     }
 
     @PostMapping("/trade/complete")

@@ -17,6 +17,7 @@ import java.util.Optional;
 public class MemberService {
 
     private final MemberRepository memberRepository;
+
     /**
      * 회원가입
      */
@@ -27,6 +28,14 @@ public class MemberService {
         return member.getId();
     }
 
+    @Transactional
+    public String updateFcmToken(Long memberId, String fcmToken) {
+        Member member = memberRepository.findById(memberId).get();
+        String saveFcmToken = member.saveFcmToken(fcmToken);
+        memberRepository.save(member);
+        return saveFcmToken;
+    }
+
     private void validateDuplicateMember(Member member) {
         Optional<Member> findMember = memberRepository.findByNickName((member.getNickname()));
         if (findMember.isPresent()) {
@@ -34,8 +43,7 @@ public class MemberService {
         }
 
         findMember = memberRepository.findByMail((member.getMail()));
-        if (findMember.isPresent())
-        {
+        if (findMember.isPresent()) {
             throw new JoinException();
         }
     }
@@ -55,6 +63,7 @@ public class MemberService {
     public Optional<Member> findOne(String nickName) {
         return memberRepository.findByNickName(nickName);
     }
+
     /**
      * 로그인
      */
