@@ -14,7 +14,7 @@ import java.util.List;
 
 public class CreateTestEntity {
     public static Member createTestMember2() {
-        String mail = "wncks0303@naver.com";
+        String mail = "wncks030303@naver.com";
         String passwd = "1234";
         String phoneNumber = "010-4321-4321";
         String nickname = "토마스";
@@ -23,10 +23,10 @@ public class CreateTestEntity {
     }
 
     public static Member createTestMember1() {
-        String mail = "jckim229@gmail.com";
+        String mail = "jckim2294@gmail.com";
         String passwd = "1234";
         String phoneNumber = "010-1234-1234";
-        String nickname = "김주찬";
+        String nickname = "김주찬ff";
 
         return Member.createMember(mail, passwd, nickname);
     }

@@ -21,7 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
-@Component
+//@Component
 @RequiredArgsConstructor
 public class InitDB {
 
@@ -46,7 +46,7 @@ public class InitDB {
             ArrayList<ImageFile> imageFiles = new ArrayList<>();
             ImageFile imageFile;
             Article saveArticle;
-            imageFiles.add(new ImageFile("default_image.png", "default_image.png"));
+            imageFiles.add(new ImageFile("default_image2.png", "default_image2.png"));
 
             Member member = Member.createMember("jckim2229@gmail.com", "1",  "jckim2");
             Member member1 = Member.createMember("wncks0303@naver.com", "2",  "wncks0303");
@@ -65,7 +65,7 @@ public class InitDB {
 
             Long articleId = articleService.regisArticle(member.getId(), articleCreateDto, itemCreateDto);
             saveArticle = articleService.findArticle(articleId);
-            imageFile = new ImageFile("default_image.png", "default_image.png");
+            imageFile = new ImageFile("default_image2.png", "default_image2.png");
             ImageFile.createImageFile(saveArticle, imageFile);
 
 
@@ -79,7 +79,7 @@ public class InitDB {
 
             Long articleId1 = articleService.regisArticle(member.getId(), articleCreateDto, itemCreateDto);
             saveArticle = articleService.findArticle(articleId1);
-            imageFile = new ImageFile("default_image.png", "default_image.png");
+            imageFile = new ImageFile("default_image2.png", "default_image2.png");
             ImageFile.createImageFile(saveArticle, imageFile);
 
 
@@ -93,7 +93,7 @@ public class InitDB {
 
             Long articleId2 = articleService.regisArticle(member.getId(), articleCreateDto, itemCreateDto);
             saveArticle = articleService.findArticle(articleId2);
-            imageFile = new ImageFile("default_image.png", "default_image.png");
+            imageFile = new ImageFile("default_image2.png", "default_image2.png");
             ImageFile.createImageFile(saveArticle, imageFile);
 
 
@@ -106,7 +106,7 @@ public class InitDB {
 
             Long articleId3 = articleService.regisArticle(member1.getId(), articleCreateDto, itemCreateDto);
             saveArticle = articleService.findArticle(articleId3);
-            imageFile = new ImageFile("default_image.png", "default_image.png");
+            imageFile = new ImageFile("default_image2.png", "default_image2.png");
             ImageFile.createImageFile(saveArticle, imageFile);
 
             itemCreateDto.setItemName("컴퓨터 개론");
@@ -118,7 +118,7 @@ public class InitDB {
 
             Long articleId4 = articleService.regisArticle(member1.getId(), articleCreateDto, itemCreateDto);
             saveArticle = articleService.findArticle(articleId4);
-            imageFile = new ImageFile("default_image.png", "default_image.png");
+            imageFile = new ImageFile("default_image2.png", "default_image2.png");
             ImageFile.createImageFile(saveArticle, imageFile);
 
             Article article = articleService.findArticle(articleId);

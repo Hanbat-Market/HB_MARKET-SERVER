@@ -36,7 +36,7 @@ public class JWTFilter extends OncePerRequestFilter {
 
         // 스웨거 관련 경로 리스트
         List<String> swaggerPaths = Arrays.asList("/css/", "/assets/", "/files/", "/api/images/", "/favicon.ico", "/error", "/swagger-ui/", "/swagger-resources/",
-                "/v3/api-docs", "/api-docs", "/swagger-ui.html", "/google79674106d1aa552b.html","/chat","/chat-front/chat.html");
+                "/v3/api-docs", "/api-docs", "/swagger-ui.html", "/google79674106d1aa552b.html","/chat","/chat-front/chat.html", "/api/fcm", "/api/fcm/save");
 
         // 요청된 경로
         String path = request.getRequestURI();
