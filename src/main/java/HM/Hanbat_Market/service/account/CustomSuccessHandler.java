@@ -1,12 +1,15 @@
 package HM.Hanbat_Market.service.account;
 
 import HM.Hanbat_Market.domain.entity.Member;
+import HM.Hanbat_Market.repository.member.MemberRepository;
 import HM.Hanbat_Market.service.account.jwt.CustomOAuth2User;
 import HM.Hanbat_Market.service.account.jwt.JWTUtil;
+import HM.Hanbat_Market.service.member.MemberService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
@@ -18,13 +21,17 @@ import java.util.Iterator;
 import java.util.UUID;
 
 @Component
+@Slf4j
 public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
     private final JWTUtil jwtUtil;
+    private final MemberService memberService;
+    private final MemberRepository memberRepository;
 
-    public CustomSuccessHandler(JWTUtil jwtUtil) {
-
+    public CustomSuccessHandler(JWTUtil jwtUtil, MemberService memberService, MemberRepository memberRepository) {
         this.jwtUtil = jwtUtil;
+        this.memberService = memberService;
+        this.memberRepository = memberRepository;
     }
 
     @Override

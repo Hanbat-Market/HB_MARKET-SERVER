@@ -5,9 +5,11 @@ import HM.Hanbat_Market.domain.entity.Member;
 import HM.Hanbat_Market.repository.member.MemberRepository;
 import HM.Hanbat_Market.service.account.dto.SessionMember;
 import HM.Hanbat_Market.service.account.jwt.CustomOAuth2User;
+import HM.Hanbat_Market.service.member.MemberService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
@@ -23,10 +25,12 @@ import java.util.Collections;
 @RequiredArgsConstructor
 @Service
 @Transactional
+@Slf4j
 public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
 
     private final MemberRepository memberRepository;
     private final HttpSession httpSession;
+    private final MemberService memberService;
     @Value("${spring.oauthPasswd}")
     private String oauthPasswd;
 
@@ -52,7 +56,6 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 
         // 사용자 저장 또는 업데이트
         Member user = saveOrUpdate(attributes);
-
 
         return new CustomOAuth2User(user);
     }

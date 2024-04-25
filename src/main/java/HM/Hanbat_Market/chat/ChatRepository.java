@@ -24,7 +24,7 @@ public interface ChatRepository extends ReactiveMongoRepository<Chat, String> {
     @Aggregation(pipeline = {
             "{ $match: { $or: [ { sender: ?0 }, { receiver: ?0 } ] } }",
             "{ $sort: { createdAt: -1 } }",
-            "{ $group: { _id: '$roomNum', msg: { $first: '$msg' }, sender: { $first: '$sender' }, senderNickName: { $first: '$senderNickName' }, receiver: { $first: '$receiver' }, receiverNickName: { $first: '$receiverNickName' }, roomNum: { $first: '$roomNum' }, createdAt: { $first: '$createdAt' } } }"
+            "{ $group: { _id: '$roomNum', msg: { $first: '$msg' }, sender: { $first: '$sender' }, senderNickName: { $first: '$senderNickName' }, receiver: { $first: '$receiver' }, receiverNickName: { $first: '$receiverNickName' }, roomNum: { $first: '$roomNum' }, createdAt: { $first: '$createdAt' }, fcmOk: { $first: '$fcmOk' } } }"
     })
     Flux<Chat> findLatestChatBySenderOrReceiver(String user);
 }

@@ -21,7 +21,8 @@ public class ChatService {
                         chat.getReceiverNickName(),
                         chat.getMsg(),
                         chat.getRoomNum(),
-                        chat.getCreatedAt()
+                        chat.getCreatedAt(),
+                        chat.getFcmOk()
                 ));
     }
 }

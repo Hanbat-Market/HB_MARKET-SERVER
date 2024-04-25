@@ -34,6 +34,9 @@ public class Member {
 
     private String fcmToken;
 
+    @Enumerated(EnumType.STRING)
+    private MemberStatus memberStatus;
+
     @Enumerated(EnumType.STRING) // Enum 타입은 문자열 형태로 저장해야 함
     private Role role;
 
@@ -88,8 +91,17 @@ public class Member {
 
         return this;
     }
+
     public void changeMail(String mail) {
         setMail(mail);
+    }
+
+    public void login(){
+        this.memberStatus = MemberStatus.LOGIN;
+    }
+
+    public void logout(){
+        this.memberStatus = MemberStatus.LOGOUT;
     }
 
     public String getRoleKey() {

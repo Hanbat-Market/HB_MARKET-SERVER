@@ -21,6 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @RestController
 @RequiredArgsConstructor
@@ -40,8 +41,12 @@ public class HomeControllerApi {
 
         String token = jwtUtil.resolveTokenFromRequest(request);
         String mail = jwtUtil.getUsername(token);
-
-        Member sessionMember = memberRepository.findByMail(mail).get();
+        Member sessionMember = null;
+        try {
+             sessionMember = memberRepository.findByMail(mail).get();
+        }catch (NoSuchElementException e){
+            log.info("첫 로그인");
+        }
 
         List<Article> articles = articleService.findArticles(articleSearchDto);
         List<HomeArticlesDto> homeArticlesDtos = articleService.findArticlesToDto(sessionMember, articles);

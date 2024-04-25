@@ -2,6 +2,7 @@ package HM.Hanbat_Market.api.member;
 
 import HM.Hanbat_Market.api.Result;
 import HM.Hanbat_Market.api.member.dto.FcmTokenRequest;
+import HM.Hanbat_Market.api.member.dto.LogoutRequest;
 import HM.Hanbat_Market.api.member.dto.MemberRequestDto;
 import HM.Hanbat_Market.api.member.dto.MemberResponseDto;
 import HM.Hanbat_Market.api.member.login.SessionConst;
