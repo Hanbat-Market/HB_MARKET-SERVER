@@ -1,9 +1,11 @@
 package HM.Hanbat_Market.config;
 
+import HM.Hanbat_Market.repository.member.MemberRepository;
 import HM.Hanbat_Market.service.account.CustomOAuth2UserService;
 import HM.Hanbat_Market.service.account.CustomSuccessHandler;
 import HM.Hanbat_Market.service.account.jwt.JWTFilter;
 import HM.Hanbat_Market.service.account.jwt.JWTUtil;
+import HM.Hanbat_Market.service.member.MemberService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -19,12 +21,17 @@ public class SecurityConfig {
     private final CustomOAuth2UserService customOAuth2UserService;
     private final CustomSuccessHandler customSuccessHandler;
     private final JWTUtil jwtUtil;
+    private final MemberService memberService;
+    private final MemberRepository memberRepository;
 
-    public SecurityConfig(CustomOAuth2UserService customOAuth2UserService, CustomSuccessHandler customSuccessHandler, JWTUtil jwtUtil) {
+    public SecurityConfig(CustomOAuth2UserService customOAuth2UserService, CustomSuccessHandler customSuccessHandler, JWTUtil jwtUtil,
+                          MemberService memberService, MemberRepository memberRepository) {
 
         this.customOAuth2UserService = customOAuth2UserService;
         this.customSuccessHandler = customSuccessHandler;
         this.jwtUtil = jwtUtil;
+        this.memberService = memberService;
+        this.memberRepository = memberRepository;
     }
 
     @Bean
@@ -44,7 +51,7 @@ public class SecurityConfig {
 
         //JWTFilter 추가
         http
-                .addFilterBefore(new JWTFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(new JWTFilter(jwtUtil, memberService), UsernamePasswordAuthenticationFilter.class);
 
         //oauth2
         http

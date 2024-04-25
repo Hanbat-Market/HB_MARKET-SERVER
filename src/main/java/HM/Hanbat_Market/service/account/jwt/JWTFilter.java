@@ -1,11 +1,13 @@
 package HM.Hanbat_Market.service.account.jwt;
 
 import HM.Hanbat_Market.domain.entity.Member;
+import HM.Hanbat_Market.domain.entity.MemberStatus;
 import HM.Hanbat_Market.domain.entity.Role;
 import HM.Hanbat_Market.exception.account.NullTokenException;
 import HM.Hanbat_Market.exception.account.TokenExpiredException;
 import HM.Hanbat_Market.exception.account.TokenNotValidException;
 import HM.Hanbat_Market.service.account.jwt.JWTUtil;
+import HM.Hanbat_Market.service.member.MemberService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
@@ -25,10 +27,12 @@ import java.util.List;
 public class JWTFilter extends OncePerRequestFilter {
 
     private final JWTUtil jwtUtil;
+    private final MemberService memberService;
 
-    public JWTFilter(JWTUtil jwtUtil) {
+    public JWTFilter(JWTUtil jwtUtil, MemberService memberService) {
 
         this.jwtUtil = jwtUtil;
+        this.memberService = memberService;
     }
 
     @Override
@@ -36,7 +40,7 @@ public class JWTFilter extends OncePerRequestFilter {
 
         // 스웨거 관련 경로 리스트
         List<String> swaggerPaths = Arrays.asList("/css/", "/assets/", "/files/", "/api/images/", "/favicon.ico", "/error", "/swagger-ui/", "/swagger-resources/",
-                "/v3/api-docs", "/api-docs", "/swagger-ui.html", "/google79674106d1aa552b.html","/chat","/chat-front/chat.html", "/api/fcm", "/api/fcm/save");
+                "/v3/api-docs", "/api-docs", "/swagger-ui.html", "/google79674106d1aa552b.html", "/chat", "/chat-front/chat.html", "/api/fcm", "/api/fcm/save");
 
         // 요청된 경로
         String path = request.getRequestURI();
@@ -74,11 +78,11 @@ public class JWTFilter extends OncePerRequestFilter {
                     authorization = cookie.getValue();
                 }
             }
-        }catch (NullPointerException e){
+
+        } catch (NullPointerException e) {
 //            throw new TokenNotValidException();
             return;
         }
-
 
 
         //Authorization 헤더 검증
@@ -114,6 +118,13 @@ public class JWTFilter extends OncePerRequestFilter {
 
         //UserDetails에 회원 정보 객체 담기
         CustomOAuth2User customOAuth2User = new CustomOAuth2User(member);
+
+        Member findMember = memberService.findByMail(mail).get();
+
+        if (findMember.getMemberStatus() != MemberStatus.LOGIN) {
+            memberService.login(findMember.getId());
+            log.info("@@@@@@@@@@@ login 상태 변경");
+        }
 
         //스프링 시큐리티 인증 토큰 생성
         Authentication authToken = new UsernamePasswordAuthenticationToken(customOAuth2User, null, customOAuth2User.getAuthorities());

@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
@@ -37,12 +38,19 @@ public class FcmService {
 
         String API_URL = "https://fcm.googleapis.com/v1/projects/hanbatmarketfcm/messages:send";
 
+        try{
+            ResponseEntity response = restTemplate.exchange(API_URL, HttpMethod.POST, entity, String.class);
 
-        ResponseEntity response = restTemplate.exchange(API_URL, HttpMethod.POST, entity, String.class);
+            log.info(response.getStatusCode().toString() + "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ push @@@@@@");
 
-        log.info(response.getStatusCode().toString() + "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ push @@@@@@");
+            return response.getStatusCode() == HttpStatus.OK ? 1 : 0;
+        }catch (HttpClientErrorException.BadRequest ex){
+            log.info("푸시 알림 수신자가 지정되지 않음 @@@@@@@@@@@@@@@@@@@@@@@@@@");
+            return 0;
+        }
 
-        return response.getStatusCode() == HttpStatus.OK ? 1 : 0;
+
+
     }
 
     /**

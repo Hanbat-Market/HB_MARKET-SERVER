@@ -2,6 +2,7 @@ package HM.Hanbat_Market.api.member;
 
 import HM.Hanbat_Market.api.Result;
 import HM.Hanbat_Market.api.member.dto.LoginRequestDto;
+import HM.Hanbat_Market.api.member.dto.LogoutRequest;
 import HM.Hanbat_Market.api.member.login.SessionConst;
 import HM.Hanbat_Market.domain.entity.Member;
 import HM.Hanbat_Market.exception.member.AlreadyLoginException;
@@ -28,34 +29,32 @@ public class LoginControllerApi {
     private final MemberRepository memberRepository;
     private final JWTUtil jwtUtil;
 
-    @Hidden
-    @PostMapping("/login")
-    public Result login(@RequestBody LoginRequestDto form, HttpServletRequest request) {
+//    @Hidden
+//    @PostMapping("/login")
+//    public Result login(@RequestBody LoginRequestDto form, HttpServletRequest request) {
+//
+//        String token = jwtUtil.resolveTokenFromRequest(request);
+//        String mail = jwtUtil.getUsername(token);
+//
+//        Member sessionMember = memberRepository.findByMail(mail).get();
+//
+//        if (sessionMember != null) {
+//            throw new AlreadyLoginException();
+//        }
+//
+//        Member loginMember = memberService.login(form.getMail(), form.getPasswd());
+//
+//        return new Result<>("ok");
+//    }
 
-        String token = jwtUtil.resolveTokenFromRequest(request);
-        String mail = jwtUtil.getUsername(token);
-
-        Member sessionMember = memberRepository.findByMail(mail).get();
-
-        if (sessionMember != null) {
-            throw new AlreadyLoginException();
-        }
-
-        Member loginMember = memberService.login(form.getMail(), form.getPasswd());
-
-        return new Result<>("ok");
-    }
-
-    @Hidden
     @PostMapping("/logout")
-    public Result logout(HttpServletRequest request) {
-        HttpSession session = request.getSession(false);
-        if (session != null) {
-            session.invalidate();
-        }
-        return new Result<>("ok");
+    public Result logout(@RequestBody LogoutRequest logoutRequest, HttpServletRequest request) {
+
+        Member member = memberRepository.findByUUID(logoutRequest.getUuid()).get();
+        memberService.logout(member.getId());
+        log.info("@@@@@@@@@@@ logout 상태 변경");
+
+        return new Result("ok");
     }
-
-
 
 }

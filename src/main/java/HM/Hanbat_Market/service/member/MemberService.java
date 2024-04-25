@@ -29,6 +29,22 @@ public class MemberService {
     }
 
     @Transactional
+    public Long login(Long memberId) {
+        Member member = memberRepository.findById(memberId).get();
+        member.login();
+        memberRepository.save(member);
+        return member.getId();
+    }
+
+    @Transactional
+    public Long logout(Long memberId) {
+        Member member = memberRepository.findById(memberId).get();
+        member.logout();
+        memberRepository.save(member);
+        return member.getId();
+    }
+
+    @Transactional
     public String updateFcmToken(Long memberId, String fcmToken) {
         Member member = memberRepository.findById(memberId).get();
         String saveFcmToken = member.saveFcmToken(fcmToken);
@@ -64,12 +80,16 @@ public class MemberService {
         return memberRepository.findByNickName(nickName);
     }
 
+    public Optional<Member> findByMail(String mail) {
+        return memberRepository.findByMail(mail);
+    }
+
     /**
      * 로그인
      */
-    public Member login(String mail, String passwd) {
-        return memberRepository.findByMail(mail)
-                .filter(m -> m.getPasswd().equals(passwd))
-                .orElseThrow(LoginException::new);
-    }
+//    public Member login(String mail, String passwd) {
+//        return memberRepository.findByMail(mail)
+//                .filter(m -> m.getPasswd().equals(passwd))
+//                .orElseThrow(LoginException::new);
+//    }
 }

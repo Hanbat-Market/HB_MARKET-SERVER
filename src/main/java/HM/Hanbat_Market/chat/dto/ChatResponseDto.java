@@ -15,9 +15,10 @@ public class ChatResponseDto {
     private String lastChat;
     private String roomNum;
     private LocalDateTime createdAt;
+    private int fcmOk;
 
     // Constructor, Getters, and Setters
-    public ChatResponseDto(String senderUuid, String receiverUuid, String senderNickname, String receiverNickname, String lastChat, String roomNum, LocalDateTime createdAt) {
+    public ChatResponseDto(String senderUuid, String receiverUuid, String senderNickname, String receiverNickname, String lastChat, String roomNum, LocalDateTime createdAt, int fcmOk) {
         this.senderUuid = senderUuid;
         this.receiverUuid = receiverUuid;
         this.senderNickname = senderNickname;
@@ -25,6 +26,7 @@ public class ChatResponseDto {
         this.lastChat = lastChat;
         this.roomNum = roomNum;
         this.createdAt = createdAt;
+        this.fcmOk = fcmOk;
     }
 
     // Getters and Setters 생략
