@@ -1,5 +1,6 @@
 package HM.Hanbat_Market.service.account;
 
+import HM.Hanbat_Market.domain.entity.ImageFile;
 import HM.Hanbat_Market.domain.entity.Member;
 import HM.Hanbat_Market.domain.entity.Role;
 import lombok.Builder;
@@ -54,6 +55,7 @@ public class OAuthAttributes {
 
     // User 엔티티 생성
     public Member toEntity(String oauthPasswd) {
-        return Member.createMember(email, name, oauthPasswd, "임시 닉네임" + email, Role.USER);
+        Member member = Member.createMember(email, name, oauthPasswd, "임시 닉네임" + email, Role.USER);
+        return member;
     }
 }
