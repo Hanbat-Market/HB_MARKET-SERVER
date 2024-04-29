@@ -1,22 +1,39 @@
 package HM.Hanbat_Market.service.member;
 
+import HM.Hanbat_Market.api.article.FileStore;
+import HM.Hanbat_Market.api.member.dto.ProfileImageResponse;
+import HM.Hanbat_Market.api.member.dto.ProfileNicknameRequest;
+import HM.Hanbat_Market.api.member.dto.ProfileResponse;
+import HM.Hanbat_Market.domain.entity.ImageFile;
 import HM.Hanbat_Market.domain.entity.Member;
+import HM.Hanbat_Market.domain.entity.MemberStatus;
+import HM.Hanbat_Market.exception.account.AlreadyVerifiedStudentException;
+import HM.Hanbat_Market.exception.account.FailMailVerificationException;
+import HM.Hanbat_Market.exception.account.NotMatchingUuidAndRandomNumberException;
+import HM.Hanbat_Market.exception.account.UnverifiedStudentException;
 import HM.Hanbat_Market.exception.member.JoinException;
-import HM.Hanbat_Market.exception.member.LoginException;
 import HM.Hanbat_Market.repository.member.MemberRepository;
+import HM.Hanbat_Market.service.APIURL;
+import java.io.IOException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
+@Slf4j
 public class MemberService {
 
     private final MemberRepository memberRepository;
+    private final FileStore fileStore;
+
+    private final String FILE_URL = APIURL.url;
 
     /**
      * 회원가입
@@ -45,6 +62,32 @@ public class MemberService {
     }
 
     @Transactional
+    public Long verification(String uuid, String number) {
+        Member member = memberRepository.findByUUID(uuid).get();
+        if (member.getVerificationNumber() != number) {
+            throw new NotMatchingUuidAndRandomNumberException();
+        }
+
+        if (member.getMemberStatus().equals(MemberStatus.VERIFIED)) {
+            throw new AlreadyVerifiedStudentException();
+        }
+        if (member.verification(number)) {
+            member.verificationSuccess();
+            memberRepository.save(member);
+            return member.getId();
+        }
+        //인증실패
+        throw new FailMailVerificationException();
+    }
+
+    @Transactional
+    public Long regisVerificationNumber(String uuid, String number) {
+        Member member = memberRepository.findByUUID(uuid).get();
+        member.regisVerificationNumber(number);
+        return member.getId();
+    }
+
+    @Transactional
     public String updateFcmToken(Long memberId, String fcmToken) {
         Member member = memberRepository.findById(memberId).get();
         String saveFcmToken = member.saveFcmToken(fcmToken);
@@ -63,6 +106,39 @@ public class MemberService {
             throw new JoinException();
         }
     }
+
+    public boolean isVerifiedStudent(String uuid) {
+        Member member = memberRepository.findByUUID(uuid).get();
+        if (member.getMemberStatus().equals(MemberStatus.VERIFIED)) {
+            return true;
+        }
+        throw new UnverifiedStudentException();
+    }
+
+    @Transactional
+    public ProfileImageResponse regisProfileImage(MultipartFile newImageFile, String memberUuid) throws IOException {
+        Member member = memberRepository.findByUUID(memberUuid).get();
+
+        ImageFile profileImage = fileStore.storeFile(newImageFile);
+        member.setImageFile(profileImage);
+
+        memberRepository.save(member);
+
+        return new ProfileImageResponse(member.getMail(), member.getImageFile().getStoreFileName());
+    }
+
+    public ProfileResponse getProfileDetail(String uuid) {
+        Member member = memberRepository.findByUUID(uuid).get();
+        return new ProfileResponse(member.getMail(), member.getNickname(),
+                getFullPath(member.getImageFile().getStoreFileName()));
+    }
+
+    public void setProfileNickname(ProfileNicknameRequest profileNicknameRequest) {
+        Member member = memberRepository.findByUUID(profileNicknameRequest.getUuid()).get();
+        member.updateNickname(profileNicknameRequest.getNickName());
+        memberRepository.save(member);
+    }
+
 
     /**
      * 회원 조회
@@ -84,12 +160,7 @@ public class MemberService {
         return memberRepository.findByMail(mail);
     }
 
-    /**
-     * 로그인
-     */
-//    public Member login(String mail, String passwd) {
-//        return memberRepository.findByMail(mail)
-//                .filter(m -> m.getPasswd().equals(passwd))
-//                .orElseThrow(LoginException::new);
-//    }
+    private String getFullPath(String filename) {
+        return FILE_URL + filename;
+    }
 }

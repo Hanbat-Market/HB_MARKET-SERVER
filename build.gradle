@@ -59,6 +59,11 @@ dependencies {
     implementation group: 'com.google.firebase', name: 'firebase-admin', version: '9.2.0'
     implementation 'com.google.firebase:firebase-admin:9.2.0'
 
+    //이메일 인증 관련
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
+
+    implementation "org.springframework.boot:spring-boot-starter-aop"
+
 }
 
 tasks.named('test') {

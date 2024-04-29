@@ -67,7 +67,8 @@ public class SecurityConfig {
                         .requestMatchers("/api/members/new", "/api/login", "/api/members/login", "/api/members/logout",
                                 "/css/**", "/assets/**", "/files/**", "/api/images/**", "/*.ico", "/error", "/swagger-ui/**", "/swagger-resources/**",
                                 "/v3/api-docs/**", "/api-docs/**", "/swagger-ui.html", "/google79674106d1aa552b.html",
-                                "/mentoring/room/**", "/chat/**", "/chat-front/chat.html", "/chat-front/**", "/api/fcm", "/api/fcm/save").permitAll()
+                                "/mentoring/room/**", "/chat/**", "/chat-front/chat.html", "/chat-front/**", "/api/fcm", "/api/fcm/save"
+                                , "/api/verification", "/api/verification/match", "/api/verification/confirm").permitAll()
                         .anyRequest().authenticated());
 
         //세션 설정 : STATELESS
