@@ -44,7 +44,7 @@ public class ArticleService {
     private final MemberRepository memberRepository;
     private final ImageFileRepository imageFileRepository;
     private final PreemptionItemService preemptionItemService;
-    private final FileStore fileStore = new FileStore();
+    private final FileStore fileStore;
     private final String FILE_URL = APIURL.url;
     private final int IMAGE_MAX_RANGE = 5;
     private final int THUMBNAIL_FILE_INDEX = 0;

@@ -1,8 +1,6 @@
 package HM.Hanbat_Market.exception;
 
-import HM.Hanbat_Market.exception.account.NullTokenException;
-import HM.Hanbat_Market.exception.account.TokenExpiredException;
-import HM.Hanbat_Market.exception.account.TokenNotValidException;
+import HM.Hanbat_Market.exception.account.*;
 import HM.Hanbat_Market.exception.article.FileOutOfRangeException;
 import HM.Hanbat_Market.exception.article.FileValidityException;
 import HM.Hanbat_Market.exception.article.IsDeleteArticleException;
@@ -182,6 +180,41 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(AlreadyReservationException.class)
     public ErrorResult AlreadyReservationExceptionHandler(AlreadyReservationException e) {
+        log.error("[exceptionHandler] ex", e);
+        return new ErrorResult(e.getStatus(), e.getErrorCode(), e.getErrorMessage());
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(UnverifiedStudentException.class)
+    public ErrorResult UnverifiedStudentExceptionHandler(UnverifiedStudentException e) {
+        log.error("[exceptionHandler] ex", e);
+        return new ErrorResult(e.getStatus(), e.getErrorCode(), e.getErrorMessage());
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(AlreadyVerifiedStudentException.class)
+    public ErrorResult AlreadyVerifiedExceptionHandler(AlreadyVerifiedStudentException e) {
+        log.error("[exceptionHandler] ex", e);
+        return new ErrorResult(e.getStatus(), e.getErrorCode(), e.getErrorMessage());
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(FailMailVerificationException.class)
+    public ErrorResult FailMailVerificationExceptionHandler(FailMailVerificationException e) {
+        log.error("[exceptionHandler] ex", e);
+        return new ErrorResult(e.getStatus(), e.getErrorCode(), e.getErrorMessage());
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(NoHanbatMailException.class)
+    public ErrorResult NoHanbatMailExceptionHandler(NoHanbatMailException e) {
+        log.error("[exceptionHandler] ex", e);
+        return new ErrorResult(e.getStatus(), e.getErrorCode(), e.getErrorMessage());
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(NotMatchingUuidAndRandomNumberException.class)
+    public ErrorResult NotMatchingUuidAndRandomNumberExceptionHandler(NotMatchingUuidAndRandomNumberException e) {
         log.error("[exceptionHandler] ex", e);
         return new ErrorResult(e.getStatus(), e.getErrorCode(), e.getErrorMessage());
     }

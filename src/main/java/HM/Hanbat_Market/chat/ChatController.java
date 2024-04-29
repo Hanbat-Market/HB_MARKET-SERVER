@@ -1,15 +1,15 @@
 package HM.Hanbat_Market.chat;
 
+import HM.Hanbat_Market.aop.TimeTrace;
 import HM.Hanbat_Market.chat.dto.ChatResponseDto;
 import HM.Hanbat_Market.domain.entity.Member;
-import HM.Hanbat_Market.domain.entity.MemberStatus;
+import HM.Hanbat_Market.domain.entity.LoginStatus;
 import HM.Hanbat_Market.exception.member.NotExistUuidException;
 import HM.Hanbat_Market.fcm.FcmSendDto;
 import HM.Hanbat_Market.fcm.FcmService;
 import HM.Hanbat_Market.repository.member.MemberRepository;
-import HM.Hanbat_Market.service.member.MemberService;
 import io.swagger.v3.oas.annotations.Hidden;
-import jakarta.persistence.NoResultException;
+import java.util.NoSuchElementException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -25,7 +25,6 @@ import reactor.core.scheduler.Schedulers;
 import java.io.IOException;
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.NoSuchElementException;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Slf4j
@@ -87,37 +86,33 @@ public class ChatController {
      * 동기 방식
      */
 
-//    @CrossOrigin
+    @CrossOrigin
 //    @PostMapping("/chat")
-//    public Mono<Chat> setMsg(@RequestBody Chat chat) throws IOException {
-//        Member sender;
-//        Member receiver;
-//
-//        try {
-//            log.info("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@Receiver");
-//            log.info(chat.getReceiver());
-//            log.info(chat.getSender());
-//            log.info("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@Sender");
-//            //UUID로 유저 식별
-//            sender = memberRepository.findByUUID(chat.getSender()).get();
-//            receiver = memberRepository.findByUUID(chat.getReceiver()).get();
-//
-//            chat.setSenderNickName(sender.getNickname());
-//            chat.setReceiverNickName(receiver.getNickname());
-//            chat.setCreatedAt(LocalDateTime.now());
-//
-//        } catch (NoSuchElementException e) {
-//            throw new NotExistUuidException();
-//        }
-//        Mono<Chat> saveChat = chatRepository.save(chat);
-//
-//        //푸시알림
-//        String fcmToken = receiver.getFcmToken();
-//        int result = fcmService.sendMessageTo(new FcmSendDto(fcmToken, chat.getSenderNickName(), chat.getMsg()));
-//        chat.setFcmOk(result);
-//
-//        return saveChat;
-//    }
+    public Mono<Chat> setMsg(@RequestBody Chat chat) throws IOException {
+
+        Member sender;
+        Member receiver;
+
+        try {
+            //UUID로 유저 식별
+            sender = memberRepository.findByUUID(chat.getSender()).get();
+            receiver = memberRepository.findByUUID(chat.getReceiver()).get();
+
+            chat.setSenderNickName(sender.getNickname());
+            chat.setReceiverNickName(receiver.getNickname());
+            chat.setCreatedAt(LocalDateTime.now());
+
+        } catch (NoSuchElementException e) {
+            throw new NotExistUuidException();
+        }
+        Mono<Chat> saveChat = chatRepository.save(chat);
+
+        //푸시알림
+        String fcmToken = receiver.getFcmToken();
+        int result = fcmService.sendMessageTo(new FcmSendDto(fcmToken, chat.getSenderNickName(), chat.getMsg()));
+        chat.setFcmOk(result);
+        return saveChat;
+    }
 
     /**
      * 비동기 방식
@@ -165,7 +160,7 @@ public class ChatController {
      *  푸시알림과 채팅 전송 병렬 진행
      */
     @PostMapping("/chat")
-    public Mono<Chat> setMsg(@RequestBody Chat chat) {
+    public Mono<Chat> setMsgReactive(@RequestBody Chat chat) {
         return Mono.just(chat)
                 .map(c -> {
                     Member sender = memberRepository.findByUUID(c.getSender()).orElseThrow(NotExistUuidException::new);
@@ -183,7 +178,7 @@ public class ChatController {
                         return savedChat;
                     });
                 })
-                .onErrorMap(e -> new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error in chat or push notification", e));
+                .onErrorMap(e -> new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "채팅 푸시알림 에러", e));
     }
 
     private Mono<Integer> sendMessage(Chat chat) {
@@ -191,7 +186,7 @@ public class ChatController {
             Member receiver = memberRepository.findByUUID(chat.getReceiver()).orElseThrow(NotExistUuidException::new);
 
             // receiver의 MemberStatus가 logout인 경우 푸시 알림을 보내지 않음
-            if (receiver.getMemberStatus() == MemberStatus.LOGOUT) {
+            if (receiver.getLoginStatus() == LoginStatus.LOGOUT) {
                 return 0;
             }
 

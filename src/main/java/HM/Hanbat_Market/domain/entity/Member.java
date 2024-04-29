@@ -34,11 +34,20 @@ public class Member {
 
     private String fcmToken;
 
+    private String verificationNumber;
+
+    @Enumerated(EnumType.STRING)
+    private LoginStatus loginStatus;
+
     @Enumerated(EnumType.STRING)
     private MemberStatus memberStatus;
 
     @Enumerated(EnumType.STRING) // Enum 타입은 문자열 형태로 저장해야 함
     private Role role;
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "file_id")
+    private ImageFile imageFile;
 
     @OneToMany(mappedBy = "member")
     private List<Article> articles = new ArrayList<>();
@@ -69,9 +78,14 @@ public class Member {
         this.passwd = passwd;
         this.nickname = nickname;
         this.role = role;
+        this.memberStatus = MemberStatus.UNVERIFIED;
+        this.verificationNumber = "-1";
+        ImageFile imageFile = new ImageFile();
+        imageFile.setStoreFileName("profile.png");
+        this.setImageFile(imageFile);
     }
 
-    public String saveFcmToken(String fcmToken){
+    public String saveFcmToken(String fcmToken) {
         this.fcmToken = fcmToken;
         return fcmToken;
     }
@@ -96,16 +110,43 @@ public class Member {
         setMail(mail);
     }
 
-    public void login(){
-        this.memberStatus = MemberStatus.LOGIN;
+    public void login() {
+        this.loginStatus = LoginStatus.LOGIN;
     }
 
-    public void logout(){
-        this.memberStatus = MemberStatus.LOGOUT;
+    public void logout() {
+        this.loginStatus = LoginStatus.LOGOUT;
+    }
+
+    public void verificationSuccess() {
+        this.memberStatus = MemberStatus.VERIFIED;
+    }
+
+    public boolean verification(String number) {
+        if (this.verificationNumber.equals(number)) {
+            return true;
+        }
+        return false;
+    }
+
+    public void setImageFile(ImageFile imageFile) {
+        this.imageFile = imageFile;
+    }
+
+    public void updateNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public void regisVerificationNumber(String number) {
+        this.verificationNumber = number;
     }
 
     public String getRoleKey() {
         return this.role.getKey();
+    }
+
+    public void pp(){
+        this.memberStatus = MemberStatus.UNVERIFIED;
     }
 
     public Collection<? extends GrantedAuthority> getAuthorities() {

@@ -39,13 +39,23 @@ public class ImageFile {
         article.getImageFiles().add(this);
     }
 
-    public void format(){
+    public void format() {
         this.article = null;
+    }
+
+    public void setStoreFileName(String fileName) {
+        this.storeFileName = fileName;
     }
 
     /**
      * 생성 메서드
      */
+
+    public static ImageFile newImageFile() {
+
+        return new ImageFile();
+    }
+
     public static ImageFile createImageFile(Article article, ImageFile imageFile) {
         imageFile.regisArticle(article);
         return imageFile;
