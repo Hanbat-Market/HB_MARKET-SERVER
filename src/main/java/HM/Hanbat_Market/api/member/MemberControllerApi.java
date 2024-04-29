@@ -2,23 +2,25 @@ package HM.Hanbat_Market.api.member;
 
 import HM.Hanbat_Market.api.Result;
 import HM.Hanbat_Market.api.member.dto.FcmTokenRequest;
-import HM.Hanbat_Market.api.member.dto.LogoutRequest;
 import HM.Hanbat_Market.api.member.dto.MemberRequestDto;
 import HM.Hanbat_Market.api.member.dto.MemberResponseDto;
-import HM.Hanbat_Market.api.member.login.SessionConst;
+import HM.Hanbat_Market.api.member.dto.ProfileDetailRequest;
+import HM.Hanbat_Market.api.member.dto.ProfileImageRequest;
+import HM.Hanbat_Market.api.member.dto.ProfileImageResponse;
+import HM.Hanbat_Market.api.member.dto.ProfileNicknameRequest;
 import HM.Hanbat_Market.domain.entity.Member;
 import HM.Hanbat_Market.exception.member.AlreadyLoginException;
 import HM.Hanbat_Market.repository.member.MemberRepository;
 import HM.Hanbat_Market.service.account.jwt.JWTUtil;
 import HM.Hanbat_Market.service.member.MemberService;
 import io.swagger.v3.oas.annotations.Hidden;
-import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.validation.Valid;
+import java.io.IOException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.validation.BindingResult;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequiredArgsConstructor
@@ -44,7 +46,8 @@ public class MemberControllerApi {
             throw new AlreadyLoginException();
         }
 
-        Member member = Member.createMember(memberRequestDto.getMail(), memberRequestDto.getPasswd(), memberRequestDto.getNickname());
+        Member member = Member.createMember(memberRequestDto.getMail(), memberRequestDto.getPasswd(),
+                memberRequestDto.getNickname());
         memberService.join(member);
 
         return new Result(new MemberResponseDto(member.getMail()));
@@ -58,5 +61,39 @@ public class MemberControllerApi {
         String fcmToken = memberService.updateFcmToken(member.getId(), fcmTokenRequest.getFcmToken());
 
         return new Result("success save - " + fcmToken);
+    }
+
+    @PostMapping("/profiles/image")
+    public Result saveProfileImage(@RequestPart(value = "imageFile", required = true) MultipartFile imageFile,
+                                   @RequestPart("profileImageRequest") ProfileImageRequest profileImageRequest) throws IOException {
+
+        ProfileImageResponse profileImageResponse = memberService.regisProfileImage(imageFile, profileImageRequest.getUuid());
+
+        return new Result(profileImageResponse);
+    }
+
+    @GetMapping("/profiles")
+    public Result getProfile(@RequestBody ProfileDetailRequest profileDetailRequest) {
+
+        return new Result(memberService.getProfileDetail(profileDetailRequest.getUuid()));
+    }
+
+    @Transactional
+    @PostMapping("/p")
+    public String pp(@RequestBody ProfileDetailRequest profileDetailRequest) {
+
+        Member member = memberRepository.findByUUID(profileDetailRequest.getUuid()).get();
+        member.pp();
+        memberRepository.save(member);
+
+        return "ok";
+    }
+
+    @PutMapping("/profiles/nickname")
+    public Result setNickname(@RequestBody ProfileNicknameRequest profileNicknameRequest) {
+
+        memberService.setProfileNickname(profileNicknameRequest);
+
+        return new Result(profileNicknameRequest.getNickName());
     }
 }

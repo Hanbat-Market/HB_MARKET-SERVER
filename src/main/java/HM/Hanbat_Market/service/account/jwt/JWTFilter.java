@@ -1,12 +1,8 @@
 package HM.Hanbat_Market.service.account.jwt;
 
 import HM.Hanbat_Market.domain.entity.Member;
-import HM.Hanbat_Market.domain.entity.MemberStatus;
+import HM.Hanbat_Market.domain.entity.LoginStatus;
 import HM.Hanbat_Market.domain.entity.Role;
-import HM.Hanbat_Market.exception.account.NullTokenException;
-import HM.Hanbat_Market.exception.account.TokenExpiredException;
-import HM.Hanbat_Market.exception.account.TokenNotValidException;
-import HM.Hanbat_Market.service.account.jwt.JWTUtil;
 import HM.Hanbat_Market.service.member.MemberService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -40,7 +36,8 @@ public class JWTFilter extends OncePerRequestFilter {
 
         // 스웨거 관련 경로 리스트
         List<String> swaggerPaths = Arrays.asList("/css/", "/assets/", "/files/", "/api/images/", "/favicon.ico", "/error", "/swagger-ui/", "/swagger-resources/",
-                "/v3/api-docs", "/api-docs", "/swagger-ui.html", "/google79674106d1aa552b.html", "/chat", "/chat-front/chat.html", "/api/fcm", "/api/fcm/save");
+                "/v3/api-docs", "/api-docs", "/swagger-ui.html", "/google79674106d1aa552b.html", "/chat", "/chat-front/chat.html",
+                "/api/fcm", "/api/fcm/save", "/api/verification", "/api/verification/match", "/api/verification/confirm");
 
         // 요청된 경로
         String path = request.getRequestURI();
@@ -121,7 +118,7 @@ public class JWTFilter extends OncePerRequestFilter {
 
         Member findMember = memberService.findByMail(mail).get();
 
-        if (findMember.getMemberStatus() != MemberStatus.LOGIN) {
+        if (findMember.getLoginStatus() != LoginStatus.LOGIN) {
             memberService.login(findMember.getId());
             log.info("@@@@@@@@@@@ login 상태 변경");
         }

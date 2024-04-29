@@ -43,8 +43,8 @@ public class HomeControllerApi {
         String mail = jwtUtil.getUsername(token);
         Member sessionMember = null;
         try {
-             sessionMember = memberRepository.findByMail(mail).get();
-        }catch (NoSuchElementException e){
+            sessionMember = memberRepository.findByMail(mail).get();
+        } catch (NoSuchElementException e) {
             log.info("첫 로그인");
         }
 
