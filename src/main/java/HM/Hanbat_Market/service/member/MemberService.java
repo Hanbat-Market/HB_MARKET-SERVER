@@ -12,6 +12,7 @@ import HM.Hanbat_Market.exception.account.FailMailVerificationException;
 import HM.Hanbat_Market.exception.account.NotMatchingUuidAndRandomNumberException;
 import HM.Hanbat_Market.exception.account.UnverifiedStudentException;
 import HM.Hanbat_Market.exception.member.JoinException;
+import HM.Hanbat_Market.exception.member.UpdateNicknameException;
 import HM.Hanbat_Market.repository.member.MemberRepository;
 import HM.Hanbat_Market.service.APIURL;
 import java.io.IOException;
@@ -96,12 +97,12 @@ public class MemberService {
     }
 
     private void validateDuplicateMember(Member member) {
-        Optional<Member> findMember = memberRepository.findByNickName((member.getNickname()));
+        Optional<Member> findMember = memberRepository.findByNickName(member.getNickname());
         if (findMember.isPresent()) {
             throw new JoinException();
         }
 
-        findMember = memberRepository.findByMail((member.getMail()));
+        findMember = memberRepository.findByMail(member.getMail());
         if (findMember.isPresent()) {
             throw new JoinException();
         }
@@ -133,12 +134,22 @@ public class MemberService {
                 getFullPath(member.getImageFile().getStoreFileName()));
     }
 
-    public void setProfileNickname(ProfileNicknameRequest profileNicknameRequest) {
+    @Transactional
+    public String setProfileNickname(ProfileNicknameRequest profileNicknameRequest) {
+        validateDuplicateNickname(profileNicknameRequest.getNickName());
         Member member = memberRepository.findByUUID(profileNicknameRequest.getUuid()).get();
         member.updateNickname(profileNicknameRequest.getNickName());
         memberRepository.save(member);
+
+        return member.getNickname();
     }
 
+    private void validateDuplicateNickname(String nickname) {
+        Optional<Member> findMember = memberRepository.findByNickName(nickname);
+        if (findMember.isPresent()) {
+            throw new UpdateNicknameException();
+        }
+    }
 
     /**
      * 회원 조회

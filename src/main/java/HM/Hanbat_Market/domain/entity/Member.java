@@ -45,7 +45,7 @@ public class Member {
     @Enumerated(EnumType.STRING) // Enum 타입은 문자열 형태로 저장해야 함
     private Role role;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "file_id")
     private ImageFile imageFile;
 
