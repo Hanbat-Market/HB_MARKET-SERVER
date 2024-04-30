@@ -65,9 +65,11 @@ public class MemberControllerApi {
 
     @PostMapping("/profiles/image")
     public Result saveProfileImage(@RequestPart(value = "imageFile", required = true) MultipartFile imageFile,
-                                   @RequestPart("profileImageRequest") ProfileImageRequest profileImageRequest) throws IOException {
+                                   @RequestPart("profileImageRequest") ProfileImageRequest profileImageRequest)
+            throws IOException {
 
-        ProfileImageResponse profileImageResponse = memberService.regisProfileImage(imageFile, profileImageRequest.getUuid());
+        ProfileImageResponse profileImageResponse = memberService.regisProfileImage(imageFile,
+                profileImageRequest.getUuid());
 
         return new Result(profileImageResponse);
     }
@@ -92,8 +94,6 @@ public class MemberControllerApi {
     @PutMapping("/profiles/nickname")
     public Result setNickname(@RequestBody ProfileNicknameRequest profileNicknameRequest) {
 
-        memberService.setProfileNickname(profileNicknameRequest);
-
-        return new Result(profileNicknameRequest.getNickName());
+        return new Result(memberService.setProfileNickname(profileNicknameRequest));
     }
 }
