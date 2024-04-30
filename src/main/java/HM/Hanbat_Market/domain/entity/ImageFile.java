@@ -62,6 +62,7 @@ public class ImageFile {
     }
 }
 
+
 /*
 양쪽 세터에서
 this.delivery = delivery;
