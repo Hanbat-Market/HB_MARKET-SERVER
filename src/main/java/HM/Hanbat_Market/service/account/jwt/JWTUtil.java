@@ -1,8 +1,12 @@
 package HM.Hanbat_Market.service.account.jwt;
 
+import com.nimbusds.jose.JOSEException;
+import com.nimbusds.jwt.JWTClaimsSet;
+import com.nimbusds.jwt.SignedJWT;
 import io.jsonwebtoken.Jwts;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
+import java.text.ParseException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
@@ -32,6 +36,20 @@ public class JWTUtil {
 
     public String getUsername(String token) {
         return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("mail", String.class);
+    }
+
+    public String getEmail(String token) throws ParseException, JOSEException {
+        // JWT 파싱
+        SignedJWT signedJWT = SignedJWT.parse(token);
+
+//        // 서명 확인
+//        if (!signedJWT.verify()) {
+//            throw new JOSEException("Invalid signature");
+//        }
+
+        // 클레임 추출
+        JWTClaimsSet claimsSet = (JWTClaimsSet) signedJWT.getJWTClaimsSet();
+        return claimsSet.getStringClaim("email");
     }
 
     public String getRole(String token) {

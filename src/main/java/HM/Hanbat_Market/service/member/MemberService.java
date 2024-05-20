@@ -65,7 +65,10 @@ public class MemberService {
     @Transactional
     public Long verification(String uuid, String number) {
         Member member = memberRepository.findByUUID(uuid).get();
-        if (member.getVerificationNumber() != number) {
+        log.info(member.getMail());
+        log.info(member.getVerificationNumber());
+        log.info(number);
+        if (!member.getVerificationNumber().equals(number)) {
             throw new NotMatchingUuidAndRandomNumberException();
         }
 

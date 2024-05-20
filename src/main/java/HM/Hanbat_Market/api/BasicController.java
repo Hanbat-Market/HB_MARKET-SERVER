@@ -23,7 +23,7 @@ import java.util.List;
 public class BasicController {
 
     @Hidden
-    @GetMapping("/")
+    @GetMapping("/clear")
     public Result home() {
         return new Result("OAuth OK");
     }
