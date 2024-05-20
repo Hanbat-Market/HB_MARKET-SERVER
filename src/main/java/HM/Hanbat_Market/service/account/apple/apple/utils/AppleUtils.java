@@ -79,7 +79,7 @@ public class AppleUtils {
     private String KEY_ID;
 
     @Value("${APPLE.KEY.PATH}")
-    private String KEY_PATH = "static/AuthKey_7CZL7KRZA5.p8";
+    private String KEY_PATH;
 
     @Value("${APPLE.AUTH.TOKEN.URL}")
     private String AUTH_TOKEN_URL;
