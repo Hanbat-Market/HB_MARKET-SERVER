@@ -36,7 +36,13 @@ dependencies {
     testImplementation 'io.projectreactor:reactor-test'
     implementation 'org.springframework.boot:spring-boot-starter-data-mongodb-reactive'
 
+    //Apple Login
 
+    implementation 'org.apache.httpcomponents:httpclient'
+    implementation 'com.nimbusds:nimbus-jose-jwt:3.10'
+
+    //Json
+    implementation 'com.googlecode.json-simple:json-simple:1.1.1'
     compileOnly 'org.projectlombok:lombok'
     runtimeOnly 'com.h2database:h2'
     annotationProcessor 'org.projectlombok:lombok'

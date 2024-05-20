@@ -63,7 +63,7 @@ public class MemberControllerApi {
         return new Result("success save - " + fcmToken);
     }
 
-    @PostMapping("/profiles/image")
+    @PutMapping("/profiles/image")
     public Result saveProfileImage(@RequestPart(value = "imageFile", required = true) MultipartFile imageFile,
                                    @RequestPart("profileImageRequest") ProfileImageRequest profileImageRequest)
             throws IOException {
@@ -74,10 +74,10 @@ public class MemberControllerApi {
         return new Result(profileImageResponse);
     }
 
-    @GetMapping("/profiles")
-    public Result getProfile(@RequestBody ProfileDetailRequest profileDetailRequest) {
+    @GetMapping("/profiles/{uuid}")
+    public Result getProfile(@PathVariable("uuid") String uuid) {
 
-        return new Result(memberService.getProfileDetail(profileDetailRequest.getUuid()));
+        return new Result(memberService.getProfileDetail(uuid));
     }
 
     @Transactional
