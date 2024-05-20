@@ -68,7 +68,8 @@ public class SecurityConfig {
                                 "/css/**", "/assets/**", "/files/**", "/api/images/**", "/*.ico", "/error", "/swagger-ui/**", "/swagger-resources/**",
                                 "/v3/api-docs/**", "/api-docs/**", "/swagger-ui.html", "/google79674106d1aa552b.html",
                                 "/mentoring/room/**", "/chat/**", "/chat-front/chat.html", "/chat-front/**", "/api/fcm", "/api/fcm/save"
-                                , "/api/verification", "/api/verification/match", "/api/verification/confirm").permitAll()
+                                , "/api/verification", "/api/verification/match", "/api/verification/confirm", "/apple","/apple/login","/redirect","/refresh",
+                                "/apps/to/endpoint","/clear").permitAll()
                         .anyRequest().authenticated());
 
         //세션 설정 : STATELESS
