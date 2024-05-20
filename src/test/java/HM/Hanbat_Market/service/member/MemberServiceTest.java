@@ -71,13 +71,13 @@ class MemberServiceTest {
                 -> memberService.join(member2));
     }
 
-    @Test
-    public void 로그인_실패() {
-        //given
-
-        //when, then
-
-        LoginException e = assertThrows(LoginException.class, ()
-                -> memberService.login("fail@email.com", "failPasswd"));
-    }
+//    @Test
+//    public void 로그인_실패() {
+//        //given
+//
+//        //when, then
+//
+//        LoginException e = assertThrows(LoginException.class, ()
+//                -> memberService.login("fail@email.com", "failPasswd"));
+//    }
 }

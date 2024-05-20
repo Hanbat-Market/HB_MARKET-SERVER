@@ -51,7 +51,7 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         String token = jwtUtil.createJwt(uuid, mail, role, 60 * 60 * 24 * 7 * 1000L);
 
         response.addCookie(createCookie("Authorization", token));
-        response.sendRedirect("https://9285-39-119-25-167.ngrok-free.app/");
+        response.sendRedirect("https://vervet-optimal-crawdad.ngrok-free.app/clear");
     }
 
     private Cookie createCookie(String key, String value) {
