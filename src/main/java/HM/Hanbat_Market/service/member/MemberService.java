@@ -55,6 +55,13 @@ public class MemberService {
     }
 
     @Transactional
+    public void updateToken(String refreshToken, String uuid) {
+        Member member = memberRepository.findByUUID(uuid).get();
+        member.getRefreshToken().update(refreshToken);
+        memberRepository.save(member);
+    }
+
+    @Transactional
     public Long logout(Long memberId) {
         Member member = memberRepository.findById(memberId).get();
         member.logout();

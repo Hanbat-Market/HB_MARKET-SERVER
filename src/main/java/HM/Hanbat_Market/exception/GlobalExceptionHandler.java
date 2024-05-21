@@ -7,6 +7,7 @@ import HM.Hanbat_Market.exception.article.IsDeleteArticleException;
 import HM.Hanbat_Market.exception.article.NoImageException;
 import HM.Hanbat_Market.exception.member.*;
 import HM.Hanbat_Market.exception.trade.*;
+import io.jsonwebtoken.ExpiredJwtException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 
@@ -156,7 +157,21 @@ public class GlobalExceptionHandler {
         return new ErrorResult(e.getStatus(), e.getErrorCode(), e.getErrorMessage());
     }
 
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ExceptionHandler(AccessTokenExpiredException.class)
+    public ErrorResult AccessTokenExpiredExceptionHandler(AccessTokenExpiredException e) {
+        log.error("[exceptionHandler] ex", e);
+        return new ErrorResult(e.getStatus(), e.getErrorCode(), e.getErrorMessage());
+    }
+
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ExceptionHandler(RefreshTokenExpiredException.class)
+    public ErrorResult RefreshTokenExpiredExceptionHandler(RefreshTokenExpiredException e) {
+        log.error("[exceptionHandler] ex", e);
+        return new ErrorResult(e.getStatus(), e.getErrorCode(), e.getErrorMessage());
+    }
+
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @ExceptionHandler(TokenExpiredException.class)
     public ErrorResult TokenExpiredExceptionHandler(TokenExpiredException e) {
         log.error("[exceptionHandler] ex", e);
