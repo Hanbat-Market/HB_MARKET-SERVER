@@ -2,6 +2,9 @@ package HM.Hanbat_Market.service.account.apple.apple.utils;
 
 import HM.Hanbat_Market.api.Result;
 import HM.Hanbat_Market.domain.entity.Member;
+import HM.Hanbat_Market.repository.member.MemberRepository;
+import HM.Hanbat_Market.service.account.RefreshToken;
+import HM.Hanbat_Market.service.account.RefreshTokenService;
 import HM.Hanbat_Market.service.account.apple.apple.model.Key;
 import HM.Hanbat_Market.service.account.apple.apple.model.Keys;
 import HM.Hanbat_Market.service.account.apple.apple.model.Payload;
@@ -11,6 +14,7 @@ import HM.Hanbat_Market.service.account.apple.apple.service.AppleService;
 import HM.Hanbat_Market.service.account.apple.apple.service.AppleServiceImpl;
 import HM.Hanbat_Market.service.account.jwt.CustomOAuth2User;
 import HM.Hanbat_Market.service.account.jwt.JWTUtil;
+import HM.Hanbat_Market.service.member.MemberService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nimbusds.jose.JOSEException;
@@ -38,6 +42,7 @@ import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.bouncycastle.util.io.pem.PemObject;
@@ -89,6 +94,9 @@ public class AppleUtils {
 
     private final JWTUtil jwtUtil;
     private final AppleMemberService appleMemberService;
+    private final RefreshTokenService refreshTokenService;
+    private final MemberRepository memberRepository;
+    private final MemberService memberService;
 
     /**
      * User가 Sign in with Apple 요청(https://appleid.apple.com/auth/authorize)으로 전달받은 id_token을 이용한 최초 검증 Apple Document
@@ -246,9 +254,24 @@ public class AppleUtils {
 
         Member member = appleMemberService.saveOrUpdate(email);
 
-        String jwt = appleMemberService.getJWT(member);
+        String accessToken = appleMemberService.getAccessToken(member);
+        String refreshToken = appleMemberService.getRefreshToken(member);
 
-        response.addCookie(createCookie("Authorization", jwt));
+        String uuid = member.getUuid();
+
+        Member findMember = memberRepository.findByUUID(uuid).get();
+
+        Optional<RefreshToken> findToken = refreshTokenService.findByUuid(uuid);
+
+        if (findToken.isPresent()) {
+            memberService.updateToken(refreshToken, uuid);
+        } else if (!findToken.isPresent()) {
+            refreshTokenService.save(new RefreshToken(uuid, refreshToken, findMember));
+        }
+
+
+        response.addCookie(createCookie("accessToken", accessToken));
+        response.addCookie(createCookie("refreshToken", refreshToken));
         response.sendRedirect("https://vervet-optimal-crawdad.ngrok-free.app/clear");
 
         return new Result("ok");
@@ -257,7 +280,7 @@ public class AppleUtils {
     private Cookie createCookie(String key, String value) {
 
         Cookie cookie = new Cookie(key, value);
-        cookie.setMaxAge(60*60*60);
+        cookie.setMaxAge(60 * 60 * 60);
         //cookie.setSecure(true);
         cookie.setPath("/");
         cookie.setHttpOnly(true);

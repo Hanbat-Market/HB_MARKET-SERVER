@@ -1,5 +1,6 @@
 package HM.Hanbat_Market.domain.entity;
 
+import HM.Hanbat_Market.service.account.RefreshToken;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -61,6 +62,10 @@ public class Member {
     @OneToMany(mappedBy = "member")
     private List<Trade> trades = new ArrayList<>();
 
+    @OneToOne(mappedBy = "member", cascade = CascadeType.ALL)
+    private RefreshToken refreshToken;
+
+
     private void setMail(String mail) {
         this.mail = mail;
     }
@@ -106,6 +111,10 @@ public class Member {
         return this;
     }
 
+    public void updateToken(RefreshToken refreshToken){
+        this.refreshToken = refreshToken;
+    }
+
     public void changeMail(String mail) {
         setMail(mail);
     }
@@ -145,7 +154,7 @@ public class Member {
         return this.role.getKey();
     }
 
-    public void pp(){
+    public void pp() {
         this.memberStatus = MemberStatus.UNVERIFIED;
     }
 

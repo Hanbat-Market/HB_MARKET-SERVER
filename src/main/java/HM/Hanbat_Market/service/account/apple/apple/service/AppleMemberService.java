@@ -3,6 +3,8 @@ package HM.Hanbat_Market.service.account.apple.apple.service;
 import HM.Hanbat_Market.domain.entity.Member;
 import HM.Hanbat_Market.domain.entity.Role;
 import HM.Hanbat_Market.repository.member.MemberRepository;
+import HM.Hanbat_Market.service.account.RefreshToken;
+import HM.Hanbat_Market.service.account.RefreshTokenService;
 import HM.Hanbat_Market.service.account.jwt.JWTUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -25,13 +27,23 @@ public class AppleMemberService {
         return memberRepository.save(user);
     }
 
-    public String getJWT(Member member) {
+    public String getAccessToken(Member member) {
         String role = member.getRole().toString();
         String uuid = member.getUuid();
 
-        String token = jwtUtil.createJwt(uuid, member.getMail(), role, 60 * 60 * 24 * 7 * 1000L);
+        String accessToken = jwtUtil.createAccessTokenJwt(uuid, member.getMail(), role);
 
-        return token;
+        return accessToken;
+    }
+
+    public String getRefreshToken(Member member) {
+        String role = member.getRole().toString();
+        String uuid = member.getUuid();
+        String mail = member.getMail();
+
+        String refreshToken = jwtUtil.createRefreshTokenJwt(uuid, mail, role);
+
+        return refreshToken;
     }
 
 }
