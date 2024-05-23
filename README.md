@@ -1,5 +1,3 @@
-# 임시 리드미입니다. (출시 후 정식으로 README가 작성될 예정입니다.)
-
 ## 💎 한밭마켓
 - 인원: 3명 (Design 1, IOS 1, SERVER 1)
 - 기간: 2024.01.01 - now
@@ -141,6 +139,14 @@ MemberService의 복잡도 감소 -> 유지보수 용이성⬆️
 
 ## 💎 System Architecture
 ![한밭마켓 drawio](https://github.com/Hanbat-Market/HB_MARKET-SERVER/assets/101490157/eb1eb60d-3f0d-4518-98af-4f909a6c1036)
+
+
+<br>
+
+## 💎 Entity-Relationship Diagram
+
+
+![스크린샷 2024-05-24 오전 4 48 00](https://github.com/Hanbat-Market/HB_MARKET-SERVER/assets/101490157/ea3ae8e1-25db-40c3-8497-3743fb7c739f)
 
 
 <br>
