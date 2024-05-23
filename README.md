@@ -25,6 +25,7 @@
 - IOS: 진동규
 - Designer: 전지우
 
+<br>
 
 ## 🛠️ 리팩토링 & 성능개선
 
@@ -136,9 +137,13 @@ MemberService의 복잡도 감소 -> 유지보수 용이성⬆️
 
 </details>
 
-## System Architecture
-![한밭마켓 drawio](https://github.com/Hanbat-Market/HB_MARKET-SERVER/assets/101490157/8c52cc25-a33f-46a7-a053-a9e78f0129f2)
+<br>
 
+## 💎 System Architecture
+![한밭마켓 drawio](https://github.com/Hanbat-Market/HB_MARKET-SERVER/assets/101490157/eb1eb60d-3f0d-4518-98af-4f909a6c1036)
+
+
+<br>
 
 ## 💎 Service
 
