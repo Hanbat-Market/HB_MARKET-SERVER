@@ -1,6 +1,6 @@
 # 임시 리드미입니다. (출시 후 정식으로 README가 작성될 예정입니다.)
 
-## 💎 프로젝트명: 한밭마켓
+## 💎 한밭마켓
 - 인원: 3명 (Design 1, IOS 1, SERVER 1)
 - 기간: 2024.01.01 - now
 
@@ -19,6 +19,11 @@
   <img src="https://github.com/WAFO-WaveInfo/WAFO-SERVER/assets/101490157/e6b2d874-cb5d-46c8-bb6c-4f44e2da3f2e" width="200" height="355">
   <img src="https://github.com/WAFO-WaveInfo/WAFO-SERVER/assets/101490157/fa18b074-8e71-481f-9a6f-c7cf1e66c57d" width="200" height="355">
 </div>
+
+## 👬 Team
+- Back-End: 김주찬
+- IOS: 진동규
+- Designer: 전지우
 
 
 ## 🛠️ 리팩토링 & 성능개선
@@ -131,13 +136,11 @@ MemberService의 복잡도 감소 -> 유지보수 용이성⬆️
 
 </details>
 
+## System Architecture
+![한밭마켓 drawio](https://github.com/Hanbat-Market/HB_MARKET-SERVER/assets/101490157/8c52cc25-a33f-46a7-a053-a9e78f0129f2)
 
-## 👬 Team
-- Back-End(Spring-boot): 김주찬
-- Front-End(ios): 진동규
-- Designer: 전지우
 
-## 💎 한밭마켓
+## 💎 Service
 
 > 교내 중고거래 플랫폼 어플리케이션
 
