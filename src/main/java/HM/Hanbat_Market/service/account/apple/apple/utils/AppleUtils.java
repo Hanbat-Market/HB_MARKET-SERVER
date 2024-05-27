@@ -270,8 +270,8 @@ public class AppleUtils {
         }
 
 
-        response.addCookie(createCookie("accessToken", accessToken));
-        response.addCookie(createCookie("refreshToken", refreshToken));
+        response.addCookie(createCookie("Authorization", accessToken));
+        response.addCookie(createCookie("AuthorizationRefresh", refreshToken));
         response.sendRedirect("https://vervet-optimal-crawdad.ngrok-free.app/clear");
 
         return new Result("ok");

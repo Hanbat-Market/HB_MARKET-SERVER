@@ -80,7 +80,7 @@ public class SecurityConfig {
                                 "/chat-front/chat.html",
                                 "/chat-front/**", "/api/fcm", "/api/fcm/save", "/api/verification",
                                 "/api/verification/match", "/api/verification/confirm", "/apple", "/apple/login",
-                                "/redirect", "/refresh", "/apps/to/endpoint", "/clear")
+                                "/redirect", "/refresh", "/apps/to/endpoint", "/clear", "/api/account/refresh")
                         .permitAll()
                         .anyRequest().authenticated());
 

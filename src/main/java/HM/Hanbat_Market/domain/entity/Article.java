@@ -26,7 +26,7 @@ import java.util.concurrent.atomic.AtomicLong;
 public class Article {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "article_id")
     private Long id;
 
@@ -36,7 +36,8 @@ public class Article {
 
     private String tradingPlace;
 
-    @Enumerated(EnumType.STRING)
+    @Enumerated(EnumType.STRING) // Enum 타입으로 매핑
+    @Column(name = "article_status")
     private ArticleStatus articleStatus;
 
     @OneToOne(mappedBy = "article", cascade = CascadeType.ALL)
