@@ -2,6 +2,10 @@ package HM.Hanbat_Market.api.article;
 
 import HM.Hanbat_Market.domain.entity.ImageFile;
 import HM.Hanbat_Market.exception.article.FileValidityException;
+import com.google.cloud.storage.BlobInfo;
+import com.google.cloud.storage.Storage;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -13,14 +17,14 @@ import java.util.List;
 import java.util.UUID;
 
 @Component
+@RequiredArgsConstructor
 public class FileStore {
 
-    //    @Value("${file.dir}")
-    private String fileDir = "/Users/kimjuchan/Desktop/Hanbat_Market/src/main/resources/static/files/";
+    private final Storage storage;
 
-    public String getFullPath(String filename) {
-        return fileDir + filename;
-    }
+    @Value("${spring.cloud.gcp.storage.bucket}") // application.yml에 써둔 bucket 이름
+    private String bucketName;
+
 
     public List<ImageFile> storeFiles(List<MultipartFile> multipartFiles) throws IOException {
         List<ImageFile> storeFileResult = new ArrayList<>();
@@ -47,7 +51,14 @@ public class FileStore {
 
         String originalFilename = multipartFile.getOriginalFilename();
         String storeFileName = createStoreFileName(originalFilename);
-        multipartFile.transferTo(new File(getFullPath(storeFileName)));
+        // GCS에 이미지 업로드
+        BlobInfo blobInfo = storage.create(
+                BlobInfo.newBuilder(bucketName, storeFileName)
+                        .setContentType(multipartFile.getContentType())
+                        .build(),
+                multipartFile.getInputStream()
+        );
+
         return new ImageFile(originalFilename, storeFileName);
     }
 

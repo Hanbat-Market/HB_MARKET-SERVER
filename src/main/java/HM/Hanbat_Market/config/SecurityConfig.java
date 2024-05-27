@@ -9,6 +9,8 @@ import HM.Hanbat_Market.service.account.jwt.CustomAuthenticationEntryPoint;
 import HM.Hanbat_Market.service.account.jwt.JWTFilter;
 import HM.Hanbat_Market.service.account.jwt.JWTUtil;
 import HM.Hanbat_Market.service.member.MemberService;
+import com.google.cloud.storage.Storage;
+import com.google.cloud.storage.StorageOptions;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;

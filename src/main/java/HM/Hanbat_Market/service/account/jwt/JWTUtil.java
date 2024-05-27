@@ -75,7 +75,7 @@ public class JWTUtil {
 
     public String createAccessTokenJwt(String uuid, String mail, String role) {
 
-        Long expiredMs = 60000L;
+        Long expiredMs = 60000000000L;
 
         return Jwts.builder()
                 .claim("UUID", uuid)

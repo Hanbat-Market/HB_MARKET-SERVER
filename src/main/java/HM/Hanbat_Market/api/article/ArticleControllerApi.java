@@ -36,7 +36,7 @@ import java.util.List;
 public class ArticleControllerApi {
 
     private final ArticleService articleService;
-    private final FileStore fileStore = new FileStore();
+    private final FileStore fileStore;
     private final JWTUtil jwtUtil;
     private final MemberRepository memberRepository;
 
@@ -116,10 +116,10 @@ public class ArticleControllerApi {
         return new Result(articleService.articleDetailToDto(article, sessionMember));
     }
 
-    @ResponseBody
-    @Hidden
-    @GetMapping("/images/{filename}")
-    public Resource downloadImage(@PathVariable("filename") String filename) throws MalformedURLException {
-        return new UrlResource("file:" + fileStore.getFullPath(filename));
-    }
+//    @ResponseBody
+//    @Hidden
+//    @GetMapping("/images/{filename}")
+//    public Resource downloadImage(@PathVariable("filename") String filename) throws MalformedURLException {
+//        return new UrlResource("file:" + fileStore.getFullPath(filename));
+//    }
 }
