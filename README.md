@@ -1,12 +1,7 @@
-# 임시 리드미입니다. (출시 후 정식으로 README가 작성될 예정입니다.)
-
-## 💎 프로젝트명: 한밭마켓
-- 인원: 3명 (Design 1, IOS 1, SERVER 1)
+## 💎 한밭마켓
 - 기간: 2024.01.01 - now
 
-- 설명: 교내 중고거래가 오픈채팅방이나 에브리타임 어플의 쪽지 기능으로 진행되는 것에 불편함을 느껴 학생들의 생활의 질을 높이고자 진행한 프로젝트입니다.
-
-- 현재 진행중이고 ios는 출시를 앞두고 있습니다. (5월 중순 예정)
+- 교내 중고거래가 오픈채팅방이나 에브리타임 어플의 쪽지 기능으로 진행되는 것에 불편함을 느껴 학생들의 생활의 질을 높이고자 진행한 프로젝트입니다.
 
 <div align="center">
   <img src="https://github.com/WAFO-WaveInfo/WAFO-SERVER/assets/101490157/2b7e0d7b-67c8-4794-b5e7-9e76d82e8058" width="200" height="355">
@@ -20,6 +15,12 @@
   <img src="https://github.com/WAFO-WaveInfo/WAFO-SERVER/assets/101490157/fa18b074-8e71-481f-9a6f-c7cf1e66c57d" width="200" height="355">
 </div>
 
+## 👬 Team
+- Back-End: 김주찬
+- IOS: 진동규
+- Designer: 전지우
+
+<br>
 
 ## 🛠️ 리팩토링 & 성능개선
 
@@ -89,7 +90,6 @@
 </details>
 
 
-
 ### 2. 양방향 연관관계의 필요성 따져보기 (유지보수 용이성⬆️)
 
 <details>
@@ -111,7 +111,7 @@
 ```java
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    private Member member;
+    private Member member;
 ```
 
 하지만 한밭마켓에서는 위와 같이 Member와 ImageFile 간의 연관관계가 설정되어 있어서
@@ -131,13 +131,23 @@ MemberService의 복잡도 감소 -> 유지보수 용이성⬆️
 
 </details>
 
+<br>
 
-## 👬 Team
-- Back-End(Spring-boot): 김주찬
-- Front-End(ios): 진동규
-- Designer: 전지우
+## 💎 System Architecture
+![한밭마켓 drawio](https://github.com/Hanbat-Market/HB_MARKET-SERVER/assets/101490157/eb1eb60d-3f0d-4518-98af-4f909a6c1036)
 
-## 💎 한밭마켓
+
+<br>
+
+## 💎 Entity-Relationship Diagram
+
+
+![스크린샷 2024-05-24 오전 4 48 00](https://github.com/Hanbat-Market/HB_MARKET-SERVER/assets/101490157/ea3ae8e1-25db-40c3-8497-3743fb7c739f)
+
+
+<br>
+
+## 💎 Service
 
 > 교내 중고거래 플랫폼 어플리케이션
 
