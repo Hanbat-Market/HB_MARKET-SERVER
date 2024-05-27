@@ -69,8 +69,8 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
             refreshTokenService.save(new RefreshToken(uuid, refreshToken, member));
         }
 
-        response.addCookie(createCookie("AccessToken", accessToken));
-        response.addCookie(createCookie("RefreshToken", refreshToken));
+        response.addCookie(createCookie("Authorization", accessToken));
+        response.addCookie(createCookie("AuthorizationRefresh", refreshToken));
         response.sendRedirect("https://vervet-optimal-crawdad.ngrok-free.app/clear");
     }
 

@@ -15,7 +15,7 @@ import java.util.concurrent.atomic.AtomicLong;
 public class ImageFile {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "file_id")
     private Long id;
 

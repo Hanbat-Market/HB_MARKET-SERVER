@@ -13,7 +13,7 @@ import java.util.concurrent.atomic.AtomicLong;
 public class PreemptionItem {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "preemption_item_id")
     private Long id;
 

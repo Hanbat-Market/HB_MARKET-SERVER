@@ -29,24 +29,6 @@ public class LoginControllerApi {
     private final MemberRepository memberRepository;
     private final JWTUtil jwtUtil;
 
-//    @Hidden
-//    @PostMapping("/login")
-//    public Result login(@RequestBody LoginRequestDto form, HttpServletRequest request) {
-//
-//        String token = jwtUtil.resolveTokenFromRequest(request);
-//        String mail = jwtUtil.getUsername(token);
-//
-//        Member sessionMember = memberRepository.findByMail(mail).get();
-//
-//        if (sessionMember != null) {
-//            throw new AlreadyLoginException();
-//        }
-//
-//        Member loginMember = memberService.login(form.getMail(), form.getPasswd());
-//
-//        return new Result<>("ok");
-//    }
-
     @PostMapping("/logout")
     public Result logout(@RequestBody LogoutRequest logoutRequest, HttpServletRequest request) {
 

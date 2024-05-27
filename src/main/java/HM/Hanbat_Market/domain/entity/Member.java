@@ -16,7 +16,7 @@ import java.util.UUID;
 public class Member {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
     private Long id; //동시성 문제해결을 위해 추후에 AtomicLong 사용
 

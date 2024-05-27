@@ -24,8 +24,9 @@ public class JWTUtil {
 
     private SecretKey secretKey;
     public static final String TOKEN_HEADER = "Authorization";
+    public static final String REFRESH_TOKEN_HEADER = "AuthorizationRefresh";
 
-    public JWTUtil(@Value("${spring.jwt.secret}") String secret) {
+    public JWTUtil(@Value("${spring.jwt.secret}")String secret) {
 
         secretKey = new SecretKeySpec(secret.getBytes(StandardCharsets.UTF_8),
                 Jwts.SIG.HS256.key().build().getAlgorithm());
@@ -115,6 +116,25 @@ public class JWTUtil {
 
         Optional<String> token = Arrays.stream(cookies)
                 .filter(c -> c.getName().equals(TOKEN_HEADER))
+                .map(c -> c.getValue())
+                .findFirst();
+
+        if (token.isPresent()) {
+            return token.get();
+        }
+
+        return null;
+    }
+    public String resolveRefreshTokenFromRequest(HttpServletRequest request) {
+
+        Cookie[] cookies = request.getCookies();
+
+        if (ObjectUtils.isEmpty(cookies)) {
+            return null;
+        }
+
+        Optional<String> token = Arrays.stream(cookies)
+                .filter(c -> c.getName().equals(REFRESH_TOKEN_HEADER))
                 .map(c -> c.getValue())
                 .findFirst();
 

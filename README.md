@@ -90,7 +90,6 @@
 </details>
 
 
-
 ### 2. 양방향 연관관계의 필요성 따져보기 (유지보수 용이성⬆️)
 
 <details>
@@ -112,7 +111,7 @@
 ```java
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    private Member member;
+    private Member member;
 ```
 
 하지만 한밭마켓에서는 위와 같이 Member와 ImageFile 간의 연관관계가 설정되어 있어서

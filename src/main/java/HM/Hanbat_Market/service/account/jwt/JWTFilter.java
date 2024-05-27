@@ -53,7 +53,7 @@ public class JWTFilter extends OncePerRequestFilter {
                     "/chat-front/chat.html",
                     "/api/fcm", "/api/fcm/save", "/api/verification", "/api/verification/match",
                     "/api/verification/confirm", "/apple", "/apple/login", "/redirect", "/refresh",
-                    "/apps/to/endpoint", "/clear");
+                    "/apps/to/endpoint", "/clear", "/api/account/refresh");
 
             // 요청된 경로
             String path = request.getRequestURI();
@@ -115,26 +115,8 @@ public class JWTFilter extends OncePerRequestFilter {
             //토큰
             String token = authorization;
 
-            //토큰 타입 검증
-            if (jwtUtil.getTokenType(token).equals("refresh")) {
-                if (jwtUtil.isExpired(token)) {
-                    //refreshtoken 만료 401 보내기
-                    throw new RefreshTokenExpiredException();
-                }
-                String uuid = jwtUtil.getUUID(token);
-                String mail = jwtUtil.getUsername(token);
-                String role = jwtUtil.getRole(token);
-                String accessToken = jwtUtil.createAccessTokenJwt(uuid, mail, role);
-                response.addCookie(createCookie("AccessToken", accessToken)); //쿠키에 새로운 AccessToken 발급
-                return;
-            }
-
             //토큰 소멸 시간 검증
             if (jwtUtil.isExpired(token)) {
-
-//            System.out.println("token expired");
-//            filterChain.doFilter(request, response);
-
                 throw new AccessTokenExpiredException();
             }
 
@@ -165,7 +147,7 @@ public class JWTFilter extends OncePerRequestFilter {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 
-            ErrorResult errorResult = new ErrorResult(401, "UNAUTHORIZED_TOKEN_EXPIRED", "만료된 토큰입니다.");
+            ErrorResult errorResult = new ErrorResult(401, "UNAUTHORIZED_ACCESS_TOKEN_EXPIRED", "만료된 액세스 토큰입니다.");
             new ObjectMapper().writeValue(response.getOutputStream(), errorResult);
         }
     }
